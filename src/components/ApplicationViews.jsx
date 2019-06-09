@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-// import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
+import RequestForm from './RequestForm'
 
 class ApplicationViews extends Component {
     render() {
         return (
-            <div>
-                <h1>Under Construction</h1>
+            <div className="container app-view-container">
+                <Route exact path="/requestForm" render={props => {
+                    return <RequestForm />
+                }} />
             </div>
         )
     }
