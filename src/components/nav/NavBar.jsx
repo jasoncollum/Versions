@@ -10,10 +10,13 @@ class NavBar extends Component {
                 <h2>VERSIONS</h2>
                 <ul className="nav nav-pills">
                     <li className="nav-item">
+                        <Link className="nav-link" to="/songList">Song List</Link>
+                    </li>
+                    <li className="nav-item">
                         <Link className="nav-link" to="/requestForm">New Version</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link">Logout</Link>
+                        {/* <Link className="nav-link">Logout</Link> */}
                     </li>
                 </ul>
             </nav>
