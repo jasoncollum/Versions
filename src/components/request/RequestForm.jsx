@@ -7,13 +7,22 @@ export default class RequestForm extends Component {
         songTitleInput: '',
         versionNumberInput: '',
         artistNameInput: '',
-        requestInput: ''
+        requestInputs: []
     }
 
     handleFieldChange = evt => {
         const stateToChange = {}
         stateToChange[evt.target.id] = evt.target.value
         this.setState(stateToChange)
+    }
+
+    addRequestInput = () => {
+        const requestInputs = document.querySelectorAll('#requestGroup textarea')
+        requestInputs.forEach(input => {
+            let floatState = this.state.requestInputs
+            floatState.push(input.value)
+            this.setState({ requestInputs: floatState })
+        })
     }
 
     render() {
@@ -51,10 +60,9 @@ export default class RequestForm extends Component {
                         <FormGroup id="requestGroup">
                             <Label for="requestInput">Mix Requests</Label>
                             <Input type="textarea" name="requestInput" id="requestInput"
-                                placeholder="Enter a mix request..."
-                                onChange={this.handleFieldChange} />
+                                placeholder="Enter a mix request..." />
                         </FormGroup>
-                        <Button id="requestBtn">+</Button>
+                        <Button onClick={this.addRequestInput} id="requestBtn">+</Button>
                     </Col>
                 </Row>
                 <Button>Submit</Button>
