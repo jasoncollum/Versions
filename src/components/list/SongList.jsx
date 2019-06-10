@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 
 export default class SongList extends Component {
 
-    // componentDidMount() {
-    //     console.log(this.props.song.versions)
-    // }
+    componentDidMount() {
+        console.log(this.props.song.versions)
+    }
 
     render() {
         return (
