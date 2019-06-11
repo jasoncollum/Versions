@@ -7,7 +7,8 @@ export default class RequestForm extends Component {
         songTitleInput: '',
         versionNumberInput: '',
         artistNameInput: '',
-        requests: [{ text: '' }]
+        requests: [{ text: '' }],
+        requestInputText: []
     }
 
     addRequest = (e) => {
@@ -16,39 +17,37 @@ export default class RequestForm extends Component {
         }));
     }
 
-    handleSubmit = (e) => { e.preventDefault() }
+    // push all request text to requestText array in state
+    pushRequests = () => {
+        const requestInputs = document.querySelectorAll('#requestGroup textarea')
+        requestInputs.forEach(input => {
+            let floatState = this.state.requestInputText
+            floatState.push(input.value)
+            this.setState({ requestInputText: floatState })
+        })
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        this.pushRequests()
+    }
 
     handleFieldChange = e => {
         if (['text'].includes(e.target.className)) {
             let requests = [...this.state.requests]
             requests[e.target.dataset.id][e.target.className] = e.target.value
             this.setState({ requests }, () => console.log(this.state.requests))
-        } else {
+        }
+        if (e.target.type !== 'textarea') {
             this.setState({ [e.target.name]: e.target.value })
         }
+
 
         // const stateToChange = {}
         // stateToChange[evt.target.id] = evt.target.value
         // this.setState(stateToChange)
     }
 
-    // Dynamically add request inputs
-    // addRequestInput = (parent) => {
-    //     const newRequestTextarea = `<Input type="textarea" name="requestInput" className="requestInput"
-    // placeholder = "Enter a mix request..." />`
-
-    //     parent.append(newRequestTextarea)
-    // }
-
-    // move to submit button
-    // pushRequests = () => {
-    //     const requestInputs = document.querySelectorAll('#requestGroup textarea')
-    //     requestInputs.forEach(input => {
-    //         let floatState = this.state.requestInputs
-    //         floatState.push(input.value)
-    //         this.setState({ requestInputs: floatState })
-    //     })
-    // }
 
     render() {
         let { requests } = this.state
@@ -92,12 +91,13 @@ export default class RequestForm extends Component {
                                     let requestId = `request-${idx}`
                                     return (
                                         <div key={idx}>
-                                            {/* <Label for={requestId}>Mix Requests</Label> */}
+                                            <Label for={requestId} hidden>Mix Requests</Label>
                                             <Input
                                                 type="textarea"
                                                 name={requestId}
                                                 data-id={idx}
                                                 id={requestId}
+                                                className="requestText"
                                                 placeholder="Enter a mix request..."
                                                 onChange={this.handleFieldChange} />
                                         </div>

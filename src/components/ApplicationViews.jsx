@@ -20,7 +20,6 @@ class ApplicationViews extends Component {
         })
             .then(() => dbCalls.getVersion(newState.song.id)
                 .then(versions => {
-                    console.log(versions)
                     newState.versions = versions
                 }))
             .then(() => dbCalls.getRequests(1)
