@@ -30,6 +30,9 @@ export default class RequestForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault()
         this.pushRequests()
+        // post to db
+        const artistObj = this.createArtistObj()
+        this.props.saveArtist(artistObj)
     }
 
     handleFieldChange = e => {
@@ -41,13 +44,35 @@ export default class RequestForm extends Component {
         if (e.target.type !== 'textarea') {
             this.setState({ [e.target.name]: e.target.value })
         }
-
-
-        // const stateToChange = {}
-        // stateToChange[evt.target.id] = evt.target.value
-        // this.setState(stateToChange)
     }
 
+    // Create objects:  artist, song, version, request
+    createArtistObj = () => {
+        return {
+            name: this.state.artistNameInput
+        }
+    }
+
+    // createSongObj = (artistId) => {
+    //     const songObj = {
+    //         title: this.state.songTitleInput,
+    //         artistId: artistId
+    //     }
+    // }
+
+    // createVersionObj = (songId) => {
+    //     const versionObj = {
+    //         versionNum: this.state.versionNumberInput,
+    //         songId: songId
+    //     }
+    // }
+
+    // createRequestObj = (versionId) => {
+    //     const requestObj = {
+    //         requestText: this.state.requestInputText,
+    //         versionId: versionId
+    //     }
+    // }
 
     render() {
         let { requests } = this.state
@@ -97,7 +122,6 @@ export default class RequestForm extends Component {
                                                 name={requestId}
                                                 data-id={idx}
                                                 id={requestId}
-                                                className="requestText"
                                                 placeholder="Enter a mix request..."
                                                 onChange={this.handleFieldChange} />
                                         </div>

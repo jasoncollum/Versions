@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import RequestForm from './request/RequestForm'
 import SongList from './list/SongList'
-import dbCalls from '../modules/dbCalls'
+import API from '../modules/API'
 
 class ApplicationViews extends Component {
 
@@ -12,17 +12,29 @@ class ApplicationViews extends Component {
         requests: []
     }
 
+    saveArtist = (artistObj) => {
+        API.getArtist(artistObj.name)
+            .then(artist => {
+                if (artist.length > 0) {
+                    return artist.id
+                } else {
+                    console.log(artistObj)
+                    API.postArtist(artistObj)
+                }
+            })
+    }
+
     componentDidMount() {
         const newState = {}
 
-        dbCalls.getSong(1).then(song => {
+        API.getSong(1).then(song => {
             newState.song = song
         })
-            .then(() => dbCalls.getVersion(newState.song.id)
+            .then(() => API.getVersion(newState.song.id)
                 .then(versions => {
                     newState.versions = versions
                 }))
-            .then(() => dbCalls.getRequests(1)
+            .then(() => API.getRequests(1)
                 .then(requests => {
                     newState.requests = requests
                 }))
@@ -44,7 +56,8 @@ class ApplicationViews extends Component {
                     return <RequestForm
                         song={this.state.song}
                         versions={this.state.versions}
-                        requests={this.state.requests} />
+                        requests={this.state.requests}
+                        saveArtist={this.saveArtist} />
                 }} />
             </div>
         )
