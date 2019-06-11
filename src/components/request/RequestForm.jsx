@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Col, Row, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
+import { Col, Row, Button, Form, FormGroup, Label, Input, } from 'reactstrap'
+// import API from '../../modules/API'
 import './requestForm.css'
 
 export default class RequestForm extends Component {
@@ -30,9 +31,18 @@ export default class RequestForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault()
         this.pushRequests()
+
         // post to db
         const artistObj = this.createArtistObj()
-        this.props.saveArtist(artistObj)
+        const songObj = this.createSongObj()
+        const versionObj = this.createVersionObj()
+        const requestArr = this.state.requestInputText.map(request => {
+            return { requestText: request }
+        })
+        console.log(requestArr)
+
+        this.props.saveRequestForm(artistObj, songObj, versionObj, requestArr)
+
     }
 
     handleFieldChange = e => {
@@ -53,26 +63,23 @@ export default class RequestForm extends Component {
         }
     }
 
-    // createSongObj = (artistId) => {
-    //     const songObj = {
-    //         title: this.state.songTitleInput,
-    //         artistId: artistId
-    //     }
-    // }
+    createSongObj = () => {
+        return {
+            title: this.state.songTitleInput
+        }
+    }
 
-    // createVersionObj = (songId) => {
-    //     const versionObj = {
-    //         versionNum: this.state.versionNumberInput,
-    //         songId: songId
-    //     }
-    // }
+    createVersionObj = () => {
+        return {
+            versionNum: parseInt(this.state.versionNumberInput)
+        }
+    }
 
-    // createRequestObj = (versionId) => {
-    //     const requestObj = {
-    //         requestText: this.state.requestInputText,
-    //         versionId: versionId
-    //     }
-    // }
+    createRequestObjArr = (strArr) => {
+        return {
+            requestText: this.state.requestInputText
+        }
+    }
 
     render() {
         let { requests } = this.state

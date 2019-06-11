@@ -7,20 +7,44 @@ import API from '../modules/API'
 class ApplicationViews extends Component {
 
     state = {
+        artist: {},
         song: {},
         versions: [],
         requests: []
     }
 
-    saveArtist = (artistObj) => {
-        API.getArtist(artistObj.name)
+    saveRequestForm = (artistObj, songObj, versionObj, requestArr) => {
+        const newState = {}
+
+        API.postArtist(artistObj)
             .then(artist => {
-                if (artist.length > 0) {
-                    return artist.id
-                } else {
-                    console.log(artistObj)
-                    API.postArtist(artistObj)
-                }
+                newState.artist = artist
+            })
+            .then(() => {
+                songObj.artistId = newState.artist.id
+                return API.postSong(songObj)
+                    .then(song => {
+                        newState.song = song
+                    })
+            })
+            .then(() => {
+                versionObj.songId = newState.song.id
+                return API.postVersion(versionObj)
+                    .then(version => {
+                        newState.version = version
+                    })
+            })
+            .then(() => {
+                let postedRequests = []
+                requestArr.forEach(requestObj => {
+                    requestObj.versionId = newState.version.id
+                    API.postRequest(requestObj)
+                        .then(request => {
+                            postedRequests.push(request)
+                            console.log(postedRequests)
+                        })
+
+                })
             })
     }
 
@@ -57,7 +81,7 @@ class ApplicationViews extends Component {
                         song={this.state.song}
                         versions={this.state.versions}
                         requests={this.state.requests}
-                        saveArtist={this.saveArtist} />
+                        saveRequestForm={this.saveRequestForm} />
                 }} />
             </div>
         )
