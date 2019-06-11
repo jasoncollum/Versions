@@ -2,28 +2,63 @@ import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import RequestForm from './request/RequestForm'
 import SongList from './list/SongList'
-import dbCalls from '../modules/dbCalls'
+import API from '../modules/API'
 
 class ApplicationViews extends Component {
 
     state = {
+        artist: {},
         song: {},
         versions: [],
         requests: []
     }
 
+    saveRequestForm = (artistObj, songObj, versionObj, requestArr) => {
+        const newState = {}
+
+        API.postArtist(artistObj)
+            .then(artist => {
+                newState.artist = artist
+            })
+            .then(() => {
+                songObj.artistId = newState.artist.id
+                return API.postSong(songObj)
+                    .then(song => {
+                        newState.song = song
+                    })
+            })
+            .then(() => {
+                versionObj.songId = newState.song.id
+                return API.postVersion(versionObj)
+                    .then(version => {
+                        newState.version = version
+                    })
+            })
+            .then(() => {
+                let postedRequests = []
+                requestArr.forEach(requestObj => {
+                    requestObj.versionId = newState.version.id
+                    API.postRequest(requestObj)
+                        .then(request => {
+                            postedRequests.push(request)
+                            console.log(postedRequests)
+                        })
+
+                })
+            })
+    }
+
     componentDidMount() {
         const newState = {}
 
-        dbCalls.getSong(1).then(song => {
+        API.getSong(1).then(song => {
             newState.song = song
         })
-            .then(() => dbCalls.getVersion(newState.song.id)
+            .then(() => API.getVersion(newState.song.id)
                 .then(versions => {
-                    console.log(versions)
                     newState.versions = versions
                 }))
-            .then(() => dbCalls.getRequests(1)
+            .then(() => API.getRequests(1)
                 .then(requests => {
                     newState.requests = requests
                 }))
@@ -45,7 +80,8 @@ class ApplicationViews extends Component {
                     return <RequestForm
                         song={this.state.song}
                         versions={this.state.versions}
-                        requests={this.state.requests} />
+                        requests={this.state.requests}
+                        saveRequestForm={this.saveRequestForm} />
                 }} />
             </div>
         )
