@@ -9,14 +9,18 @@ export default class SongList extends Component {
 
     render() {
         return (
-            <div>
-                <h4>{this.props.song.title} MIX V{this.props.version.versionNum}</h4>
-                {
-                    this.props.requests.map(request => {
-                        return <p>{request.requestText}</p>
-                    })
-                }
-            </div>
+            <React.Fragment>
+                <h1>Under Construction</h1>
+                {console.log(this.props.songs)}
+                <section className="songList">
+                    {
+                        this.props.requests.map(request =>
+                            // <AnimalCard key={animal.id} animal={animal} {...this.props} />
+                            <div key={request.id}>{request.requestText}</div>
+                        )
+                    }
+                </section>
+            </React.Fragment>
         )
     }
 }

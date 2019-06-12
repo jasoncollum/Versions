@@ -8,9 +8,9 @@ import API from '../modules/API'
 class ApplicationViews extends Component {
 
     state = {
-        artist: {},
-        song: {},
-        version: {},
+        artists: [],
+        songs: [],
+        versions: [],
         requests: []
     }
 
@@ -49,25 +49,26 @@ class ApplicationViews extends Component {
             .then(() => this.setState(newState))
     }
 
-    saveRevisionForm = () => {
-        console.log('Revision Form')
-    }
+    // saveRevisionForm = () => {
+    //     console.log('Revision Form')
+    // }
 
     componentDidMount() {
-        // const newState = {}
+        const newState = {}
 
-        // API.getSong(1).then(song => {
-        //     newState.song = song
-        // })
-        //     .then(() => API.getVersion(newState.song.id)
-        //         .then(versions => {
-        //             newState.versions = versions
-        //         }))
-        //     .then(() => API.getRequests(1)
-        //         .then(requests => {
-        //             newState.requests = requests
-        //         }))
-        //     .then(() => this.setState(newState))
+        API.getAllArtists().then(allArtists => {
+            newState.artists = allArtists
+        })
+            .then(() => API.getAllSongs().then(allSongs => {
+                newState.songs = allSongs
+            }))
+            .then(() => API.getAllVersions().then(allVersions => {
+                newState.versions = allVersions
+            }))
+            .then(() => API.getAllRequests().then(allRequests => {
+                newState.requests = allRequests
+            }))
+            .then(() => this.setState(newState))
     }
 
 
@@ -76,8 +77,9 @@ class ApplicationViews extends Component {
             <div className="container app-view-container">
                 <Route exact path="/songList" render={props => {
                     return <SongList
-                        song={this.state.song}
-                        version={this.state.version}
+                        artists={this.state.artists}
+                        songs={this.state.songs}
+                        versions={this.state.versions}
                         requests={this.state.requests}
                     />
                 }} />
