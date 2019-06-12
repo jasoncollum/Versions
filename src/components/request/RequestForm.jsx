@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Col, Row, Button, Form, FormGroup, Label, Input, } from 'reactstrap'
-// import API from '../../modules/API'
+
 import './requestForm.css'
 
 export default class RequestForm extends Component {
@@ -18,7 +18,7 @@ export default class RequestForm extends Component {
         }));
     }
 
-    // push all request text to requestText array in state
+    // push all request text to requestInputText array in state
     pushRequests = () => {
         const requestInputs = document.querySelectorAll('#requestGroup textarea')
         requestInputs.forEach(input => {
@@ -39,10 +39,8 @@ export default class RequestForm extends Component {
         const requestArr = this.state.requestInputText.map(request => {
             return { requestText: request }
         })
-        console.log(requestArr)
 
         this.props.saveRequestForm(artistObj, songObj, versionObj, requestArr)
-
     }
 
     handleFieldChange = e => {

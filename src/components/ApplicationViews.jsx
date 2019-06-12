@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import RequestForm from './request/RequestForm'
+import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
 import API from '../modules/API'
 
@@ -48,6 +49,10 @@ class ApplicationViews extends Component {
             .then(() => this.setState(newState))
     }
 
+    saveRevisionForm = () => {
+        console.log('Revision Form')
+    }
+
     componentDidMount() {
         // const newState = {}
 
@@ -83,6 +88,15 @@ class ApplicationViews extends Component {
                         versions={this.state.versions}
                         requests={this.state.requests}
                         saveRequestForm={this.saveRequestForm} />
+                }} />
+
+                <Route exact path="/revisionForm" render={props => {
+                    return <RevisionForm
+                        artist={this.state.artist}
+                        song={this.state.song}
+                        version={this.state.version}
+                        request={this.state.request}
+                        saveRevisionForm={this.saveRevisionForm} />
                 }} />
             </div>
         )
