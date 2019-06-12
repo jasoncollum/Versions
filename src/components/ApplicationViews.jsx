@@ -9,7 +9,7 @@ class ApplicationViews extends Component {
     state = {
         artist: {},
         song: {},
-        versions: [],
+        version: {},
         requests: []
     }
 
@@ -41,28 +41,28 @@ class ApplicationViews extends Component {
                     API.postRequest(requestObj)
                         .then(request => {
                             postedRequests.push(request)
-                            console.log(postedRequests)
                         })
 
                 })
             })
+            .then(() => this.setState(newState))
     }
 
     componentDidMount() {
-        const newState = {}
+        // const newState = {}
 
-        API.getSong(1).then(song => {
-            newState.song = song
-        })
-            .then(() => API.getVersion(newState.song.id)
-                .then(versions => {
-                    newState.versions = versions
-                }))
-            .then(() => API.getRequests(1)
-                .then(requests => {
-                    newState.requests = requests
-                }))
-            .then(() => this.setState(newState))
+        // API.getSong(1).then(song => {
+        //     newState.song = song
+        // })
+        //     .then(() => API.getVersion(newState.song.id)
+        //         .then(versions => {
+        //             newState.versions = versions
+        //         }))
+        //     .then(() => API.getRequests(1)
+        //         .then(requests => {
+        //             newState.requests = requests
+        //         }))
+        //     .then(() => this.setState(newState))
     }
 
 
@@ -72,7 +72,8 @@ class ApplicationViews extends Component {
                 <Route exact path="/songList" render={props => {
                     return <SongList
                         song={this.state.song}
-                        versions={this.state.versions}
+                        version={this.state.version}
+                        requests={this.state.requests}
                     />
                 }} />
 
