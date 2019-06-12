@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import VersionCard from './VersionCard'
 // import { Link } from 'react-router-dom'
+import './songList.css'
 
 export default class SongList extends Component {
 
@@ -10,13 +12,14 @@ export default class SongList extends Component {
     render() {
         return (
             <React.Fragment>
-                <h1>Under Construction</h1>
-                {console.log(this.props.songs)}
                 <section className="songList">
                     {
-                        this.props.requests.map(request =>
-                            // <AnimalCard key={animal.id} animal={animal} {...this.props} />
-                            <div key={request.id}>{request.requestText}</div>
+                        this.props.songs.map(song =>
+                            <VersionCard key={song.id}
+                                song={song}
+                                artists={this.props.artists}
+                                versions={this.props.versions}
+                                requests={this.props.requests} />
                         )
                     }
                 </section>
