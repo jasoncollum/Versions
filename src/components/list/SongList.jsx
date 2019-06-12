@@ -19,7 +19,8 @@ export default class SongList extends Component {
                                 song={song}
                                 artists={this.props.artists}
                                 versions={this.props.versions}
-                                requests={this.props.requests} />
+                                requests={this.props.requests}
+                                {...this.props} />
                         )
                     }
                 </section>

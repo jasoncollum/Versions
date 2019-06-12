@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import RequestForm from './request/RequestForm'
 // import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
+import VersionDetail from './list/VersionDetail'
 import API from '../modules/API'
 
 class ApplicationViews extends Component {
@@ -12,6 +13,18 @@ class ApplicationViews extends Component {
         songs: [],
         versions: [],
         requests: []
+    }
+
+    createMasterObjects = (data) => {
+        data.versions.map(version => {
+            let filteredRequests = data.requests.filter(request => request.versionId === version.id)
+            version.requests = filteredRequests
+            let foundSong = data.songs.find(song => song.id === version.songId)
+            version.song = foundSong
+            let foundArtist = data.artists.find(artist => artist.id === foundSong.artistId)
+            version.artist = foundArtist
+        })
+        console.log(data.versions)
     }
 
     saveRequestForm = (artistObj, songObj, versionObj, requestArr) => {
@@ -54,21 +67,22 @@ class ApplicationViews extends Component {
     // }
 
     componentDidMount() {
-        const newState = {}
+        const data = {}
 
         API.getAllArtists().then(allArtists => {
-            newState.artists = allArtists
+            data.artists = allArtists
         })
             .then(() => API.getAllSongs().then(allSongs => {
-                newState.songs = allSongs
+                data.songs = allSongs
             }))
             .then(() => API.getAllVersions().then(allVersions => {
-                newState.versions = allVersions
+                data.versions = allVersions
             }))
             .then(() => API.getAllRequests().then(allRequests => {
-                newState.requests = allRequests
+                data.requests = allRequests
             }))
-            .then(() => this.setState(newState))
+            .then(() => this.createMasterObjects(data))
+        // .then(() => this.setState(newState))
     }
 
 
@@ -82,6 +96,22 @@ class ApplicationViews extends Component {
                         versions={this.state.versions}
                         requests={this.state.requests}
                     />
+                }} />
+                <Route exact path="/songList/:versionId(\d+)" render={(props) => {
+                    // if (this.isAuthenticated()) {
+                    // Find the version with the id of the route parameter
+                    let version = this.state.versions.find(version =>
+                        version.id === parseInt(props.match.params.versionId))
+
+                    // If the version wasn't found, create a default one
+                    if (!version) {
+                        version = { id: 404, versionNum: "Dog not found" }
+                    }
+
+                    return <VersionDetail version={version} />
+                    // } else {
+                    //     return <Redirect to="/login" />
+                    // }
                 }} />
 
                 <Route exact path="/requestForm" render={props => {

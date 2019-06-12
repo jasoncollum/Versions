@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-// import { version } from '@babel/core';
+import { Link } from 'react-router-dom'
 
 export default class VersionCard extends Component {
-
 
     render() {
         const artist = this.props.artists.find(artist => artist.id === this.props.song.artistId)
@@ -14,7 +13,8 @@ export default class VersionCard extends Component {
                 <p>{artist.name}</p>
                 {
                     versions.map(version =>
-                        <h5 key={version.id}>Version {version.versionNum}</h5>
+                        <h5 key={version.id}><Link className="nav-link" to={`/songList/${version.id}`}
+                        >Version {version.versionNum}</Link></h5>
                     )
                 }
             </section>
