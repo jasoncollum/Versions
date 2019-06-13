@@ -56,6 +56,7 @@ class ApplicationViews extends Component {
                 })
             })
             .then(() => this.setState(newState))
+            .then(() => this.props.history.push('/songList'))
     }
 
     // saveRevisionForm = () => {
@@ -115,6 +116,7 @@ class ApplicationViews extends Component {
                 <Route exact path="/requestForm" render={props => {
                     return <RequestForm
                         saveRequestForm={this.saveRequestForm}
+                        {...props}
                     />
                 }} />
 

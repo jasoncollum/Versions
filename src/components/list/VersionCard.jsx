@@ -10,7 +10,6 @@ export default class VersionCard extends Component {
     artistName = this.version.artist.name
 
     render() {
-        console.log(this.artistName)
         return (
             <section className="songListItem">
                 <h4>{this.props.song.title}</h4>

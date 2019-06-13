@@ -8,12 +8,10 @@ export default class SongList extends Component {
         return version.song
     })
 
-
     uniqueSongs = Array.from(new Set(this.songs))
 
 
     render() {
-        console.log(this.uniqueSongs)
         return (
             <React.Fragment>
                 <section className="songList">
