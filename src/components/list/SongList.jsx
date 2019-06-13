@@ -1,21 +1,32 @@
 import React, { Component } from 'react'
+import VersionCard from './VersionCard'
 // import { Link } from 'react-router-dom'
+import './songList.css'
 
 export default class SongList extends Component {
+    songs = this.props.versions.map(version => {
+        return version.song
+    })
 
-    componentDidMount() {
-        console.log(this.props.song.versions)
-    }
+
+    uniqueSongs = Array.from(new Set(this.songs))
+
 
     render() {
+        console.log(this.uniqueSongs)
         return (
-            <div>
-                {
-                    this.props.versions.map(version =>
-                        <h4 key={version.id}>{this.props.song.title} MIX V{version.versionNum}</h4>
-                    )
-                }
-            </div>
+            <React.Fragment>
+                <section className="songList">
+                    {
+                        this.uniqueSongs.map(song =>
+                            <VersionCard key={song.id}
+                                song={song}
+                                versions={this.props.versions}
+                                {...this.props} />
+                        )
+                    }
+                </section>
+            </React.Fragment>
         )
     }
 }
