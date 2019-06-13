@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router'
 import RequestForm from './request/RequestForm'
-// import RevisionForm from './revision/RevisionForm'
+import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
 // import VersionDetail from './list/VersionDetail'
 import API from '../modules/API'
@@ -47,37 +47,38 @@ class ApplicationViews extends Component {
     }
 
     saveRequestForm = (artistObj, songObj, versionObj, requestArr) => {
-        const builder = {}
+        const reqFormObj = {}
 
         API.postArtist(artistObj)
             .then(artist => {
-                builder.artist = artist
+                reqFormObj.artist = artist
             })
             .then(() => {
-                songObj.artistId = builder.artist.id
+                songObj.artistId = reqFormObj.artist.id
                 return API.postSong(songObj)
                     .then(song => {
-                        builder.song = song
+                        reqFormObj.song = song
                     })
             })
             .then(() => {
-                versionObj.songId = builder.song.id
+                versionObj.songId = reqFormObj.song.id
                 return API.postVersion(versionObj)
                     .then(version => {
-                        builder.version = version
+                        reqFormObj.version = version
                     })
             })
             .then(() => {
                 let postedRequests = []
                 requestArr.forEach(requestObj => {
-                    requestObj.versionId = builder.version.id
+                    requestObj.versionId = reqFormObj.version.id
                     API.postRequest(requestObj)
                         .then(request => {
                             postedRequests.push(request)
                         })
-
                 })
+                reqFormObj.requests = postedRequests
             })
+            .then(() => console.log(reqFormObj))
             .then(() => this.getAllData())
 
         // .then(() => this.setState(newState))
@@ -145,14 +146,14 @@ class ApplicationViews extends Component {
                     />
                 }} />
 
-                {/* <Route exact path="/revisionForm" render={props => {
+                <Route exact path="/revisionForm" render={props => {
                     return <RevisionForm
-                        artist={this.state.artist}
-                        song={this.state.song}
-                        version={this.state.version}
-                        request={this.state.request}
+                        // artist={this.state.artist}
+                        // song={this.state.song}
+                        // version={this.state.version}
+                        // request={this.state.request}
                         saveRevisionForm={this.saveRevisionForm} />
-                }} /> */}
+                }} />
             </div>
         )
     }
