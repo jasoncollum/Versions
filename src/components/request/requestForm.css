@@ -6,3 +6,7 @@
 #requestBtn {
     float: right;
 }
+
+textarea {
+    margin-bottom: 5px;
+}

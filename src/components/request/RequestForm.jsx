@@ -81,7 +81,6 @@ export default class RequestForm extends Component {
 
     render() {
         let { requests } = this.state
-        console.log(this.state)
 
         return (
             <Form onSubmit={this.handleSubmit} id="requestForm">

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router'
 import RequestForm from './request/RequestForm'
 // import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
@@ -8,12 +9,7 @@ import API from '../modules/API'
 
 class ApplicationViews extends Component {
 
-    state = {
-        artists: [],
-        songs: [],
-        versions: [],
-        requests: []
-    }
+    state = {}
 
     createMasterObjects = (data) => {
         data.versions.map(version => {
@@ -24,7 +20,7 @@ class ApplicationViews extends Component {
             let foundArtist = data.artists.find(artist => artist.id === foundSong.artistId)
             version.artist = foundArtist
         })
-        console.log(data.versions)
+        return data.versions
     }
 
     saveRequestForm = (artistObj, songObj, versionObj, requestArr) => {
@@ -68,6 +64,7 @@ class ApplicationViews extends Component {
 
     componentDidMount() {
         const data = {}
+        let newState = {}
 
         API.getAllArtists().then(allArtists => {
             data.artists = allArtists
@@ -82,19 +79,24 @@ class ApplicationViews extends Component {
                 data.requests = allRequests
             }))
             .then(() => this.createMasterObjects(data))
-        // .then(() => this.setState(newState))
+            .then((masterVersions) => newState.versions = masterVersions)
+            .then(() => this.setState(newState)
+            )
     }
 
 
     render() {
+        console.log(this.state.versions)
         return (
             <div className="container app-view-container">
                 <Route exact path="/songList" render={props => {
                     return <SongList
-                        artists={this.state.artists}
-                        songs={this.state.songs}
+                        // artists={this.state.artists}
+                        // songs={this.state.songs}
+                        // versions={this.state.versions}
+                        // requests={this.state.requests}
                         versions={this.state.versions}
-                        requests={this.state.requests}
+
                     />
                 }} />
                 <Route exact path="/songList/:versionId(\d+)" render={(props) => {
@@ -108,7 +110,7 @@ class ApplicationViews extends Component {
                         version = { id: 404, versionNum: "Dog not found" }
                     }
 
-                    return <VersionDetail version={version} />
+                    // return <VersionDetail version={version} />
                     // } else {
                     //     return <Redirect to="/login" />
                     // }
@@ -116,10 +118,11 @@ class ApplicationViews extends Component {
 
                 <Route exact path="/requestForm" render={props => {
                     return <RequestForm
-                        song={this.state.song}
-                        versions={this.state.versions}
-                        requests={this.state.requests}
-                        saveRequestForm={this.saveRequestForm} />
+                        // song={this.state.song}
+                        // versions={this.state.versions}
+                        // requests={this.state.requests}
+                        saveRequestForm={this.saveRequestForm}
+                    />
                 }} />
 
                 {/* <Route exact path="/revisionForm" render={props => {
@@ -135,4 +138,4 @@ class ApplicationViews extends Component {
     }
 }
 
-export default ApplicationViews
+export default withRouter(ApplicationViews)

@@ -14,12 +14,13 @@ export default class SongList extends Component {
             <React.Fragment>
                 <section className="songList">
                     {
-                        this.props.songs.map(song =>
-                            <VersionCard key={song.id}
-                                song={song}
-                                artists={this.props.artists}
-                                versions={this.props.versions}
-                                requests={this.props.requests}
+                        this.props.versions.map(version =>
+                            <VersionCard key={version.id}
+                                // song={song}
+                                // artists={this.props.artists}
+                                // versions={this.props.versions}
+                                // requests={this.props.requests}
+                                version={version}
                                 {...this.props} />
                         )
                     }
