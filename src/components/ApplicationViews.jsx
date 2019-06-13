@@ -56,7 +56,7 @@ class ApplicationViews extends Component {
                 })
             })
             .then(() => this.setState(newState))
-            .then(() => this.props.history.push('/songList'))
+        // .then(() => this.props.history.push())
     }
 
     // saveRevisionForm = () => {
