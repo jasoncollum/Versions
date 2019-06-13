@@ -4,23 +4,24 @@ import VersionCard from './VersionCard'
 import './songList.css'
 
 export default class SongList extends Component {
+    songs = this.props.versions.map(version => {
+        return version.song
+    })
 
-    componentDidMount() {
 
-    }
+    uniqueSongs = Array.from(new Set(this.songs))
+
 
     render() {
+        console.log(this.uniqueSongs)
         return (
             <React.Fragment>
                 <section className="songList">
                     {
-                        this.props.versions.map(version =>
-                            <VersionCard key={version.id}
-                                // song={song}
-                                // artists={this.props.artists}
-                                // versions={this.props.versions}
-                                // requests={this.props.requests}
-                                version={version}
+                        this.uniqueSongs.map(song =>
+                            <VersionCard key={song.id}
+                                song={song}
+                                versions={this.props.versions}
                                 {...this.props} />
                         )
                     }

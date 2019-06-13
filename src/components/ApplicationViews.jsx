@@ -4,7 +4,7 @@ import { withRouter } from 'react-router'
 import RequestForm from './request/RequestForm'
 // import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
-import VersionDetail from './list/VersionDetail'
+// import VersionDetail from './list/VersionDetail'
 import API from '../modules/API'
 
 class ApplicationViews extends Component {
@@ -91,10 +91,6 @@ class ApplicationViews extends Component {
             <div className="container app-view-container">
                 <Route exact path="/songList" render={props => {
                     return <SongList
-                        // artists={this.state.artists}
-                        // songs={this.state.songs}
-                        // versions={this.state.versions}
-                        // requests={this.state.requests}
                         versions={this.state.versions}
 
                     />
@@ -118,9 +114,6 @@ class ApplicationViews extends Component {
 
                 <Route exact path="/requestForm" render={props => {
                     return <RequestForm
-                        // song={this.state.song}
-                        // versions={this.state.versions}
-                        // requests={this.state.requests}
                         saveRequestForm={this.saveRequestForm}
                     />
                 }} />
