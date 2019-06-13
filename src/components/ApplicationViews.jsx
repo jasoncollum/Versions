@@ -23,6 +23,29 @@ class ApplicationViews extends Component {
         return data.versions
     }
 
+    getAllData = () => {
+        const data = {}
+        let newState = {}
+
+        API.getAllArtists().then(allArtists => {
+            data.artists = allArtists
+        })
+            .then(() => API.getAllSongs().then(allSongs => {
+                data.songs = allSongs
+            }))
+            .then(() => API.getAllVersions().then(allVersions => {
+                data.versions = allVersions
+            }))
+            .then(() => API.getAllRequests().then(allRequests => {
+                data.requests = allRequests
+            }))
+            .then(() => this.createMasterObjects(data))
+            .then((masterVersions) => newState.versions = masterVersions)
+            .then(() => this.setState(newState)
+            )
+            .then(() => this.props.history.push('/songList'))
+    }
+
     saveRequestForm = (artistObj, songObj, versionObj, requestArr) => {
         const builder = {}
 
@@ -55,9 +78,11 @@ class ApplicationViews extends Component {
 
                 })
             })
+            .then(() => this.getAllData())
+
         // .then(() => this.setState(newState))
         // .then(() => console.log(this.state))
-        // .then(() => this.props.history.push())
+        // .then(() => this.props.history.push('/songList'))
     }
 
     // saveRevisionForm = () => {
