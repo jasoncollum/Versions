@@ -9,7 +9,10 @@ import API from '../modules/API'
 
 class ApplicationViews extends Component {
 
-    state = {}
+    state = {
+        versions: [],
+        requestFormObj: {}
+    }
 
     createMasterObjects = (data) => {
         data.versions.map(version => {
@@ -78,12 +81,9 @@ class ApplicationViews extends Component {
                 })
                 reqFormObj.requests = postedRequests
             })
-            .then(() => console.log(reqFormObj))
-            .then(() => this.getAllData())
-
-        // .then(() => this.setState(newState))
-        // .then(() => console.log(this.state))
-        // .then(() => this.props.history.push('/songList'))
+            .then(() => this.setState({ requestFormObj: reqFormObj }))
+            .then(() => this.props.history.push('/revisionForm'))
+        // .then(() => this.getAllData())
     }
 
     // saveRevisionForm = () => {
@@ -148,10 +148,7 @@ class ApplicationViews extends Component {
 
                 <Route exact path="/revisionForm" render={props => {
                     return <RevisionForm
-                        // artist={this.state.artist}
-                        // song={this.state.song}
-                        // version={this.state.version}
-                        // request={this.state.request}
+                        requestFormObj={this.state.requestFormObj}
                         saveRevisionForm={this.saveRevisionForm} />
                 }} />
             </div>
