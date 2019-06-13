@@ -23,31 +23,54 @@ class ApplicationViews extends Component {
         return data.versions
     }
 
+    getAllData = () => {
+        const data = {}
+        let newState = {}
+
+        API.getAllArtists().then(allArtists => {
+            data.artists = allArtists
+        })
+            .then(() => API.getAllSongs().then(allSongs => {
+                data.songs = allSongs
+            }))
+            .then(() => API.getAllVersions().then(allVersions => {
+                data.versions = allVersions
+            }))
+            .then(() => API.getAllRequests().then(allRequests => {
+                data.requests = allRequests
+            }))
+            .then(() => this.createMasterObjects(data))
+            .then((masterVersions) => newState.versions = masterVersions)
+            .then(() => this.setState(newState)
+            )
+            .then(() => this.props.history.push('/songList'))
+    }
+
     saveRequestForm = (artistObj, songObj, versionObj, requestArr) => {
-        const newState = {}
+        const builder = {}
 
         API.postArtist(artistObj)
             .then(artist => {
-                newState.artist = artist
+                builder.artist = artist
             })
             .then(() => {
-                songObj.artistId = newState.artist.id
+                songObj.artistId = builder.artist.id
                 return API.postSong(songObj)
                     .then(song => {
-                        newState.song = song
+                        builder.song = song
                     })
             })
             .then(() => {
-                versionObj.songId = newState.song.id
+                versionObj.songId = builder.song.id
                 return API.postVersion(versionObj)
                     .then(version => {
-                        newState.version = version
+                        builder.version = version
                     })
             })
             .then(() => {
                 let postedRequests = []
                 requestArr.forEach(requestObj => {
-                    requestObj.versionId = newState.version.id
+                    requestObj.versionId = builder.version.id
                     API.postRequest(requestObj)
                         .then(request => {
                             postedRequests.push(request)
@@ -55,7 +78,11 @@ class ApplicationViews extends Component {
 
                 })
             })
-            .then(() => this.setState(newState))
+            .then(() => this.getAllData())
+
+        // .then(() => this.setState(newState))
+        // .then(() => console.log(this.state))
+        // .then(() => this.props.history.push('/songList'))
     }
 
     // saveRevisionForm = () => {
@@ -86,7 +113,6 @@ class ApplicationViews extends Component {
 
 
     render() {
-        console.log(this.state.versions)
         return (
             <div className="container app-view-container">
                 <Route exact path="/songList" render={props => {
@@ -115,6 +141,7 @@ class ApplicationViews extends Component {
                 <Route exact path="/requestForm" render={props => {
                     return <RequestForm
                         saveRequestForm={this.saveRequestForm}
+                        {...props}
                     />
                 }} />
 

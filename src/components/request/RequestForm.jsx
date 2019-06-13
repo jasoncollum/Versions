@@ -83,7 +83,9 @@ export default class RequestForm extends Component {
         let { requests } = this.state
 
         return (
-            <Form onSubmit={this.handleSubmit} id="requestForm">
+            <Form id="requestForm"
+            // onSubmit={this.handleSubmit}
+            >
                 <Row form>
                     <Col md={6}>
                         <FormGroup>
@@ -136,7 +138,7 @@ export default class RequestForm extends Component {
                         </FormGroup>
                     </Col>
                 </Row>
-                <Button>Submit</Button>
+                <Button onClick={this.handleSubmit}>Submit</Button>
             </Form>
         )
     }
