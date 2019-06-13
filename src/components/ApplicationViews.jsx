@@ -24,30 +24,30 @@ class ApplicationViews extends Component {
     }
 
     saveRequestForm = (artistObj, songObj, versionObj, requestArr) => {
-        const newState = {}
+        const builder = {}
 
         API.postArtist(artistObj)
             .then(artist => {
-                newState.artist = artist
+                builder.artist = artist
             })
             .then(() => {
-                songObj.artistId = newState.artist.id
+                songObj.artistId = builder.artist.id
                 return API.postSong(songObj)
                     .then(song => {
-                        newState.song = song
+                        builder.song = song
                     })
             })
             .then(() => {
-                versionObj.songId = newState.song.id
+                versionObj.songId = builder.song.id
                 return API.postVersion(versionObj)
                     .then(version => {
-                        newState.version = version
+                        builder.version = version
                     })
             })
             .then(() => {
                 let postedRequests = []
                 requestArr.forEach(requestObj => {
-                    requestObj.versionId = newState.version.id
+                    requestObj.versionId = builder.version.id
                     API.postRequest(requestObj)
                         .then(request => {
                             postedRequests.push(request)
@@ -55,7 +55,8 @@ class ApplicationViews extends Component {
 
                 })
             })
-            .then(() => this.setState(newState))
+        // .then(() => this.setState(newState))
+        // .then(() => console.log(this.state))
         // .then(() => this.props.history.push())
     }
 
@@ -87,7 +88,6 @@ class ApplicationViews extends Component {
 
 
     render() {
-        console.log(this.state.versions)
         return (
             <div className="container app-view-container">
                 <Route exact path="/songList" render={props => {
