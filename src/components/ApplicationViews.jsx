@@ -72,6 +72,7 @@ class ApplicationViews extends Component {
     }
 
     saveRevisionForm = (artistObj, songObj, versionObj, revisionArr) => {
+        console.log('revisions array', revisionArr)
         const revFormObj = {}
 
         API.postArtist(artistObj)
@@ -105,7 +106,7 @@ class ApplicationViews extends Component {
             })
             .then(() => this.setState({ revisionFormObj: revFormObj }))
             .then(() => this.props.history.push('/songList'))
-        // .then(() => this.getAllData())
+            .then(() => this.getAllData())
     }
 
     componentDidMount() {

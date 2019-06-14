@@ -4,6 +4,7 @@ export default class VersionDetail extends Component {
 
     render() {
         if (this.props.version.song) {
+            console.log(this.props.version)
             return (
                 <section className="versionDetail">
                     <div className="card-body">
