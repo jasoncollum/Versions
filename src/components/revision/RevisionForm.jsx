@@ -1,84 +1,93 @@
-// import React, { Component } from 'react'
-// import { Col, Row, Button, Form, FormGroup, Label, Input, } from 'reactstrap'
-// import RevisionBlock from './RevisionBlock'
+import React, { Component } from 'react'
+import { Col, Row, Button, Form, FormGroup, Label, Input, } from 'reactstrap'
+import RevisionBlock from './RevisionBlock'
 
-// import './revisionForm.css'
+import './revisionForm.css'
 
-// export default class RevisionForm extends Component {
-//     state = {
-//         revisions: [{ text: '' }],
-//         revisionInputText: []
-//     }
+export default class RevisionForm extends Component {
+    state = {
+        revisions: [{ text: '' }],
+        revisionInputText: [],
+        artist: this.props.requestFormObj.artist,
+        song: this.props.requestFormObj.song,
+        version: this.props.requestFormObj.version,
+        requests: this.props.requestFormObj.requests
+    }
 
-//     addRevision = (e) => {
-//         this.setState((prevState) => ({
-//             revisions: [...prevState.revisions, { text: '' }]
-//         }));
-//     }
 
-//     // push all revision text to revisionInputText array in state
-//     // HOW CAN I GROUP REVISIONS WITH CORRESPONDING REQUEST ???
-//     pushRevisions = () => {
-//         const revisionInputs = document.querySelectorAll('.revisionGroup textarea')
-//         revisionInputs.forEach(input => {
-//             let floatState = this.state.revisionInputText
-//             floatState.push(input.value)
-//             this.setState({ revisionInputText: floatState })
-//         })
-//     }
+    addRevision = (e) => {
+        this.setState((prevState) => ({
+            revisions: [...prevState.revisions, { text: '' }]
+        }));
+    }
 
-//     handleSubmit = (e) => {
-//         e.preventDefault()
-//         this.pushRevisions()
+    //     push all revision text to revisionInputText array in state
+    // HOW CAN I GROUP REVISIONS WITH CORRESPONDING REQUEST ???
+    pushRevisions = () => {
+        const revisionInputs = document.querySelectorAll('.revisionGroup textarea')
+        revisionInputs.forEach(input => {
+            let floatState = this.state.revisionInputText
+            floatState.push(input.value)
+            this.setState({ revisionInputText: floatState })
+        })
+    }
 
-//         // post to db
-//         const revisionArr = this.state.revisionInputText.map(revision => {
-//             return { revisionText: revision }
-//         })
+    handleSubmit = (e) => {
+        e.preventDefault()
+        this.pushRevisions()
 
-//         this.props.saveRevisionForm(revisionArr)
-//     }
+        // post to db
+        const revisionArr = this.state.revisionInputText.map(revision => {
+            return { revisionText: revision }
+        })
 
-//     handleFieldChange = e => {
-//         if (['text'].includes(e.target.className)) {
-//             let revisions = [...this.state.revisions]
-//             revisions[e.target.dataset.id][e.target.className] = e.target.value
-//             this.setState({ revisions }, () => console.log(this.state.revisions))
-//         }
-//     }
+        this.props.saveRevisionForm(revisionArr)
+    }
 
-//     createRevisionObjArr = (strArr) => {
-//         return {
-//             revisionText: this.state.revisionInputText
-//         }
-//     }
+    handleFieldChange = e => {
+        if (['text'].includes(e.target.className)) {
+            let revisions = [...this.state.revisions]
+            revisions[e.target.dataset.id][e.target.className] = e.target.value
+            this.setState({ revisions }, () => console.log(this.state.revisions))
+        }
+    }
 
-//     render() {
-//         return (
-//             <Form onSubmit={this.handleSubmit} id="requestForm">
-//                 <Row form>
-//                     <Col md={6}>
-//                         <FormGroup>
-//                             <Label for="songTitleInput">I Know The Way Home MIX V2</Label>
-//                         </FormGroup>
-//                     </Col>
-//                     <Col md={4}>
-//                         <FormGroup>
-//                             <Label for="artistNameInput">Andrew Galucki</Label>
-//                         </FormGroup>
-//                     </Col>
-//                 </Row>
-//                 <hr></hr>
-//                 <Row form>
-//                     {
-//                         this.props.requests.map(request =>
-//                             <RevisionBlock key={request.id} request={request} {...this.props}
-//                                 revisions={this.state.revisions} />
-//                         )
-//                     }
-//                 </Row>
-//                 <Button>Submit</Button> */}
-//             </Form>
-//         )
-//     }
-// }
+    createRevisionObjArr = (strArr) => {
+        return {
+            revisionText: this.state.revisionInputText
+        }
+    }
+
+
+    render() {
+        console.log(this.requests)
+        return (
+            <Form id="requestForm">
+                <Row form>
+                    <Col md={6}>
+                        <FormGroup>
+                            <Label for="songTitleInput">{this.state.song.title} - Version {this.state.version.versionNum}</Label>
+                        </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                        <FormGroup>
+                            <Label for="artistNameInput">{this.state.artist.name}</Label>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <hr></hr>
+                <Row form>
+                    {/* {
+                        this.requests.map(request => {
+                            return <RevisionBlock key={request.id} request={request} requests={this.requests} {...this.props}></RevisionBlock>
+                        })
+                    } */}
+                    {
+                        <RevisionBlock song={this.state.song} {...this.props} revisions={this.state.revisions} />
+                    }
+                </Row>
+                <Button onSubmit={this.handleSubmit}>Save</Button>
+            </Form>
+        )
+    }
+}

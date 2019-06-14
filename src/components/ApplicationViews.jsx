@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router'
 import RequestForm from './request/RequestForm'
-// import RevisionForm from './revision/RevisionForm'
+import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
-// import VersionDetail from './list/VersionDetail'
+import VersionDetail from './list/VersionDetail'
 import API from '../modules/API'
 
 class ApplicationViews extends Component {
 
-    state = {}
+    state = {
+        versions: [],
+        requestFormObj: {}
+    }
 
     createMasterObjects = (data) => {
         data.versions.map(version => {
@@ -47,42 +50,40 @@ class ApplicationViews extends Component {
     }
 
     saveRequestForm = (artistObj, songObj, versionObj, requestArr) => {
-        const builder = {}
+        const reqFormObj = {}
 
         API.postArtist(artistObj)
             .then(artist => {
-                builder.artist = artist
+                reqFormObj.artist = artist
             })
             .then(() => {
-                songObj.artistId = builder.artist.id
+                songObj.artistId = reqFormObj.artist.id
                 return API.postSong(songObj)
                     .then(song => {
-                        builder.song = song
+                        reqFormObj.song = song
                     })
             })
             .then(() => {
-                versionObj.songId = builder.song.id
+                versionObj.songId = reqFormObj.song.id
                 return API.postVersion(versionObj)
                     .then(version => {
-                        builder.version = version
+                        reqFormObj.version = version
                     })
             })
             .then(() => {
                 let postedRequests = []
                 requestArr.forEach(requestObj => {
-                    requestObj.versionId = builder.version.id
+                    requestObj.versionId = reqFormObj.version.id
                     API.postRequest(requestObj)
                         .then(request => {
                             postedRequests.push(request)
                         })
-
                 })
+                reqFormObj.requests = postedRequests
             })
-            .then(() => this.getAllData())
-
-        // .then(() => this.setState(newState))
-        // .then(() => console.log(this.state))
-        // .then(() => this.props.history.push('/songList'))
+            .then(() => this.setState({ requestFormObj: reqFormObj }))
+            .then(() => this.props.history.push('/revisionForm'))
+        // .then(() => this.getAllData())
     }
 
     // saveRevisionForm = () => {
@@ -113,6 +114,7 @@ class ApplicationViews extends Component {
 
 
     render() {
+        console.log(this.state)
         return (
             <div className="container app-view-container">
                 <Route exact path="/songList" render={props => {
@@ -132,7 +134,7 @@ class ApplicationViews extends Component {
                         version = { id: 404, versionNum: "Dog not found" }
                     }
 
-                    // return <VersionDetail version={version} />
+                    return <VersionDetail version={version} />
                     // } else {
                     //     return <Redirect to="/login" />
                     // }
@@ -145,14 +147,11 @@ class ApplicationViews extends Component {
                     />
                 }} />
 
-                {/* <Route exact path="/revisionForm" render={props => {
+                <Route exact path="/revisionForm" render={props => {
                     return <RevisionForm
-                        artist={this.state.artist}
-                        song={this.state.song}
-                        version={this.state.version}
-                        request={this.state.request}
+                        requestFormObj={this.state.requestFormObj}
                         saveRevisionForm={this.saveRevisionForm} />
-                }} /> */}
+                }} />
             </div>
         )
     }

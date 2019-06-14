@@ -3,10 +3,17 @@
     margin: auto;
 }
 
+#requestForm input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
 #requestBtn {
     float: right;
 }
 
 textarea {
     margin-bottom: 5px;
+    border-top: none;
 }
