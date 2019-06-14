@@ -31,6 +31,11 @@ export default {
             body: JSON.stringify(songObj)
         }).then(e => e.json())
     },
+    deleteSong(songId) {
+        return fetch(`${remoteURL}/songs/${songId}`, {
+            method: "DELETE"
+        }).then(e => e.json())
+    },
     getAllVersions() {
         return fetch(`${remoteURL}/versions`).then(e => e.json())
     },
@@ -46,6 +51,11 @@ export default {
             body: JSON.stringify(versionObj)
         }).then(e => e.json())
     },
+    deleteVersion(versionId) {
+        return fetch(`${remoteURL}/versions/${versionId}`, {
+            method: "DELETE"
+        }).then(e => e.json())
+    },
     getAllRevisions() {
         return fetch(`${remoteURL}/revisions`).then(e => e.json())
     },
@@ -59,6 +69,11 @@ export default {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(revisionObj)
+        }).then(e => e.json())
+    },
+    deleteRevision(revisionId) {
+        return fetch(`${remoteURL}/revisions/${revisionId}`, {
+            method: "DELETE"
         }).then(e => e.json())
     }
 }

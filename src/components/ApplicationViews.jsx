@@ -13,6 +13,29 @@ class ApplicationViews extends Component {
         revisionFormObj: {}
     }
 
+    deleteRevision = (revisionId) => {
+        API.deleteRevision(revisionId)
+    }
+
+    deleteVersion = (versionId) => {
+
+    }
+
+    deleteSong = async (songId) => {
+        const revisionsToDelete = []
+        const versionsToDelete = await this.state.versions.filter(version => version.songId === songId)
+        await versionsToDelete.forEach(version => {
+            version.revisions.forEach(revision => {
+                revisionsToDelete.push(revision)
+            })
+        })
+
+        await revisionsToDelete.forEach(revision => API.deleteRevision(revision.id))
+        await versionsToDelete.forEach(version => API.deleteVersion(version.id))
+        await API.deleteSong(songId)
+        await this.getAllData()
+    }
+
     createMasterObjects = (data) => {
         data.versions.map(version => {
             let filteredRevisions = data.revisions.filter(revision => revision.versionId === version.id)
@@ -115,7 +138,7 @@ class ApplicationViews extends Component {
                 <Route exact path="/songList" render={props => {
                     return <SongList
                         versions={this.state.versions}
-
+                        deleteSong={this.deleteSong}
                     />
                 }} />
                 <Route exact path="/songList/:versionId(\d+)" render={(props) => {
