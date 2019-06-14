@@ -114,6 +114,7 @@ class ApplicationViews extends Component {
 
 
     render() {
+        console.log(this.state)
         return (
             <div className="container app-view-container">
                 <Route exact path="/songList" render={props => {
