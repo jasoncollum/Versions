@@ -1,13 +1,6 @@
 import React, { Component } from 'react'
 
 export default class VersionDetail extends Component {
-    state = {
-        version: {}
-    }
-
-    componentDidMount() {
-        this.setState({ version: this.props.version })
-    }
 
     render() {
         if (this.props.version.song) {
