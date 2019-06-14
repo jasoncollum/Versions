@@ -78,7 +78,9 @@ export default class RevisionForm extends Component {
                 <hr></hr>
                 <Row form>
                     {
-                        this.requests.map(request => <RevisionBlock key={request.id} request={request} {...this.props} />)
+                        this.requests.map(request => {
+                            return <RevisionBlock key={request.id} request={request} requests={this.requests} {...this.props}></RevisionBlock>
+                        })
                     }
                 </Row>
                 <Button onSubmit={this.handleSubmit}>Save</Button>

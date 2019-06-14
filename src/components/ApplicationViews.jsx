@@ -4,7 +4,7 @@ import { withRouter } from 'react-router'
 import RequestForm from './request/RequestForm'
 import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
-// import VersionDetail from './list/VersionDetail'
+import VersionDetail from './list/VersionDetail'
 import API from '../modules/API'
 
 class ApplicationViews extends Component {
@@ -134,7 +134,7 @@ class ApplicationViews extends Component {
                         version = { id: 404, versionNum: "Dog not found" }
                     }
 
-                    // return <VersionDetail version={version} />
+                    return <VersionDetail version={version} />
                     // } else {
                     //     return <Redirect to="/login" />
                     // }
