@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 
 export default class VersionDetail extends Component {
-    artist = this.props.version.artist
-    song = this.props.version.song
-    requests = this.props.version.requests
+    // artist = this.props.version.artist
+    // song = this.props.version.song
+    // requests = this.props.version.requests
 
     render() {
         console.log(this.requests)
