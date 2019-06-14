@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router'
-import RequestForm from './request/RequestForm'
 import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
 import VersionDetail from './list/VersionDetail'
@@ -11,13 +10,13 @@ class ApplicationViews extends Component {
 
     state = {
         versions: [],
-        requestFormObj: {}
+        revisionFormObj: {}
     }
 
     createMasterObjects = (data) => {
         data.versions.map(version => {
-            let filteredRequests = data.requests.filter(request => request.versionId === version.id)
-            version.requests = filteredRequests
+            let filteredRevisions = data.revisions.filter(revision => revision.versionId === version.id)
+            version.revisions = filteredRevisions
             let foundSong = data.songs.find(song => song.id === version.songId)
             version.song = foundSong
             let foundArtist = data.artists.find(artist => artist.id === foundSong.artistId)
@@ -39,8 +38,8 @@ class ApplicationViews extends Component {
             .then(() => API.getAllVersions().then(allVersions => {
                 data.versions = allVersions
             }))
-            .then(() => API.getAllRequests().then(allRequests => {
-                data.requests = allRequests
+            .then(() => API.getAllRevisions().then(allRevisions => {
+                data.revisions = allRevisions
             }))
             .then(() => this.createMasterObjects(data))
             .then((masterVersions) => newState.versions = masterVersions)
@@ -49,46 +48,42 @@ class ApplicationViews extends Component {
             .then(() => this.props.history.push('/songList'))
     }
 
-    saveRequestForm = (artistObj, songObj, versionObj, requestArr) => {
-        const reqFormObj = {}
+    saveRevisionForm = (artistObj, songObj, versionObj, revisionArr) => {
+        const revFormObj = {}
 
         API.postArtist(artistObj)
             .then(artist => {
-                reqFormObj.artist = artist
+                revFormObj.artist = artist
             })
             .then(() => {
-                songObj.artistId = reqFormObj.artist.id
+                songObj.artistId = revFormObj.artist.id
                 return API.postSong(songObj)
                     .then(song => {
-                        reqFormObj.song = song
+                        revFormObj.song = song
                     })
             })
             .then(() => {
-                versionObj.songId = reqFormObj.song.id
+                versionObj.songId = revFormObj.song.id
                 return API.postVersion(versionObj)
                     .then(version => {
-                        reqFormObj.version = version
+                        revFormObj.version = version
                     })
             })
             .then(() => {
-                let postedRequests = []
-                requestArr.forEach(requestObj => {
-                    requestObj.versionId = reqFormObj.version.id
-                    API.postRequest(requestObj)
-                        .then(request => {
-                            postedRequests.push(request)
+                let postedRevisions = []
+                revisionArr.forEach(revisionObj => {
+                    revisionObj.versionId = revFormObj.version.id
+                    API.postRevision(revisionObj)
+                        .then(revision => {
+                            postedRevisions.push(revision)
                         })
                 })
-                reqFormObj.requests = postedRequests
+                revFormObj.revisions = postedRevisions
             })
-            .then(() => this.setState({ requestFormObj: reqFormObj }))
-            .then(() => this.props.history.push('/revisionForm'))
+            .then(() => this.setState({ revisionFormObj: revFormObj }))
+            .then(() => this.props.history.push('/songList'))
         // .then(() => this.getAllData())
     }
-
-    // saveRevisionForm = () => {
-    //     console.log('Revision Form')
-    // }
 
     componentDidMount() {
         const data = {}
@@ -103,8 +98,8 @@ class ApplicationViews extends Component {
             .then(() => API.getAllVersions().then(allVersions => {
                 data.versions = allVersions
             }))
-            .then(() => API.getAllRequests().then(allRequests => {
-                data.requests = allRequests
+            .then(() => API.getAllRevisions().then(allRevisions => {
+                data.revisions = allRevisions
             }))
             .then(() => this.createMasterObjects(data))
             .then((masterVersions) => newState.versions = masterVersions)
@@ -131,7 +126,7 @@ class ApplicationViews extends Component {
 
                     // If the version wasn't found, create a default one
                     if (!version) {
-                        version = { id: 404, versionNum: "Dog not found" }
+                        version = { id: 404, versionNum: "Version not found" }
                     }
 
                     return <VersionDetail version={version} />
@@ -140,17 +135,11 @@ class ApplicationViews extends Component {
                     // }
                 }} />
 
-                <Route exact path="/requestForm" render={props => {
-                    return <RequestForm
-                        saveRequestForm={this.saveRequestForm}
-                        {...props}
-                    />
-                }} />
-
                 <Route exact path="/revisionForm" render={props => {
                     return <RevisionForm
-                        requestFormObj={this.state.requestFormObj}
-                        saveRevisionForm={this.saveRevisionForm} />
+                        saveRevisionForm={this.saveRevisionForm}
+                        {...props}
+                    />
                 }} />
             </div>
         )

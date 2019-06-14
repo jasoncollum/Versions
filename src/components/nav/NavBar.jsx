@@ -13,7 +13,7 @@ class NavBar extends Component {
                         <Link className="nav-link" to="/songList">Song List</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/requestForm">New Version</Link>
+                        <Link className="nav-link" to="/revisionForm">New Version</Link>
                     </li>
                     <li className="nav-item">
                         {/* <Link className="nav-link">Logout</Link> */}

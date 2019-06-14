@@ -12,8 +12,8 @@ export default class VersionDetail extends Component {
                         <hr></hr>
                         <div>
                             {
-                                this.props.version.requests.map(request =>
-                                    <p key={request.id}>{request.requestText}</p>
+                                this.props.version.revisions.map(revision =>
+                                    <p key={revision.id}>{revision.revisionText}</p>
                                 )
                             }
                         </div>

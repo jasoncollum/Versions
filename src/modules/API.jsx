@@ -46,19 +46,19 @@ export default {
             body: JSON.stringify(versionObj)
         }).then(e => e.json())
     },
-    getAllRequests() {
-        return fetch(`${remoteURL}/requests`).then(e => e.json())
+    getAllRevisions() {
+        return fetch(`${remoteURL}/revisions`).then(e => e.json())
     },
-    getRequests(versionId) {
-        return fetch(`${remoteURL}/requests?versionId=${versionId}&_embed=revisions`).then(e => e.json())
+    getRevisions(versionId) {
+        return fetch(`${remoteURL}/revisions?versionId=${versionId}`).then(e => e.json())
     },
-    postRequest(requestObj) {
-        return fetch(`${remoteURL}/requests`, {
+    postRevision(revisionObj) {
+        return fetch(`${remoteURL}/revisions`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(requestObj)
+            body: JSON.stringify(revisionObj)
         }).then(e => e.json())
     }
 }
