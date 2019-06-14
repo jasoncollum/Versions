@@ -89,30 +89,30 @@ export default class RequestForm extends Component {
                 <Row form>
                     <Col md={6}>
                         <FormGroup>
-                            <Label for="songTitleInput">Song Title</Label>
+                            {/* <Label for="songTitleInput">Song Title</Label> */}
                             <Input type="text" name="songTitleInput" id="songTitleInput"
-                                placeholder="Enter a song title"
+                                placeholder="Song Title"
                                 onChange={this.handleFieldChange} />
                         </FormGroup>
                     </Col>
                     <Col md={2}>
                         <FormGroup>
-                            <Label for="versionNumberInput">Version No.</Label>
+                            {/* <Label for="versionNumberInput">Version No.</Label> */}
                             <Input type="text" name="versionNumberInput" id="versionNumberInput"
-                                placeholder="1"
+                                placeholder="Version No."
                                 onChange={this.handleFieldChange} />
                         </FormGroup>
                     </Col>
                     <Col md={4}>
                         <FormGroup>
-                            <Label for="artistNameInput">Artist Name</Label>
+                            {/* <Label for="artistNameInput">Artist Name</Label> */}
                             <Input type="text" name="artistNameInput" id="artistNameInput"
-                                placeholder="Enter artist name"
+                                placeholder="Artist Name"
                                 onChange={this.handleFieldChange} />
                         </FormGroup>
                     </Col>
                 </Row>
-                <hr></hr>
+                {/* <hr></hr> */}
                 <Row form>
                     <Col md={12}>
                         <FormGroup id="requestGroup">
@@ -122,7 +122,7 @@ export default class RequestForm extends Component {
                                     let requestId = `request-${idx}`
                                     return (
                                         <div key={idx}>
-                                            <Label for={requestId} hidden>Mix Requests</Label>
+                                            {/* <Label for={requestId} hidden>Mix Requests</Label> */}
                                             <Input
                                                 type="textarea"
                                                 name={requestId}
