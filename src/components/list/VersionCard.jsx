@@ -9,6 +9,12 @@ export default class VersionCard extends Component {
 
     artistName = this.version.artist.name
 
+    // Pass in song.id to deleteSong
+    handleClick = () => {
+        const versionsToDelete =
+            this.props.deleteSong(this.version.song.id)
+    }
+
     render() {
         return (
             <section className="songListItem">
@@ -22,6 +28,7 @@ export default class VersionCard extends Component {
                             : ""
                     )
                 }
+                <button onClick={this.handleClick}>X</button>
             </section>
         )
     }

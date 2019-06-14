@@ -21,6 +21,7 @@ export default class SongList extends Component {
                                 <VersionCard key={song.id}
                                     song={song}
                                     versions={this.props.versions}
+                                    deleteSong={this.props.deleteSong}
                                     {...this.props} />
                             )
                         }
