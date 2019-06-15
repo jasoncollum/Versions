@@ -1,9 +1,20 @@
 import React, { Component } from 'react'
 
+
 export default class VersionDetail extends Component {
+
+    handleEditBtn = () => {
+        console.log('edit version')
+    }
+
+    handleDeleteBtn = () => {
+        console.log('delete version')
+        this.props.deleteVersion(this.props.version.id)
+    }
 
     render() {
         if (this.props.version.song) {
+            console.log(this.props.version)
             return (
                 <section className="versionDetail">
                     <div className="card-body">
@@ -17,6 +28,8 @@ export default class VersionDetail extends Component {
                                 )
                             }
                         </div>
+                        <button onClick={this.handleEditBtn} className="">Edit Version</button>
+                        <button onClick={this.handleDeleteBtn} className="">X</button>
                     </div>
                 </section>
             )

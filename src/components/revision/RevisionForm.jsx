@@ -24,6 +24,7 @@ export default class RevisionForm extends Component {
         revisionInputs.forEach(input => {
             let floatState = this.state.revisionInputText
             floatState.push(input.value)
+            console.log('pushRevisions', floatState)
             this.setState({ revisionInputText: floatState })
         })
     }
@@ -47,7 +48,7 @@ export default class RevisionForm extends Component {
         if (['text'].includes(e.target.className)) {
             let revisions = [...this.state.revisions]
             revisions[e.target.dataset.id][e.target.className] = e.target.value
-            this.setState({ revisions }, () => console.log(this.state.revisions))
+            this.setState({ revisions }, () => console.log('revisions', this.state.revisions))
         }
         if (e.target.type !== 'textarea') {
             this.setState({ [e.target.name]: e.target.value })
@@ -115,7 +116,7 @@ export default class RevisionForm extends Component {
                 {/* <hr></hr> */}
                 <Row form>
                     <Col md={12}>
-                        <FormGroup id="requestGroup">
+                        <FormGroup id="revisionGroup">
                             <p>Mix Revisions</p>
                             {
                                 revisions.map((val, idx) => {

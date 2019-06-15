@@ -17,13 +17,16 @@ class ApplicationViews extends Component {
         API.deleteRevision(revisionId)
     }
 
-    deleteVersion = (versionId) => {
-
+    deleteVersion = async (version_Id) => {
+        const versionToDelete = await this.state.versions.find(version => version.id === version_Id)
+        await versionToDelete.revisions.forEach(revision => API.deleteRevision(revision.id))
+        await API.deleteVersion(versionToDelete.id)
+        await this.getAllData()
     }
 
-    deleteSong = async (songId) => {
+    deleteSong = async (song_Id) => {
         const revisionsToDelete = []
-        const versionsToDelete = await this.state.versions.filter(version => version.songId === songId)
+        const versionsToDelete = await this.state.versions.filter(version => version.songId === song_Id)
         await versionsToDelete.forEach(version => {
             version.revisions.forEach(revision => {
                 revisionsToDelete.push(revision)
@@ -32,7 +35,7 @@ class ApplicationViews extends Component {
 
         await revisionsToDelete.forEach(revision => API.deleteRevision(revision.id))
         await versionsToDelete.forEach(version => API.deleteVersion(version.id))
-        await API.deleteSong(songId)
+        await API.deleteSong(song_Id)
         await this.getAllData()
     }
 
@@ -72,6 +75,7 @@ class ApplicationViews extends Component {
     }
 
     saveRevisionForm = (artistObj, songObj, versionObj, revisionArr) => {
+        console.log('revisions array', revisionArr)
         const revFormObj = {}
 
         API.postArtist(artistObj)
@@ -105,7 +109,7 @@ class ApplicationViews extends Component {
             })
             .then(() => this.setState({ revisionFormObj: revFormObj }))
             .then(() => this.props.history.push('/songList'))
-        // .then(() => this.getAllData())
+            .then(() => this.getAllData())
     }
 
     componentDidMount() {
@@ -152,7 +156,7 @@ class ApplicationViews extends Component {
                         version = { id: 404, versionNum: "Version not found" }
                     }
 
-                    return <VersionDetail version={version} />
+                    return <VersionDetail version={version} deleteVersion={this.deleteVersion} />
                     // } else {
                     //     return <Redirect to="/login" />
                     // }
