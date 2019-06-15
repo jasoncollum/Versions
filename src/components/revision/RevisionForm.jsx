@@ -84,9 +84,7 @@ export default class RevisionForm extends Component {
         let { revisions } = this.state
 
         return (
-            <Form id="revisionForm"
-            // onSubmit={this.handleSubmit}
-            >
+            <Form id="revisionForm">
                 <Row form>
                     <Col md={6}>
                         <FormGroup>

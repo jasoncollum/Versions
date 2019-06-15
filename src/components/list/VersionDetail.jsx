@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-// import EditFormModal from '../Modal/EditFormModal'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Col, Row, Form, FormGroup, Label, Input, } from 'reactstrap'
 
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -8,7 +8,12 @@ export default class VersionDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false
+            modal: false,
+            songTitleInput: '',
+            versionNumberInput: '',
+            artistNameInput: '',
+            revisions: [{ text: '' }],
+            revisionInputText: []
         };
 
         this.toggle = this.toggle.bind(this);
@@ -23,6 +28,76 @@ export default class VersionDetail extends Component {
         console.log('delete version')
         this.props.deleteVersion(this.props.version.id)
     }
+
+    //EDIT FORM LOGIC ...
+    addRevision = (e) => {
+        this.setState((prevState) => ({
+            revisions: [...prevState.revisions, { text: '' }]
+        }));
+    }
+
+    // push all revision text to revisionInputText array in state
+    pushRevisions = () => {
+        const revisionInputs = document.querySelectorAll('#revisionGroup textarea')
+        revisionInputs.forEach(input => {
+            let floatState = this.state.revisionInputText
+            floatState.push(input.value)
+            console.log('pushRevisions', floatState)
+            this.setState({ revisionInputText: floatState })
+        })
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        this.pushRevisions()
+
+        // post to db
+        const artistObj = this.createArtistObj()
+        const songObj = this.createSongObj()
+        const versionObj = this.createVersionObj()
+        const revisionArr = this.state.revisionInputText.map(revision => {
+            return { revisionText: revision }
+        })
+
+        this.props.saveRevisionForm(artistObj, songObj, versionObj, revisionArr)
+    }
+
+    handleFieldChange = e => {
+        if (['text'].includes(e.target.className)) {
+            let revisions = [...this.state.revisions]
+            revisions[e.target.dataset.id][e.target.className] = e.target.value
+            this.setState({ revisions }, () => console.log('revisions', this.state.revisions))
+        }
+        if (e.target.type !== 'textarea') {
+            this.setState({ [e.target.name]: e.target.value })
+        }
+    }
+
+    // Create objects:  artist, song, version, request
+    createArtistObj = () => {
+        return {
+            name: this.state.artistNameInput
+        }
+    }
+
+    createSongObj = () => {
+        return {
+            title: this.state.songTitleInput
+        }
+    }
+
+    createVersionObj = () => {
+        return {
+            versionNum: parseInt(this.state.versionNumberInput)
+        }
+    }
+
+    createRevisionObjArr = (strArr) => {
+        return {
+            revisionText: this.state.revisionInputText
+        }
+    }
+    // ... end Edit Form Logic
 
     render() {
         if (this.props.version.song) {
@@ -41,10 +116,47 @@ export default class VersionDetail extends Component {
                         </div>
                         <Button onClick={this.toggle}>Edit Version</Button>
                         <button onClick={this.handleDeleteBtn} className="">X</button>
-                        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                            <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+                        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} centered={true}>
+                            <ModalHeader toggle={this.toggle}>Add | Edit Revisions</ModalHeader>
                             <ModalBody>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                <Form id="revisionForm">
+                                    <Row form>
+                                        <Col md={6}>
+                                            <FormGroup>
+                                                <Label for="songTitleInput">{this.props.version.song.title} - Version {this.props.version.versionNum}</Label>
+                                                {/* <Input type="text" name="songTitleInput" id="songTitleInput"
+                                                    placeholder="Song Title"
+                                                    onChange={this.handleFieldChange} /> */}
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row form>
+                                        <Col md={12}>
+                                            <FormGroup id="revisionGroup">
+                                                <p>Mix Revisions</p>
+                                                {/* {
+                                                    revisions.map((val, idx) => {
+                                                        let revisionId = `revision-${idx}`
+                                                        return (
+                                                            <div key={idx}>
+                                                                <Label for={revisionId} hidden>Mix Revisions</Label>
+                                                                <Input
+                                                                    type="textarea"
+                                                                    name={revisionId}
+                                                                    data-id={idx}
+                                                                    id={revisionId}
+                                                                    placeholder="Enter a mix revision..."
+                                                                    onChange={this.handleFieldChange} />
+                                                            </div>
+                                                        )
+                                                    })
+                                                } */}
+                                                <Button onClick={this.addRevision} id="revisionBtn">+</Button>
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Button onClick={this.handleSubmit}>Submit</Button>
+                                </Form>
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="primary" onClick={this.toggle}>Save Changes</Button>{' '}
