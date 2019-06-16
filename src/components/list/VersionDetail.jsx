@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import { Col, Row, Form, FormGroup, Label, Input, } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Col, Row, Form, FormGroup, Label, Input, InputGroup, InputGroupAddon } from 'reactstrap'
+import { FiTrash2, FiPlus } from 'react-icons/fi'
 
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -121,63 +121,75 @@ export default class VersionDetail extends Component {
                             <ModalHeader toggle={this.toggle}>Add | Edit Revisions</ModalHeader>
                             <ModalBody>
                                 <Form id="revisionForm">
-                                    <Row form>
-                                        <Col md={6}>
-                                            <FormGroup>
-                                                <Label for="songTitleInput">{this.props.version.song.title}</Label>
-                                                {/* <Input type="text" name="songTitleInput" id="songTitleInput"
+                                    {/* <Row form>
+                                        <Col md={6}> */}
+                                    <FormGroup>
+                                        <Label for="songTitleInput">{this.props.version.song.title}</Label>
+                                        {/* <Input type="text" name="songTitleInput" id="songTitleInput"
                                                     placeholder="Song Title"
                                                     onChange={this.handleFieldChange} /> */}
-                                            </FormGroup>
-                                        </Col>
-                                        <Col md={2}>
-                                            <FormGroup>
-                                                <Label for="versionNumberInput">Version {this.props.version.versionNum}</Label>
-                                                {/* <Input type="text" name="versionNumberInput" id="versionNumberInput"
+                                    </FormGroup>
+                                    {/* </Col>
+                                        <Col md={2}> */}
+                                    <FormGroup>
+                                        <Label for="versionNumberInput">Version {this.props.version.versionNum}</Label>
+                                        {/* <Input type="text" name="versionNumberInput" id="versionNumberInput"
                                                     placeholder="Version No."
                                                     onChange={this.handleFieldChange} /> */}
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row form>
-                                        <Col md={12}>
-                                            <FormGroup id="revisionGroup">
-                                                {/* <p>Mix Revisions</p> */}
-                                                {
-                                                    this.props.version.revisions.map(revision => (
-                                                        <Input key={revision.id}
-                                                            id={revision.id}
-                                                            type="text"
-                                                            placeholder="Enter a mix revision"
-                                                            value={revision.revisionText}
-                                                            onChange={this.handleFieldChange}
-                                                            style={{ marginBottom: '5px' }}
-                                                        />
-
-                                                    ))
-                                                }
-                                                {
-                                                    revisions.map((val, idx) => {
-                                                        let revisionId = `revision-${idx}`
-                                                        return (
-                                                            <div key={idx}>
-                                                                {/* <Label for={revisionId} hidden>Mix Revisions</Label> */}
-                                                                <Input
-                                                                    type="text"
-                                                                    name={revisionId}
-                                                                    data-id={idx}
-                                                                    id={revisionId}
-                                                                    placeholder="Add a mix revision ..."
-                                                                    onChange={this.handleFieldChange}
-                                                                    style={{ marginBottom: '5px' }} />
-                                                            </div>
-                                                        )
-                                                    })
-                                                }
-                                                <Button onClick={this.addRevision} id="revisionBtn">+</Button>
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
+                                    </FormGroup>
+                                    {/* </Col>
+                                    </Row> */}
+                                    {/* <Row form>
+                                        <Col md={12}> */}
+                                    <FormGroup id="revisionGroup">
+                                        {/* <p>Mix Revisions</p> */}
+                                        {
+                                            this.props.version.revisions.map(revision => (
+                                                <InputGroup key={revision.id}>
+                                                    <Input key={revision.id}
+                                                        id={revision.id}
+                                                        type="text"
+                                                        placeholder="Enter a mix revision"
+                                                        value={revision.revisionText}
+                                                        onChange={this.handleFieldChange}
+                                                        style={{ marginBottom: '5px' }}
+                                                    />
+                                                    <InputGroupAddon addonType="append">
+                                                        <span className="btn" color="outline-secondary"><FiTrash2 />
+                                                        </span>
+                                                    </InputGroupAddon>
+                                                </InputGroup>
+                                            ))
+                                        }
+                                        {
+                                            revisions.map((val, idx) => {
+                                                let revisionId = `revision-${idx}`
+                                                return (
+                                                    <div key={idx}>
+                                                        {/* <Label for={revisionId} hidden>Mix Revisions</Label> */}
+                                                        <InputGroup>
+                                                            <Input
+                                                                type="text"
+                                                                name={revisionId}
+                                                                data-id={idx}
+                                                                id={revisionId}
+                                                                placeholder="Add a mix revision ..."
+                                                                onChange={this.handleFieldChange}
+                                                                style={{ marginBottom: '5px' }} />
+                                                            <InputGroupAddon addonType="append">
+                                                                <span className="btn" color="outline-secondary"
+                                                                    onClick={this.addRevision} id="revisionBtn"><FiPlus />
+                                                                </span>
+                                                            </InputGroupAddon>
+                                                        </InputGroup>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                        {/* <Button onClick={this.addRevision} id="revisionBtn">+</Button> */}
+                                    </FormGroup>
+                                    {/* </Col>
+                                    </Row> */}
                                     <Button onClick={this.handleSubmit}>Submit</Button>
                                 </Form>
                             </ModalBody>
