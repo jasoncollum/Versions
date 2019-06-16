@@ -101,6 +101,7 @@ export default class VersionDetail extends Component {
 
     render() {
         if (this.props.version.song) {
+            let { revisions } = this.state
             return (
                 <section className="versionDetail">
                     <div className="card-body">
@@ -123,9 +124,17 @@ export default class VersionDetail extends Component {
                                     <Row form>
                                         <Col md={6}>
                                             <FormGroup>
-                                                <Label for="songTitleInput">{this.props.version.song.title} - Version {this.props.version.versionNum}</Label>
+                                                <Label for="songTitleInput">{this.props.version.song.title}</Label>
                                                 {/* <Input type="text" name="songTitleInput" id="songTitleInput"
                                                     placeholder="Song Title"
+                                                    onChange={this.handleFieldChange} /> */}
+                                            </FormGroup>
+                                        </Col>
+                                        <Col md={2}>
+                                            <FormGroup>
+                                                <Label for="versionNumberInput">Version {this.props.version.versionNum}</Label>
+                                                {/* <Input type="text" name="versionNumberInput" id="versionNumberInput"
+                                                    placeholder="Version No."
                                                     onChange={this.handleFieldChange} /> */}
                                             </FormGroup>
                                         </Col>
@@ -133,24 +142,38 @@ export default class VersionDetail extends Component {
                                     <Row form>
                                         <Col md={12}>
                                             <FormGroup id="revisionGroup">
-                                                <p>Mix Revisions</p>
-                                                {/* {
+                                                {/* <p>Mix Revisions</p> */}
+                                                {
+                                                    this.props.version.revisions.map(revision => (
+                                                        <Input key={revision.id}
+                                                            id={revision.id}
+                                                            type="text"
+                                                            placeholder="Enter a mix revision"
+                                                            value={revision.revisionText}
+                                                            onChange={this.handleFieldChange}
+                                                            style={{ marginBottom: '5px' }}
+                                                        />
+
+                                                    ))
+                                                }
+                                                {
                                                     revisions.map((val, idx) => {
                                                         let revisionId = `revision-${idx}`
                                                         return (
                                                             <div key={idx}>
-                                                                <Label for={revisionId} hidden>Mix Revisions</Label>
+                                                                {/* <Label for={revisionId} hidden>Mix Revisions</Label> */}
                                                                 <Input
-                                                                    type="textarea"
+                                                                    type="text"
                                                                     name={revisionId}
                                                                     data-id={idx}
                                                                     id={revisionId}
-                                                                    placeholder="Enter a mix revision..."
-                                                                    onChange={this.handleFieldChange} />
+                                                                    placeholder="Add a mix revision ..."
+                                                                    onChange={this.handleFieldChange}
+                                                                    style={{ marginBottom: '5px' }} />
                                                             </div>
                                                         )
                                                     })
-                                                } */}
+                                                }
                                                 <Button onClick={this.addRevision} id="revisionBtn">+</Button>
                                             </FormGroup>
                                         </Col>
