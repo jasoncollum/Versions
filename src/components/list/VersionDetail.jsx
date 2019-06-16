@@ -3,6 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Col, Row, Form, For
 import { FiTrash2, FiPlus } from 'react-icons/fi'
 
 import 'bootstrap/dist/css/bootstrap.css';
+import API from '../../modules/API';
 
 export default class VersionDetail extends Component {
     constructor(props) {
@@ -13,15 +14,42 @@ export default class VersionDetail extends Component {
             versionNumberInput: '',
             artistNameInput: '',
             revisions: [{ text: '' }],
-            revisionInputText: []
+            newRevisionInputText: []
         };
 
         this.toggle = this.toggle.bind(this);
+        this.handlesavechangesbtn = this.handlesavechangesbtn.bind(this)
+        this.handlecancelbtn = this.handlecancelbtn.bind(this)
     }
 
     toggle() {
-        console.log('toggled')
         this.setState(prevState => ({ modal: !prevState.modal }))
+    }
+
+    handlesavechangesbtn = async (e) => {
+        e.preventDefault()
+
+        // HANDLE NEW REVISIONS
+        await this.pushNewRevisions()
+        // post new revisions to db
+        const newRevisionArr = await this.state.newRevisionInputText.map(newRevisionText => {
+            return {
+                revisionText: newRevisionText,
+                versionId: this.props.version.id
+            }
+        })
+        await console.log(newRevisionArr)
+        // await newRevisionArr.map(revision => API.postRevision(revision))
+        // ... end of New Revisions
+
+
+    }
+
+    handlecancelbtn() {
+        this.setState(prevState => ({
+            modal: !prevState.modal,
+            revisions: [{ text: '' }]
+        }))
     }
 
     handleDeleteBtn = () => {
@@ -36,30 +64,14 @@ export default class VersionDetail extends Component {
         }));
     }
 
-    // push all revision text to revisionInputText array in state
-    pushRevisions = () => {
-        const revisionInputs = document.querySelectorAll('#revisionGroup textarea')
-        revisionInputs.forEach(input => {
-            let floatState = this.state.revisionInputText
+    // push all new revision text to newRevisionInputText array in state
+    pushNewRevisions = () => {
+        const newRevisionInputs = document.querySelectorAll('#newRevisionGroup input')
+        newRevisionInputs.forEach(input => {
+            let floatState = this.state.newRevisionInputText
             floatState.push(input.value)
-            console.log('pushRevisions', floatState)
-            this.setState({ revisionInputText: floatState })
+            this.setState({ newRevisionInputText: floatState })
         })
-    }
-
-    handleSubmit = (e) => {
-        e.preventDefault()
-        this.pushRevisions()
-
-        // post to db
-        const artistObj = this.createArtistObj()
-        const songObj = this.createSongObj()
-        const versionObj = this.createVersionObj()
-        const revisionArr = this.state.revisionInputText.map(revision => {
-            return { revisionText: revision }
-        })
-
-        this.props.saveRevisionForm(artistObj, songObj, versionObj, revisionArr)
     }
 
     handleFieldChange = e => {
@@ -117,7 +129,9 @@ export default class VersionDetail extends Component {
                         </div>
                         <Button onClick={this.toggle}>Edit Version</Button>
                         <button onClick={this.handleDeleteBtn} className="">X</button>
-                        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} centered={true}>
+                        <Modal isOpen={this.state.modal}
+                            className={this.props.className}
+                            centered={true}>
                             <ModalHeader toggle={this.toggle}>Add | Edit Revisions</ModalHeader>
                             <ModalBody>
                                 <Form id="revisionForm">
@@ -165,7 +179,7 @@ export default class VersionDetail extends Component {
                                             revisions.map((val, idx) => {
                                                 let revisionId = `revision-${idx}`
                                                 return (
-                                                    <div key={idx}>
+                                                    <div key={idx} id="newRevisionGroup">
                                                         {/* <Label for={revisionId} hidden>Mix Revisions</Label> */}
                                                         <InputGroup>
                                                             <Input
@@ -190,12 +204,12 @@ export default class VersionDetail extends Component {
                                     </FormGroup>
                                     {/* </Col>
                                     </Row> */}
-                                    <Button onClick={this.handleSubmit}>Submit</Button>
+                                    {/* <Button onClick={this.handleSubmit}>Submit</Button> */}
                                 </Form>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" onClick={this.toggle}>Save Changes</Button>{' '}
-                                <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                                <Button color="primary" onClick={this.handlesavechangesbtn}>Save Changes</Button>{' '}
+                                <Button color="secondary" onClick={this.handlecancelbtn}>Cancel</Button>
                             </ModalFooter>
                         </Modal>
                     </div>
