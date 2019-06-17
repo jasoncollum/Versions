@@ -24,7 +24,11 @@ export default class RevisionComp extends Component {
                         />
                         <InputGroupAddon addonType="append">
                             <FiMinus
-                                onClick={() => this.setState({ hide: true })}
+                                onClick={() => {
+                                    this.setState({ hide: true })
+                                    this.props.handleMinus(this.props.revision.id)
+                                }
+                                }
                                 style={{ margin: 'auto', display: `${hide}` }} />
                         </InputGroupAddon>
                     </InputGroup>

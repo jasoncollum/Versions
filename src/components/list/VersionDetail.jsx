@@ -18,6 +18,7 @@ export default class VersionDetail extends Component {
             // artistNameInput: '',
             revisions: [{ text: '' }],
             updatedRevisionIds: [],
+            removeRevisionIds: [],
             newRevisionInputText: []
         };
 
@@ -36,10 +37,19 @@ export default class VersionDetail extends Component {
 
     handlesavechangesbtn = async (e) => {
         e.preventDefault()
+        console.log('updated revisions ids', this.state.updatedRevisionIds)
         // HANDLE UPDTATED REVISIONS
         const updatedRevisionArray = await this.createUpdatedRevisionObjects()
-        await updatedRevisionArray.forEach(updatedRevisionObj => API.updateRevision(updatedRevisionObj.id, updatedRevisionObj))
+        if (updatedRevisionArray) {
+            await updatedRevisionArray.forEach(updatedRevisionObj => API.updateRevision(updatedRevisionObj.id, updatedRevisionObj))
+        }
         //  ... end of Updated Revisions
+
+        // HANDLE DELETE REVISIONS
+        if (this.state.removeRevisionIds.length > 0) {
+            await this.state.removeRevisionIds.forEach(id => API.deleteRevision(id))
+        }
+        //  ... end of HANDLE REMOVE REVISIONS
 
         // HANDLE NEW REVISIONS
         await this.pushNewRevisions()
@@ -50,6 +60,9 @@ export default class VersionDetail extends Component {
                 versionId: this.props.version.id
             }
         })
+
+
+
         // await console.log(newRevisionArr)
         await newRevisionArr.map(newRevisionObj => API.postRevision(newRevisionObj))
         // ... end of New Revisions
@@ -77,9 +90,9 @@ export default class VersionDetail extends Component {
 
     handleMinus = (revisionId) => {
         console.log('minus icon', revisionId)
-        this.setState({ hide: true })
-        // const revisionToDelete = document.getElementById('revisionId')
-
+        if (!this.state.removeRevisionIds.includes(revisionId)) {
+            this.state.removeRevisionIds.push(revisionId)
+        }
     }
 
     //EDIT FORM LOGIC ...
@@ -100,6 +113,8 @@ export default class VersionDetail extends Component {
                 }
             })
             return updatedRevisionArray
+        } else {
+            return
         }
     }
 
@@ -108,8 +123,10 @@ export default class VersionDetail extends Component {
         const newRevisionInputs = document.querySelectorAll('#newRevisionGroup input')
         newRevisionInputs.forEach(input => {
             let floatState = this.state.newRevisionInputText
-            floatState.push(input.value)
-            this.setState({ newRevisionInputText: floatState })
+            if (input.value !== '') {
+                floatState.push(input.value)
+                this.setState({ newRevisionInputText: floatState })
+            }
         })
     }
 
@@ -122,7 +139,7 @@ export default class VersionDetail extends Component {
             this.setState({ revisions }, () => console.log('revisions', this.state.revisions))
         }
         // check if updating an existing revision
-        if (e.target.type === 'text' && typeof parseInt(e.target.id) === 'number') {
+        if (e.target.type === 'text' && !e.target.id.includes('-')) {
             if (!this.state.updatedRevisionIds.includes(e.target.id)) {
                 this.state.updatedRevisionIds.push(e.target.id)
             }
@@ -169,7 +186,7 @@ export default class VersionDetail extends Component {
 
     render() {
         if (this.props.version.song) {
-            console.log('render', this.state)
+            console.log('version', this.props.version)
             let { revisions } = this.state
             return (
                 <section className="versionDetail">
@@ -227,9 +244,9 @@ export default class VersionDetail extends Component {
                                             revisions.map((val, idx) => {
                                                 let revisionId = `revision-${idx}`
                                                 return (
-                                                    <div key={idx} id="newRevisionGroup">
+                                                    <div key={idx} id="dynamicRevisionGroup">
                                                         {/* <Label for={revisionId} hidden>Mix Revisions</Label> */}
-                                                        <InputGroup>
+                                                        <InputGroup id="newRevisionGroup">
                                                             <Input
                                                                 type="text"
                                                                 name={revisionId}
