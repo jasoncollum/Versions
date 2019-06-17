@@ -71,7 +71,7 @@ class ApplicationViews extends Component {
             .then((masterVersions) => newState.versions = masterVersions)
             .then(() => this.setState(newState)
             )
-            .then(() => this.props.history.push('/songList'))
+        // .then(() => this.props.history.push('/songList'))
     }
 
     saveRevisionForm = (artistObj, songObj, versionObj, revisionArr) => {
@@ -108,8 +108,9 @@ class ApplicationViews extends Component {
                 revFormObj.revisions = postedRevisions
             })
             .then(() => this.setState({ revisionFormObj: revFormObj }))
-            .then(() => this.props.history.push('/songList'))
+            // .then(() => this.props.history.push('/songList'))
             .then(() => this.getAllData())
+            .then(() => this.props.history.push('/songList'))
     }
 
     componentDidMount() {
@@ -156,7 +157,7 @@ class ApplicationViews extends Component {
                         version = { id: 404, versionNum: "Version not found" }
                     }
 
-                    return <VersionDetail version={version} deleteVersion={this.deleteVersion} getAllData={this.getAllData} />
+                    return <VersionDetail version={version} deleteVersion={this.deleteVersion} getAllData={this.getAllData} {...this.props} />
                     // } else {
                     //     return <Redirect to="/login" />
                     // }

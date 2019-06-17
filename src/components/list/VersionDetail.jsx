@@ -61,19 +61,20 @@ export default class VersionDetail extends Component {
             }
         })
 
-
-
         // await console.log(newRevisionArr)
         await newRevisionArr.map(newRevisionObj => API.postRevision(newRevisionObj))
         // ... end of New Revisions
 
-        this.props.getAllData()
+        await this.props.getAllData()
+        await this.setState({
+            revisions: [{ text: '' }],
+            updatedRevisionIds: [],
+            removeRevisionIds: [],
+            newRevisionInputText: []
+        })
+        await this.toggle()
+        await this.props.history.push(`/songList/${this.props.version.id}`)
 
-        // toggle modal state and reset rvisions state
-        // this.setState(prevState => ({
-        //     modal: !prevState.modal,
-        //     revisions: [{ text: '' }]
-        // }))
     }
 
     handlecancelbtn() {
@@ -255,10 +256,10 @@ export default class VersionDetail extends Component {
                                                                 placeholder="Add a mix revision ..."
                                                                 onChange={this.handleFieldChange}
                                                                 style={{ marginBottom: '5px' }} />
-                                                            <InputGroupAddon addonType="append">
+                                                            {/* <InputGroupAddon addonType="append">
                                                                 <FiPlus onClick={this.addRevision} id="revisionBtn"
                                                                     style={{ margin: 'auto' }} />
-                                                            </InputGroupAddon>
+                                                            </InputGroupAddon> */}
                                                         </InputGroup>
                                                     </div>
                                                 )
@@ -266,6 +267,8 @@ export default class VersionDetail extends Component {
                                         }
                                         {/* <Button onClick={this.addRevision} id="revisionBtn">+</Button> */}
                                     </FormGroup>
+                                    <FiPlus onClick={this.addRevision} id="revisionBtn"
+                                        style={{ margin: 'auto' }} />
                                     {/* </Col>
                                     </Row> */}
                                     {/* <Button onClick={this.handleSubmit}>Submit</Button> */}
