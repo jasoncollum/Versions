@@ -156,7 +156,7 @@ class ApplicationViews extends Component {
                         version = { id: 404, versionNum: "Version not found" }
                     }
 
-                    return <VersionDetail version={version} deleteVersion={this.deleteVersion} />
+                    return <VersionDetail version={version} deleteVersion={this.deleteVersion} getAllData={this.getAllData} />
                     // } else {
                     //     return <Redirect to="/login" />
                     // }

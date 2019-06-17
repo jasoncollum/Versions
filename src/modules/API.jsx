@@ -71,6 +71,15 @@ export default {
             body: JSON.stringify(revisionObj)
         }).then(e => e.json())
     },
+    updateRevision(revisionId, updatedRevisionObj) {
+        return fetch(`${remoteURL}/revisions/${revisionId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedRevisionObj)
+        }).then(e => e.json())
+    },
     deleteRevision(revisionId) {
         return fetch(`${remoteURL}/revisions/${revisionId}`, {
             method: "DELETE"
