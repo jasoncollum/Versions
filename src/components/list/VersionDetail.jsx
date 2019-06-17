@@ -94,7 +94,7 @@ export default class VersionDetail extends Component {
             const updatedRevisionArray = this.state.updatedRevisionIds.map(revId => {
                 const targetInput = document.getElementById(`${revId}`)
                 return {
-                    id: parseInt(targetInput.id),
+                    id: (targetInput.id),
                     revisionText: targetInput.value,
                     versionId: this.props.version.id
                 }
