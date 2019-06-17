@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
+import API from '../../modules/API';
+import RevisionComp from './RevisionComp'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Col, Row, Form, FormGroup, Label, Input, InputGroup, InputGroupAddon } from 'reactstrap'
-import { FiTrash2, FiPlus } from 'react-icons/fi'
+import { FiMinus, FiPlus } from 'react-icons/fi'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import API from '../../modules/API';
+import './versionDetail.css'
+
 
 export default class VersionDetail extends Component {
     constructor(props) {
@@ -22,6 +25,10 @@ export default class VersionDetail extends Component {
         this.handlesavechangesbtn = this.handlesavechangesbtn.bind(this)
         this.handlecancelbtn = this.handlecancelbtn.bind(this)
     }
+
+    // hideRevision() {
+    //     this.setState({ hide: true })
+    // }
 
     toggle() {
         this.setState(prevState => ({ modal: !prevState.modal }))
@@ -66,6 +73,13 @@ export default class VersionDetail extends Component {
     handleDeleteBtn = () => {
         console.log('delete version')
         this.props.deleteVersion(this.props.version.id)
+    }
+
+    handleMinus = (revisionId) => {
+        console.log('minus icon', revisionId)
+        this.setState({ hide: true })
+        // const revisionToDelete = document.getElementById('revisionId')
+
     }
 
     //EDIT FORM LOGIC ...
@@ -118,29 +132,29 @@ export default class VersionDetail extends Component {
     }
 
     // Create objects:  artist, song, version, request
-    createArtistObj = () => {
-        return {
-            name: this.state.artistNameInput
-        }
-    }
+    // createArtistObj = () => {
+    //     return {
+    //         name: this.state.artistNameInput
+    //     }
+    // }
 
-    createSongObj = () => {
-        return {
-            title: this.state.songTitleInput
-        }
-    }
+    // createSongObj = () => {
+    //     return {
+    //         title: this.state.songTitleInput
+    //     }
+    // }
 
-    createVersionObj = () => {
-        return {
-            versionNum: parseInt(this.state.versionNumberInput)
-        }
-    }
+    // createVersionObj = () => {
+    //     return {
+    //         versionNum: parseInt(this.state.versionNumberInput)
+    //     }
+    // }
 
-    createRevisionObjArr = (strArr) => {
-        return {
-            revisionText: this.state.revisionInputText
-        }
-    }
+    // createRevisionObjArr = (strArr) => {
+    //     return {
+    //         revisionText: this.state.revisionInputText
+    //     }
+    // }
     // ... end Edit Form Logic
 
     // set existing properties in state
@@ -170,7 +184,7 @@ export default class VersionDetail extends Component {
                                 )
                             }
                         </div>
-                        <Button onClick={this.toggle}>Edit Version</Button>
+                        <Button onClick={this.toggle} outline color="secondary">Add | Edit Revisions</Button>
                         <button onClick={this.handleDeleteBtn} className="">X</button>
                         <Modal isOpen={this.state.modal}
                             className={this.props.className}
@@ -202,21 +216,11 @@ export default class VersionDetail extends Component {
                                         {/* <p>Mix Revisions</p> */}
                                         {
                                             this.props.version.revisions.map(revision => (
-                                                <InputGroup key={revision.id}>
-                                                    <Input key={revision.id}
-                                                        id={revision.id}
-                                                        name={revision.id}
-                                                        type="text"
-                                                        placeholder="Enter a mix revision"
-                                                        defaultValue={revision.revisionText}
-                                                        onChange={this.handleFieldChange}
-                                                        style={{ marginBottom: '5px' }}
-                                                    />
-                                                    <InputGroupAddon addonType="append">
-                                                        <span className="btn" color="outline-secondary"><FiTrash2 />
-                                                        </span>
-                                                    </InputGroupAddon>
-                                                </InputGroup>
+                                                <RevisionComp key={revision.id}
+                                                    revision={revision}
+                                                    handleFieldChange={this.handleFieldChange}
+                                                    handleMinus={this.handleMinus}
+                                                />
                                             ))
                                         }
                                         {
@@ -235,9 +239,8 @@ export default class VersionDetail extends Component {
                                                                 onChange={this.handleFieldChange}
                                                                 style={{ marginBottom: '5px' }} />
                                                             <InputGroupAddon addonType="append">
-                                                                <span className="btn" color="outline-secondary"
-                                                                    onClick={this.addRevision} id="revisionBtn"><FiPlus />
-                                                                </span>
+                                                                <FiPlus onClick={this.addRevision} id="revisionBtn"
+                                                                    style={{ margin: 'auto' }} />
                                                             </InputGroupAddon>
                                                         </InputGroup>
                                                     </div>
