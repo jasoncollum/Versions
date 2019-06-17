@@ -11,8 +11,8 @@ export default class VersionCard extends Component {
 
     // Pass in song.id to deleteSong
     handleClick = () => {
-        const versionsToDelete =
-            this.props.deleteSong(this.version.song.id)
+        // const versionsToDelete =
+        this.props.deleteSong(this.version.song.id)
     }
 
     render() {
