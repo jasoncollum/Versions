@@ -71,8 +71,8 @@ export default {
             body: JSON.stringify(revisionObj)
         }).then(e => e.json())
     },
-    updateRevision(id, updatedRevisionObj) {
-        return fetch(`${remoteURL}/revisions/${id}`, {
+    updateRevision(revisionId, updatedRevisionObj) {
+        return fetch(`${remoteURL}/revisions/${revisionId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
