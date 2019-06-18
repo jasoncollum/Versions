@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router'
+import Login from './Login';
+import Register from './Register';
+// import Home from './components/Home';
+// import { getUserFromLocalStorage, logout } from './auth/userManager';
 import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
 import VersionDetail from './list/VersionDetail'
@@ -140,6 +144,18 @@ class ApplicationViews extends Component {
         console.log(this.state)
         return (
             <div className="container app-view-container">
+                <Route path="/login" render={(props) => <Login {...props} onLogin={(user) => this.setState({ user: user })} />} />
+
+                <Route path="/register" render={(props) => <Register {...props} onRegister={(user) => this.setState({ user: user })} />} />
+
+                {/* <Route exact path="/" render={(props) => {
+                    return this.state.user ? (
+                        <Home {...props} user={this.state.user} onLogout={logout} />
+                    ) : (
+                            <Redirect to="/login" />
+                        )
+                }} /> */}
+
                 <Route exact path="/songList" render={props => {
                     return <SongList
                         versions={this.state.versions}
