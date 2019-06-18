@@ -121,7 +121,7 @@ export default class VersionDetail extends Component {
 
     // push all new revision text to newRevisionInputText array in state
     pushNewRevisions = () => {
-        const newRevisionInputs = document.querySelectorAll('#newRevisionGroup input')
+        const newRevisionInputs = document.querySelectorAll('.newRevisionGroup input')
         newRevisionInputs.forEach(input => {
             let floatState = this.state.newRevisionInputText
             if (input.value !== '') {
@@ -190,7 +190,7 @@ export default class VersionDetail extends Component {
             console.log('version', this.props.version)
             let { revisions } = this.state
             return (
-                <section className="versionDetail">
+                <section className="versionDetail" style={{ width: '500px' }}>
                     <div className="card-body">
                         <h4 className="card-title">{this.props.version.song.title}</h4>
                         <h5 className="card-title">Version {this.props.version.versionNum}</h5>
@@ -202,11 +202,15 @@ export default class VersionDetail extends Component {
                                 )
                             }
                         </div>
-                        <Button onClick={this.toggle} outline color="secondary">Add | Edit Revisions</Button>
-                        <button onClick={this.handleDeleteBtn} className="">X</button>
+                        <hr></hr>
+                        <Button onClick={this.handleDeleteBtn} outline color="danger"
+                            style={{ float: 'right', margin: '0 10px' }}>Delete Version</Button>
+                        <Button onClick={this.toggle} outline color="primary"
+                            style={{ float: 'right' }}>Add | Edit Revisions</Button>
                         <Modal isOpen={this.state.modal}
                             className={this.props.className}
-                            centered={true}>
+                            centered={true}
+                            style={{ maxWidth: '575px' }}>
                             <ModalHeader toggle={this.toggle}>Add | Edit Revisions</ModalHeader>
                             <ModalBody>
                                 <Form id="revisionForm">
@@ -247,7 +251,7 @@ export default class VersionDetail extends Component {
                                                 return (
                                                     <div key={idx} id="dynamicRevisionGroup">
                                                         {/* <Label for={revisionId} hidden>Mix Revisions</Label> */}
-                                                        <InputGroup id="newRevisionGroup">
+                                                        <InputGroup className="newRevisionGroup">
                                                             <Input
                                                                 type="text"
                                                                 name={revisionId}
@@ -275,8 +279,8 @@ export default class VersionDetail extends Component {
                                 </Form>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" onClick={this.handlesavechangesbtn}>Save Changes</Button>{' '}
-                                <Button color="secondary" onClick={this.handlecancelbtn}>Cancel</Button>
+                                <Button outline color="primary" onClick={this.handlesavechangesbtn}>Save Changes</Button>{' '}
+                                <Button outline color="secondary" onClick={this.handlecancelbtn}>Cancel</Button>
                             </ModalFooter>
                         </Modal>
                     </div>
