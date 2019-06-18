@@ -7,7 +7,7 @@ import { fbKey } from './modules/hiddenKey'
 
 import './index.css';
 
-const firebaseConfig = {
+var firebaseConfig = {
     apiKey: fbKey,
     authDomain: "versions-6e60a.firebaseapp.com",
     databaseURL: "https://versions-6e60a.firebaseio.com",

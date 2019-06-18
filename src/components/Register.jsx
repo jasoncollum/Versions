@@ -10,7 +10,8 @@ export default class Register extends Component {
         password: ''
     }
 
-    submit = () => {
+    submit = (e) => {
+        e.preventDefault()
         register(this.state)
             .then((newUser) => {
                 this.props.onRegister(newUser);
@@ -27,11 +28,13 @@ export default class Register extends Component {
                         style={{ border: '.5px solid lightgrey', borderRadius: '5px', padding: '30px' }} >
                         <FormGroup>
                             <Label for="exampleEmail">Email</Label>
-                            <Input type="email" name="email" id="exampleEmail" placeholder="email@website.com" />
+                            <Input type="email" name="email" id="exampleEmail" placeholder="email@website.com"
+                                onChange={(e) => this.setState({ email: e.target.value })} />
                         </FormGroup>
                         <FormGroup style={{ marginBottom: '25px' }}>
                             <Label for="examplePassword">Password</Label>
-                            <Input type="password" name="password" id="examplePassword" placeholder="**********" />
+                            <Input type="password" name="password" id="examplePassword" placeholder="**********"
+                                onChange={(e) => this.setState({ password: e.target.value })} />
                         </FormGroup>
                         <Button className="register--btn" outline color="secondary">Register</Button>
                         <FormText className="auth--message" style={{ float: 'right', marginTop: '9px' }}>
