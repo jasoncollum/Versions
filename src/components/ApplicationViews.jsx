@@ -108,7 +108,8 @@ class ApplicationViews extends Component {
 
         let revisionArrProms = revisionArr.map(revisionObj => {
             revisionObj.versionId = revFormObj.version.id
-            return API.postRevision(revisionObj)
+            let dbCall = API.postRevision(revisionObj)
+            return dbCall
             // .then(revision => {
             //     postedRevisions.push(revision)
             // })
