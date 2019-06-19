@@ -65,7 +65,8 @@ export default class RevisionForm extends Component {
 
     createSongObj = () => {
         return {
-            title: this.state.songTitleInput
+            title: this.state.songTitleInput,
+            userId: this.props.user.id
         }
     }
 

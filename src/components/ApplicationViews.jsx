@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router'
 import Login from './Login';
 import Register from './Register';
-// import Home from './components/Home';
+// import Home from './Home';
 import { getUserFromLocalStorage, logout } from '../auth/userManager';
 import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
@@ -75,7 +75,7 @@ class ApplicationViews extends Component {
             .then(() => this.createMasterObjects(data))
             .then((masterVersions) => {
                 const userVersions = masterVersions.filter(version => version.song.userId === this.state.user.id)
-                console.log('USER VERSIONS', userVersions)
+                // console.log('USER VERSIONS', userVersions)
                 newState.versions = userVersions
             })
             // .then((userVersions) => newState.version = userVersions)
@@ -85,7 +85,7 @@ class ApplicationViews extends Component {
     }
 
     saveRevisionForm = (artistObj, songObj, versionObj, revisionArr) => {
-        console.log('revisions array', revisionArr)
+        // console.log('revisions array', revisionArr)
         const revFormObj = {}
 
         API.postArtist(artistObj)
@@ -124,7 +124,7 @@ class ApplicationViews extends Component {
     }
 
     componentDidMount() {
-        console.log('CDM', this.state.user)
+        // console.log('CDM', this.state.user)
         // const data = {}
         // let newState = {}
         this.getAllData()
@@ -149,7 +149,7 @@ class ApplicationViews extends Component {
 
 
     render() {
-        console.log(this.state)
+        console.log(this.state.user)
         return (
             <div className="container app-view-container">
                 <Route path="/login" render={(props) => <Login {...props} onLogin={(user) => this.setState({ user: user })} />} />
@@ -195,6 +195,7 @@ class ApplicationViews extends Component {
                 <Route exact path="/revisionForm" render={props => {
                     return this.state.user ? (
                         <RevisionForm
+                            user={this.state.user}
                             saveRevisionForm={this.saveRevisionForm}
                             {...props}
                         />
