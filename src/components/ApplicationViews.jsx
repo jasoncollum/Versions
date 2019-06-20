@@ -25,13 +25,13 @@ class ApplicationViews extends Component {
 
     deleteVersion = async (version_Id) => {
         const versionToDelete = this.state.versions.find(version => version.id === version_Id)
-        // await versionToDelete.revisions.forEach(revision => API.deleteRevision(revision.id))
+
         await API.deleteVersion(versionToDelete.id)
         this.getAllData()
     }
 
     deleteSong = async (song_Id) => {
-        // const revisionsToDelete = []
+        // console.log('deleteSong called')
         const versionsToDelete = this.state.versions.filter(version => version.songId === song_Id)
 
         await versionsToDelete.map(version => {
@@ -39,7 +39,7 @@ class ApplicationViews extends Component {
         })
 
         await API.deleteSong(song_Id)
-        this.getAllData()
+            .then(() => this.getAllData())
     }
 
     createMasterObjects = (data) => {
@@ -54,105 +54,70 @@ class ApplicationViews extends Component {
         return data.versions
     }
 
-    getAllData = () => {
+    getAllData = async () => {
         const data = {}
         let newState = {}
 
-        API.getAllArtists().then(allArtists => {
+        await API.getAllArtists().then(allArtists => {
             data.artists = allArtists
         })
-            .then(() => API.getAllSongs().then(allSongs => {
-                data.songs = allSongs
-            }))
-            .then(() => API.getAllVersions().then(allVersions => {
-                data.versions = allVersions
-            }))
-            .then(() => API.getAllRevisions().then(allRevisions => {
-                data.revisions = allRevisions
-            }))
-            .then(() => this.createMasterObjects(data))
-            .then((masterVersions) => {
-                const userVersions = masterVersions.filter(version => version.song.userId === this.state.user.id)
-                // console.log('USER VERSIONS', userVersions)
-                newState.versions = userVersions
-            })
-            // .then((userVersions) => newState.version = userVersions)
-            .then(() => this.setState(newState)
-            )
-        // .then(() => this.props.history.push('/songList'))
+        await API.getAllSongs().then(allSongs => {
+            data.songs = allSongs
+        })
+        await API.getAllVersions().then(allVersions => {
+            data.versions = allVersions
+        })
+        await API.getAllRevisions().then(allRevisions => {
+            data.revisions = allRevisions
+        })
+        const masterVersions = this.createMasterObjects(data)
+
+        const userVersions = masterVersions.filter(version => version.song.userId === this.state.user.id)
+        // console.log('USER VERSIONS', userVersions)
+        newState.versions = userVersions
+
+        this.setState(newState)
+        this.props.history.push('/songList')
     }
 
     saveRevisionForm = async (artistObj, songObj, versionObj, revisionArr) => {
-        // console.log('revisions array', revisionArr)
+        console.log('revisions array', revisionArr)
         const revFormObj = {}
 
         await API.postArtist(artistObj)
             .then(artist => {
                 revFormObj.artist = artist
             })
-        // .then(() => {
+
         songObj.artistId = revFormObj.artist.id
         await API.postSong(songObj)
             .then(song => {
                 revFormObj.song = song
             })
-        // })
-        // .then(() => {
+
         versionObj.songId = revFormObj.song.id
         await API.postVersion(versionObj)
             .then(version => {
                 revFormObj.version = version
             })
-        // })
-        // .then(() => {
 
         let revisionArrProms = revisionArr.map(revisionObj => {
             revisionObj.versionId = revFormObj.version.id
             let dbCall = API.postRevision(revisionObj)
             return dbCall
-            // .then(revision => {
-            //     postedRevisions.push(revision)
-            // })
+
         })
         Promise.all(revisionArrProms).then(() => console.log('Revisions posted', revisionArrProms))
+            .then(() => this.getAllData())
+    }
 
-        let postedRevisions = await API.getRevisions(revFormObj.version.id)
-        revFormObj.revisions = postedRevisions
-        // })
-
-        this.setState({ revisionFormObj: revFormObj })
-        // .then(() => this.props.history.push('/songList'))
+    componentDidMount() {
         this.getAllData()
         this.props.history.push('/songList')
     }
 
-    componentDidMount() {
-        // console.log('CDM', this.state.user)
-        // const data = {}
-        // let newState = {}
-        this.getAllData()
-
-        // API.getAllArtists().then(allArtists => {
-        //     data.artists = allArtists
-        // })
-        //     .then(() => API.getAllSongs().then(allSongs => {
-        //         data.songs = allSongs
-        //     }))
-        //     .then(() => API.getAllVersions().then(allVersions => {
-        //         data.versions = allVersions
-        //     }))
-        //     .then(() => API.getAllRevisions().then(allRevisions => {
-        //         data.revisions = allRevisions
-        //     }))
-        //     .then(() => this.createMasterObjects(data))
-        //     .then((masterVersions) => newState.versions = masterVersions)
-        //     .then(() => this.setState(newState)
-        //     )
-    }
-
 
     render() {
-        console.log(this.state.user)
         return (
             <div className="container app-view-container">
                 <Route path="/login" render={(props) => <Login {...props} onLogin={(user) => this.setState({ user: user })} />} />
