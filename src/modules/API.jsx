@@ -4,7 +4,7 @@ export default {
     getAllArtists() {
         return fetch(`${remoteURL}/artists`).then(e => e.json())
     },
-    getArtist(artistName) {
+    getArtistByName(artistName) {
         return fetch(`${remoteURL}/artists?name=${artistName}`).then(e => e.json())
     },
     postArtist(artistObj) {

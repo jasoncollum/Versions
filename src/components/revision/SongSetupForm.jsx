@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input, InputGroup } from 'reactstrap'
-import { FiPlus } from 'react-icons/fi'
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 
 import './songSetupForm.css'
+import API from '../../modules/API';
 
 export default class SongSetupForm extends Component {
     state = {
@@ -18,37 +18,50 @@ export default class SongSetupForm extends Component {
         }
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault()
 
         // post to db
-        const artistObj = this.createArtistObj()
-        const songObj = this.createSongObj()
-        const versionObj = this.createVersionObj()
+        const artistObj = await this.createArtistObj()
+        // const songObj = this.createSongObj()
+        // const versionObj = this.createVersionObj()
 
-        console.log(artistObj, songObj, versionObj)
+        console.log(artistObj)
+        // console.log(artistObj, songObj, versionObj)
         // this.props.saveSongSetupForm(artistObj, songObj, versionObj)
     }
 
     // Create objects:  artist, song, and version
-    createArtistObj = () => {
-        return {
-            name: this.state.artistNameInput
+    createArtistObj = async () => {
+
+        const artistCheck = await API.getArtistByName(this.state.artistNameInput)
+        if (artistCheck.length === 1) {
+            return artistCheck[0]
+        }
+        if (artistCheck.length === 0) {
+            let newArtistObj = {
+                name: this.state.artistNameInput,
+                imageURL: this.state.artistImageURL
+            }
+            await API.postArtist(newArtistObj).then(result => {
+                newArtistObj = { result }
+            })
+            return newArtistObj
         }
     }
 
-    createSongObj = () => {
-        return {
-            title: this.state.songTitleInput,
-            userId: this.props.user.id
-        }
-    }
+    // createSongObj = () => {
+    //     return {
+    //         title: this.state.songTitleInput,
+    //         userId: this.props.user.id
+    //     }
+    // }
 
-    createVersionObj = () => {
-        return {
-            versionNum: parseInt(this.state.versionNumberInput)
-        }
-    }
+    // createVersionObj = () => {
+    //     return {
+    //         versionNum: parseInt(this.state.versionNumberInput)
+    //     }
+    // }
 
     render() {
         return (
