@@ -5,11 +5,12 @@ import Login from './Login';
 import Register from './Register';
 // import Home from './Home';
 import { getUserFromLocalStorage, logout } from '../auth/userManager';
+import SongSetupForm from './revision/SongSetupForm'
 import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
 import VersionDetail from './list/VersionDetail'
 import API from '../modules/API'
-import { promised } from 'q';
+// import { promised } from 'q';
 
 class ApplicationViews extends Component {
 
@@ -78,6 +79,30 @@ class ApplicationViews extends Component {
 
         this.setState(newState)
         this.props.history.push('/songList')
+    }
+
+    saveSongSetupForm = async (artistObj, songObj, versionObj) => {
+        // console.log('revisions array', revisionArr)
+        const revFormObj = {}
+
+        await API.postArtist(artistObj)
+            .then(artist => {
+                revFormObj.artist = artist
+            })
+
+        songObj.artistId = revFormObj.artist.id
+        await API.postSong(songObj)
+            .then(song => {
+                revFormObj.song = song
+            })
+
+        versionObj.songId = revFormObj.song.id
+        await API.postVersion(versionObj)
+            .then(version => {
+                revFormObj.version = version
+            })
+
+        this.getAllData()
     }
 
     saveRevisionForm = async (artistObj, songObj, versionObj, revisionArr) => {
@@ -158,6 +183,18 @@ class ApplicationViews extends Component {
                     } else {
                         return <Redirect to="/login" />
                     }
+                }} />
+
+                <Route exact path="/songSetupForm" render={props => {
+                    return this.state.user ? (
+                        <SongSetupForm
+                            user={this.state.user}
+                            saveSongSetupForm={this.saveSongSetupForm}
+                            {...props}
+                        />
+                    ) : (
+                            <Redirect to="/login" />
+                        )
                 }} />
 
                 <Route exact path="/revisionForm" render={props => {
