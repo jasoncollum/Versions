@@ -1,0 +1,18 @@
+.song-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.title-version {
+    align-self: flex-start;
+}
+
+.artist-image {
+   align-self: flex-end;
+}
+
+img {
+    width: 200px;
+    height: auto;
+}

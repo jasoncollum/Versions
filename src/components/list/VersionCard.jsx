@@ -23,7 +23,7 @@ export default class VersionCard extends Component {
         return (
             <div className="songListItem">
                 <Card style={{ backgroundColor: '#F3F3F3' }}>
-                    <CardImg top width="100%" src="http://media2.s-nbcnews.com/j/MSNBC/Components/Photo/_new/101202-great-white-shark-hmed-755a.grid-6x2.jpg" alt="Card image cap" />
+                    <CardImg top width="100%" src={this.version.artist.imageURL} alt="Card image cap" />
                     <CardBody>
                         <h4>{this.props.song.title}</h4>
                         <p>{this.artist.name}</p>

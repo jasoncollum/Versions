@@ -45,6 +45,9 @@ export default {
     getVersion(songId) {
         return fetch(`${remoteURL}/versions?songId=${songId}`).then(e => e.json())
     },
+    getVersionNumBySongId(version_Num, song_Id) {
+        return fetch(`${remoteURL}/versions?versionNum=${version_Num}&_songId=${song_Id}`).then(e => e.json())
+    },
     postVersion(versionObj) {
         return fetch(`${remoteURL}/versions`, {
             method: "POST",

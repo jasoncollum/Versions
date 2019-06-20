@@ -74,36 +74,36 @@ class ApplicationViews extends Component {
         const masterVersions = this.createMasterObjects(data)
 
         const userVersions = masterVersions.filter(version => version.song.userId === this.state.user.id)
-        // console.log('USER VERSIONS', userVersions)
+        console.log('USER VERSIONS', userVersions)
         newState.versions = userVersions
 
         this.setState(newState)
         this.props.history.push('/songList')
     }
 
-    saveSongSetupForm = async (artistObj, songObj, versionObj) => {
-        // console.log('revisions array', revisionArr)
-        const revFormObj = {}
+    // saveSongSetupForm = async (artistObj, songObj, versionObj) => {
+    //     // console.log('revisions array', revisionArr)
+    //     const revFormObj = {}
 
-        await API.postArtist(artistObj)
-            .then(artist => {
-                revFormObj.artist = artist
-            })
+    //     await API.postArtist(artistObj)
+    //         .then(artist => {
+    //             revFormObj.artist = artist
+    //         })
 
-        songObj.artistId = revFormObj.artist.id
-        await API.postSong(songObj)
-            .then(song => {
-                revFormObj.song = song
-            })
+    //     songObj.artistId = revFormObj.artist.id
+    //     await API.postSong(songObj)
+    //         .then(song => {
+    //             revFormObj.song = song
+    //         })
 
-        versionObj.songId = revFormObj.song.id
-        await API.postVersion(versionObj)
-            .then(version => {
-                revFormObj.version = version
-            })
+    //     versionObj.songId = revFormObj.song.id
+    //     await API.postVersion(versionObj)
+    //         .then(version => {
+    //             revFormObj.version = version
+    //         })
 
-        this.getAllData()
-    }
+    //     this.getAllData()
+    // }
 
     saveRevisionForm = async (artistObj, songObj, versionObj, revisionArr) => {
         // console.log('revisions array', revisionArr)
@@ -138,7 +138,7 @@ class ApplicationViews extends Component {
 
     componentDidMount() {
         this.getAllData()
-        this.props.history.push('/songList')
+        // this.props.history.push('/songList')
     }
 
 
@@ -189,7 +189,7 @@ class ApplicationViews extends Component {
                     return this.state.user ? (
                         <SongSetupForm
                             user={this.state.user}
-                            saveSongSetupForm={this.saveSongSetupForm}
+                            getAllData={this.getAllData}
                             {...props}
                         />
                     ) : (

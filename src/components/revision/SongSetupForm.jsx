@@ -24,9 +24,10 @@ export default class SongSetupForm extends Component {
         // post to db
         const artistObj = await this.createArtistObj()
         const songObj = await this.createSongObj(artistObj.id)
-        // const versionObj = this.createVersionObj()
+        const versionObj = await this.createVersionObj(songObj.id)
+        console.log(versionObj)
+        this.props.getAllData()
 
-        console.log(artistObj, songObj)
         // console.log(artistObj, songObj, versionObj)
         // this.props.saveSongSetupForm(artistObj, songObj, versionObj)
     }
@@ -69,11 +70,21 @@ export default class SongSetupForm extends Component {
         }
     }
 
-    // createVersionObj = () => {
-    //     return {
-    //         versionNum: parseInt(this.state.versionNumberInput)
-    //     }
-    // }
+    createVersionObj = async (songObj_Id) => {
+        const versionCheck = await API.getVersionNumBySongId(this.state.versionNumberInput, songObj_Id)
+        if (versionCheck.length === 1) {
+            console.log('Redirect to version card to create a new version')
+        } else {
+            let newVersionObj = {
+                versionNum: this.state.versionNumberInput,
+                songId: songObj_Id
+            }
+            await API.postVersion(newVersionObj).then(result => {
+                newVersionObj = result
+            })
+            return newVersionObj
+        }
+    }
 
     render() {
         return (
