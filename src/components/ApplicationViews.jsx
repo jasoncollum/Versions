@@ -81,7 +81,7 @@ class ApplicationViews extends Component {
     }
 
     saveRevisionForm = async (artistObj, songObj, versionObj, revisionArr) => {
-        console.log('revisions array', revisionArr)
+        // console.log('revisions array', revisionArr)
         const revFormObj = {}
 
         await API.postArtist(artistObj)

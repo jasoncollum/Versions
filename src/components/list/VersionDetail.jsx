@@ -39,22 +39,22 @@ export default class VersionDetail extends Component {
         e.preventDefault()
         console.log('updated revisions ids', this.state.updatedRevisionIds)
         // HANDLE UPDTATED REVISIONS
-        const updatedRevisionArray = await this.createUpdatedRevisionObjects()
+        const updatedRevisionArray = this.createUpdatedRevisionObjects()
         if (updatedRevisionArray) {
-            await updatedRevisionArray.forEach(updatedRevisionObj => API.updateRevision(updatedRevisionObj.id, updatedRevisionObj))
+            await updatedRevisionArray.map(updatedRevisionObj => API.updateRevision(updatedRevisionObj.id, updatedRevisionObj))
         }
         //  ... end of Updated Revisions
 
         // HANDLE DELETE REVISIONS
         if (this.state.removeRevisionIds.length > 0) {
-            await this.state.removeRevisionIds.forEach(id => API.deleteRevision(id))
+            await this.state.removeRevisionIds.map(id => API.deleteRevision(id))
         }
         //  ... end of HANDLE REMOVE REVISIONS
 
         // HANDLE NEW REVISIONS
-        await this.pushNewRevisions()
+        this.pushNewRevisions()
         // post new revisions to db
-        const newRevisionArr = await this.state.newRevisionInputText.map(newRevisionText => {
+        const newRevisionArr = this.state.newRevisionInputText.map(newRevisionText => {
             return {
                 revisionText: newRevisionText,
                 versionId: this.props.version.id
@@ -66,14 +66,14 @@ export default class VersionDetail extends Component {
         // ... end of New Revisions
 
         await this.props.getAllData()
-        await this.setState({
+        this.setState({
             revisions: [{ text: '' }],
             updatedRevisionIds: [],
             removeRevisionIds: [],
             newRevisionInputText: []
         })
-        await this.toggle()
-        await this.props.history.push(`/songList/${this.props.version.id}`)
+        this.toggle()
+        this.props.history.push(`/songList/${this.props.version.id}`)
 
     }
 
@@ -147,6 +147,10 @@ export default class VersionDetail extends Component {
 
             console.log('VALUE', e.target.value)
         }
+    }
+
+    componentDidMount() {
+        console.log('VersionDetail mounted')
     }
 
     // Create objects:  artist, song, version, request
