@@ -4,7 +4,7 @@ export default {
     getAllArtists() {
         return fetch(`${remoteURL}/artists`).then(e => e.json())
     },
-    getArtist(artistName) {
+    getArtistByName(artistName) {
         return fetch(`${remoteURL}/artists?name=${artistName}`).then(e => e.json())
     },
     postArtist(artistObj) {
@@ -20,7 +20,10 @@ export default {
         return fetch(`${remoteURL}/songs`).then(e => e.json())
     },
     getSong(id) {
-        return fetch(`${remoteURL}/songs/${id}?_embed=versions`).then(e => e.json())
+        return fetch(`${remoteURL}/songs${id}?_embed=versions`).then(e => e.json())
+    },
+    getSongByTitle(songTitle) {
+        return fetch(`${remoteURL}/songs?title=${songTitle}`).then(e => e.json())
     },
     postSong(songObj) {
         return fetch(`${remoteURL}/songs`, {
@@ -41,6 +44,9 @@ export default {
     },
     getVersion(songId) {
         return fetch(`${remoteURL}/versions?songId=${songId}`).then(e => e.json())
+    },
+    getVersionNumBySongId(version_Num, song_Id) {
+        return fetch(`${remoteURL}/versions?versionNum=${version_Num}&_songId=${song_Id}`).then(e => e.json())
     },
     postVersion(versionObj) {
         return fetch(`${remoteURL}/versions`, {

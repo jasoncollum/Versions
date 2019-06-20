@@ -196,8 +196,15 @@ export default class VersionDetail extends Component {
             return (
                 <section className="versionDetail" style={{ width: '500px' }}>
                     <div className="card-body">
-                        <h4 className="card-title">{this.props.version.song.title}</h4>
-                        <h5 className="card-title">Version {this.props.version.versionNum}</h5>
+                        <div className="song-info">
+                            <div className="title-version">
+                                <h4 className="card-title">{this.props.version.song.title}</h4>
+                                <h5 className="card-title">Version {this.props.version.versionNum}</h5>
+                            </div>
+                            <div className="artist-image">
+                                <img src={this.props.version.artist.imageURL} alt="artist" />
+                            </div>
+                        </div>
                         <hr></hr>
                         <div>
                             {

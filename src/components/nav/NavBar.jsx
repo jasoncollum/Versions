@@ -14,7 +14,7 @@ class NavBar extends Component {
                         <Link className="nav-link" to="/songList">Song List</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/revisionForm">New Song</Link>
+                        <Link className="nav-link" to="/songSetupForm">New Song</Link>
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/login" onClick={() => logout()}>Logout</Link>
