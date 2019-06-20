@@ -20,7 +20,10 @@ export default {
         return fetch(`${remoteURL}/songs`).then(e => e.json())
     },
     getSong(id) {
-        return fetch(`${remoteURL}/songs/${id}?_embed=versions`).then(e => e.json())
+        return fetch(`${remoteURL}/songs${id}?_embed=versions`).then(e => e.json())
+    },
+    getSongByTitle(songTitle) {
+        return fetch(`${remoteURL}/songs?title=${songTitle}`).then(e => e.json())
     },
     postSong(songObj) {
         return fetch(`${remoteURL}/songs`, {

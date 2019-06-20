@@ -23,17 +23,16 @@ export default class SongSetupForm extends Component {
 
         // post to db
         const artistObj = await this.createArtistObj()
-        // const songObj = this.createSongObj()
+        const songObj = await this.createSongObj(artistObj.id)
         // const versionObj = this.createVersionObj()
 
-        console.log(artistObj)
+        console.log(artistObj, songObj)
         // console.log(artistObj, songObj, versionObj)
         // this.props.saveSongSetupForm(artistObj, songObj, versionObj)
     }
 
     // Create objects:  artist, song, and version
     createArtistObj = async () => {
-
         const artistCheck = await API.getArtistByName(this.state.artistNameInput)
         if (artistCheck.length === 1) {
             return artistCheck[0]
@@ -44,18 +43,31 @@ export default class SongSetupForm extends Component {
                 imageURL: this.state.artistImageURL
             }
             await API.postArtist(newArtistObj).then(result => {
-                newArtistObj = { result }
+                newArtistObj = result
             })
             return newArtistObj
         }
     }
 
-    // createSongObj = () => {
-    //     return {
-    //         title: this.state.songTitleInput,
-    //         userId: this.props.user.id
-    //     }
-    // }
+    createSongObj = async (artist_Id) => {
+        const songCheck = await API.getSongByTitle(this.state.songTitleInput)
+        // If song is in DB and matches artistObj.id
+        if (songCheck.length === 1 && songCheck[0].artistId === artist_Id) {
+            return songCheck[0]
+        }
+        // If song is in DB, but does not match artistObj.id || if song is not in DB
+        if ((songCheck.length === 1 && songCheck[0].artistId !== artist_Id) || songCheck.length === 0) {
+            let newSongObj = {
+                title: this.state.songTitleInput,
+                userId: this.props.user.id,
+                artistId: artist_Id
+            }
+            await API.postSong(newSongObj).then(result => {
+                newSongObj = result
+            })
+            return newSongObj
+        }
+    }
 
     // createVersionObj = () => {
     //     return {
