@@ -9,8 +9,20 @@ export default class RevisionForm extends Component {
         songTitleInput: '',
         versionNumberInput: '',
         artistNameInput: '',
+        artistImageURL: '',
         revisions: [{ text: '' }],
         revisionInputText: []
+    }
+
+    handleFieldChange = e => {
+        if (['text'].includes(e.target.className)) {
+            let revisions = [...this.state.revisions]
+            revisions[e.target.dataset.id][e.target.className] = e.target.value
+            this.setState({ revisions }, () => console.log('revisions', this.state.revisions))
+        }
+        if (!e.target.id.includes('-')) {
+            this.setState({ [e.target.name]: e.target.value })
+        }
     }
 
     addRevision = (e) => {
@@ -43,17 +55,6 @@ export default class RevisionForm extends Component {
         })
 
         this.props.saveRevisionForm(artistObj, songObj, versionObj, revisionArr)
-    }
-
-    handleFieldChange = e => {
-        if (['text'].includes(e.target.className)) {
-            let revisions = [...this.state.revisions]
-            revisions[e.target.dataset.id][e.target.className] = e.target.value
-            this.setState({ revisions }, () => console.log('revisions', this.state.revisions))
-        }
-        if (!e.target.id.includes('-')) {
-            this.setState({ [e.target.name]: e.target.value })
-        }
     }
 
     // Create objects:  artist, song, version, request
@@ -93,7 +94,8 @@ export default class RevisionForm extends Component {
                     {/* <Label for="songTitleInput">Song Title</Label> */}
                     <Input type="text" name="songTitleInput" id="songTitleInput"
                         placeholder="Song Title"
-                        onChange={this.handleFieldChange} />
+                        onChange={this.handleFieldChange}
+                    />
                 </FormGroup>
                 {/* </Col>
                     <Col md={2}> */}
@@ -101,7 +103,8 @@ export default class RevisionForm extends Component {
                     {/* <Label for="versionNumberInput">Version No.</Label> */}
                     <Input type="text" name="versionNumberInput" id="versionNumberInput"
                         placeholder="Version No."
-                        onChange={this.handleFieldChange} />
+                        onChange={this.handleFieldChange}
+                    />
                 </FormGroup>
                 {/* </Col>
             <Col md={4}> */}
@@ -109,7 +112,15 @@ export default class RevisionForm extends Component {
                     {/* <Label for="artistNameInput">Artist Name</Label> */}
                     <Input type="text" name="artistNameInput" id="artistNameInput"
                         placeholder="Artist Name"
-                        onChange={this.handleFieldChange} />
+                        onChange={this.handleFieldChange}
+                    />
+                </FormGroup>
+                <FormGroup>
+                    {/* <Label for="artistNameInput">Artist Name</Label> */}
+                    <Input type="text" name="artistImageURL" id="artistImageURLInput"
+                        placeholder="Artist Image URL"
+                        onChange={this.handleFieldChange}
+                    />
                 </FormGroup>
                 {/* </Col>
                 </Row > */}
