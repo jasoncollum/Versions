@@ -9,14 +9,15 @@ export default class Login extends Component {
         password: ''
     }
 
-    submit = (e) => {
+    submit = async (e) => {
         e.preventDefault()
         console.log(this.state.email, this.state.password)
-        login(this.state.email, this.state.password)
+        await login(this.state.email, this.state.password)
             .then((user) => {
                 this.props.onLogin(user);
-                this.props.history.push('/songList');
             });
+        await this.props.getAllData()
+        this.props.history.push('/songList');
     }
 
     render() {

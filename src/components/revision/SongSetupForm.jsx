@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import API from '../../modules/API';
 
 import './songSetupForm.css'
-import API from '../../modules/API';
 
 export default class SongSetupForm extends Component {
     state = {

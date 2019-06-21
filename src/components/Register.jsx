@@ -15,7 +15,7 @@ export default class Register extends Component {
         register(this.state)
             .then((newUser) => {
                 this.props.onRegister(newUser);
-                this.props.history.push('/');
+                this.props.history.push('/songSetupForm');
             })
     }
 

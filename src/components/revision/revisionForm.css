@@ -1,19 +1,19 @@
-#songSetupForm {
+#revisionForm {
     max-width: 80%;
     margin: auto;
 }
 
-#songSetupForm input {
+#revisionForm input {
     border-top: none;
     border-left: none;
     border-right: none;
 }
 
-/* #songSetupBtn {
+#revisionBtn {
     float: right;
 }
 
 textarea {
     margin-bottom: 5px;
     border-top: none;
-} */
+}
