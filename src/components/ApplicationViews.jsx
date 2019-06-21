@@ -105,47 +105,51 @@ class ApplicationViews extends Component {
     //     this.getAllData()
     // }
 
-    saveRevisionForm = async (artistObj, songObj, versionObj, revisionArr) => {
-        // console.log('revisions array', revisionArr)
-        const revFormObj = {}
+    // saveRevisionForm = async (artistObj, songObj, versionObj, revisionArr) => {
+    //     // console.log('revisions array', revisionArr)
+    //     const revFormObj = {}
 
-        await API.postArtist(artistObj)
-            .then(artist => {
-                revFormObj.artist = artist
-            })
+    //     await API.postArtist(artistObj)
+    //         .then(artist => {
+    //             revFormObj.artist = artist
+    //         })
 
-        songObj.artistId = revFormObj.artist.id
-        await API.postSong(songObj)
-            .then(song => {
-                revFormObj.song = song
-            })
+    //     songObj.artistId = revFormObj.artist.id
+    //     await API.postSong(songObj)
+    //         .then(song => {
+    //             revFormObj.song = song
+    //         })
 
-        versionObj.songId = revFormObj.song.id
-        await API.postVersion(versionObj)
-            .then(version => {
-                revFormObj.version = version
-            })
+    //     versionObj.songId = revFormObj.song.id
+    //     await API.postVersion(versionObj)
+    //         .then(version => {
+    //             revFormObj.version = version
+    //         })
 
-        let revisionArrProms = revisionArr.map(revisionObj => {
-            revisionObj.versionId = revFormObj.version.id
-            let dbCall = API.postRevision(revisionObj)
-            return dbCall
+    //     let revisionArrProms = revisionArr.map(revisionObj => {
+    //         revisionObj.versionId = revFormObj.version.id
+    //         let dbCall = API.postRevision(revisionObj)
+    //         return dbCall
 
-        })
-        Promise.all(revisionArrProms).then(() => console.log('Revisions posted', revisionArrProms))
-            .then(() => this.getAllData())
-    }
+    //     })
+    //     Promise.all(revisionArrProms).then(() => console.log('Revisions posted', revisionArrProms))
+    //         .then(() => this.getAllData())
+    // }
 
     componentDidMount() {
-        this.getAllData()
-        // this.props.history.push('/songList')
+        if (this.user) {
+            this.getAllData()
+        } else {
+            this.props.history.push('/login')
+        }
+
     }
 
 
     render() {
         return (
             <div className="container app-view-container">
-                <Route path="/login" render={(props) => <Login {...props} onLogin={(user) => this.setState({ user: user })} />} />
+                <Route path="/login" render={(props) => <Login {...props} onLogin={(user) => this.setState({ user: user })} getAllData={this.getAllData} />} />
 
                 <Route path="/register" render={(props) => <Register {...props} onRegister={(user) => this.setState({ user: user })} />} />
 

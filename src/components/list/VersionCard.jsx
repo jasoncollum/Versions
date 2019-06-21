@@ -35,7 +35,7 @@ export default class VersionCard extends Component {
                                     : ""
                             )
                         }
-                        <button onClick={this.handleClick}>X</button>
+                        <Button onClick={this.handleClick} outline color="secondary" style={{ float: 'right', fontSize: '.7em' }} >Delete Song</Button>
                     </CardBody>
                 </Card>
             </div>
