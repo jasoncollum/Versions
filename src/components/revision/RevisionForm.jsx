@@ -6,10 +6,6 @@ import './revisionForm.css'
 
 export default class RevisionForm extends Component {
     state = {
-        songTitleInput: '',
-        versionNumberInput: '',
-        artistNameInput: '',
-        artistImageURL: '',
         revisions: [{ text: '' }],
         revisionInputText: []
     }
@@ -46,37 +42,16 @@ export default class RevisionForm extends Component {
         e.preventDefault()
         this.pushRevisions()
 
-        // post to db
-        const artistObj = this.createArtistObj()
-        const songObj = this.createSongObj()
-        const versionObj = this.createVersionObj()
+        // Create array of object with revisionText: revision
         const revisionArr = this.state.revisionInputText.map(revision => {
             return { revisionText: revision }
         })
 
-        this.props.saveRevisionForm(artistObj, songObj, versionObj, revisionArr)
+        console.log('RevisionForm - Save Changes', this.state)
+        // this.props.saveRevisionForm(revisionArr)
     }
 
-    // Create objects:  artist, song, version, request
-    createArtistObj = () => {
-        return {
-            name: this.state.artistNameInput
-        }
-    }
-
-    createSongObj = () => {
-        return {
-            title: this.state.songTitleInput,
-            userId: this.props.user.id
-        }
-    }
-
-    createVersionObj = () => {
-        return {
-            versionNum: parseInt(this.state.versionNumberInput)
-        }
-    }
-
+    // Create revision objects
     createRevisionObjArr = (strArr) => {
         return {
             revisionText: this.state.revisionInputText
@@ -88,8 +63,6 @@ export default class RevisionForm extends Component {
 
         return (
             <Form id="revisionForm">
-                {/* <Row form>
-                    <Col md={6}> */}
                 <FormGroup>
                     {/* <Label for="songTitleInput">Song Title</Label> */}
                     <Input type="text" name="songTitleInput" id="songTitleInput"
@@ -97,8 +70,6 @@ export default class RevisionForm extends Component {
                         onChange={this.handleFieldChange}
                     />
                 </FormGroup>
-                {/* </Col>
-                    <Col md={2}> */}
                 <FormGroup>
                     {/* <Label for="versionNumberInput">Version No.</Label> */}
                     <Input type="text" name="versionNumberInput" id="versionNumberInput"
@@ -106,8 +77,6 @@ export default class RevisionForm extends Component {
                         onChange={this.handleFieldChange}
                     />
                 </FormGroup>
-                {/* </Col>
-            <Col md={4}> */}
                 <FormGroup>
                     {/* <Label for="artistNameInput">Artist Name</Label> */}
                     <Input type="text" name="artistNameInput" id="artistNameInput"
@@ -122,11 +91,6 @@ export default class RevisionForm extends Component {
                         onChange={this.handleFieldChange}
                     />
                 </FormGroup>
-                {/* </Col>
-                </Row > */}
-                {/* <hr></hr> */}
-                {/* < Row form >
-                <Col md={12}> */}
                 <FormGroup id="revisionGroup">
                     <p>Mix Revisions</p>
                     {
@@ -151,8 +115,6 @@ export default class RevisionForm extends Component {
                     }
                     {/* <Button onClick={this.addRevision} id="revisionBtn">+</Button> */}
                 </FormGroup>
-                {/* </Col>
-                </Row > */}
                 <Button onClick={this.handleSubmit} outline color="secondary">Submit</Button>
                 <FiPlus onClick={this.addRevision} id="revisionBtn"
                     style={{ marginTop: '12px' }} />

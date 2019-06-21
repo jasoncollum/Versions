@@ -1,15 +1,15 @@
-#revisionForm {
-    max-width: 80%;
+#songSetupForm {
+    max-width: 375px;
     margin: auto;
 }
 
-#revisionForm input {
+#songSetupForm input {
     border-top: none;
     border-left: none;
     border-right: none;
 }
 
-#revisionBtn {
+#songSetupBtn {
     float: right;
 }
 

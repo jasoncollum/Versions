@@ -20,6 +20,7 @@ export default class RevisionComp extends Component {
                             placeholder="Enter a mix revision"
                             defaultValue={this.props.revision.revisionText}
                             onChange={this.props.handleFieldChange}
+                            onBlur={this.props.handleBlur}
                             style={{ marginBottom: '5px', display: `${hide}` }}
                         />
                         <InputGroupAddon addonType="append">

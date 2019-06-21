@@ -24,7 +24,7 @@ export default class VersionDetail extends Component {
 
         this.toggle = this.toggle.bind(this);
         this.handlesavechangesbtn = this.handlesavechangesbtn.bind(this)
-        this.handlecancelbtn = this.handlecancelbtn.bind(this)
+        // this.handlecancelbtn = this.handlecancelbtn.bind(this)
     }
 
     // hideRevision() {
@@ -77,12 +77,13 @@ export default class VersionDetail extends Component {
 
     }
 
-    handlecancelbtn() {
-        this.setState(prevState => ({
-            modal: !prevState.modal,
-            revisions: [{ text: '' }]
-        }))
-    }
+    // handlecancelbtn() {
+    //     this.setState(prevState => ({
+    //         modal: !prevState.modal,
+    //         revisions: [{ text: '' }]
+    //     }))
+    // }
+    newRevisionsArray = []
 
     handleDeleteBtn = () => {
         console.log('delete version')
@@ -91,13 +92,42 @@ export default class VersionDetail extends Component {
 
     handleMinus = (revisionId) => {
         console.log('minus icon', revisionId)
-        if (!this.state.removeRevisionIds.includes(revisionId)) {
-            this.state.removeRevisionIds.push(revisionId)
+        // if (!this.state.removeRevisionIds.includes(revisionId)) {
+        //     this.state.removeRevisionIds.push(revisionId)
+        // }
+        API.deleteRevision(revisionId).then(() => console.log('revision deleted:'))
+    }
+
+    handleBlur = (e) => {
+        console.log('Blur', e.target.id, e.target.value)
+        // Check if previously existing revision
+        if (e.target.type === 'text' && !e.target.id.includes('-')) {
+            const updatedRevision = { revisionText: e.target.value }
+            API.updateRevision(e.target.id, updatedRevision)
+        }
+        // Check if new revision
+        if (e.target.type === 'text' && e.target.id.includes('-')) {
+            if (!this.state[e.target.id]) {
+                console.log('UNDEFINED')
+                const newRevisionObject = {
+                    revisionText: e.target.value,
+                    versionId: this.props.version.id
+                }
+                API.postRevision(newRevisionObject).then((result) => {
+
+                })
+            } // Check if revision-idx
+            if (typeof this.state[e.target.id] === Object) {
+                const updatedRevisionObject = {
+                    revisionText: e.target.value
+                }
+            }
         }
     }
 
     //EDIT FORM LOGIC ...
     addRevision = (e) => {
+        // add new Revision INPUT
         this.setState((prevState) => ({
             revisions: [...prevState.revisions, { text: '' }]
         }));
@@ -139,6 +169,9 @@ export default class VersionDetail extends Component {
             revisions[e.target.dataset.id][e.target.className] = e.target.value
             this.setState({ revisions }, () => console.log('revisions', this.state.revisions))
         }
+        // else {
+        //     this.setState({ [e.target.name]: e.target.value })
+        // }
         // check if updating an existing revision
         if (e.target.type === 'text' && !e.target.id.includes('-')) {
             if (!this.state.updatedRevisionIds.includes(e.target.id)) {
@@ -215,9 +248,9 @@ export default class VersionDetail extends Component {
                         </div>
                         <hr></hr>
                         <Button onClick={this.handleDeleteBtn} outline color="danger"
-                            style={{ float: 'right', margin: '0 10px' }}>Delete Version</Button>
+                            style={{ float: 'right', margin: '0 10px', fontSize: '.7em' }}>Delete Version</Button>
                         <Button onClick={this.toggle} outline color="primary"
-                            style={{ float: 'right' }}>Add | Edit Revisions</Button>
+                            style={{ float: 'right', fontSize: '.7em' }}>Add | Edit Revisions</Button>
                         <Modal isOpen={this.state.modal}
                             className={this.props.className}
                             centered={true}
@@ -225,26 +258,18 @@ export default class VersionDetail extends Component {
                             <ModalHeader toggle={this.toggle}>Add | Edit Revisions</ModalHeader>
                             <ModalBody>
                                 <Form id="revisionForm">
-                                    {/* <Row form>
-                                        <Col md={6}> */}
                                     <FormGroup>
                                         <Label for="songTitleInput">{this.props.version.song.title}</Label>
                                         {/* <Input type="text" name="songTitleInput" id="songTitleInput"
                                                     placeholder="Song Title"
                                                     onChange={this.handleFieldChange} /> */}
                                     </FormGroup>
-                                    {/* </Col>
-                                        <Col md={2}> */}
                                     <FormGroup>
                                         <Label for="versionNumberInput">Version {this.props.version.versionNum}</Label>
                                         {/* <Input type="text" name="versionNumberInput" id="versionNumberInput"
                                                     placeholder="Version No."
                                                     onChange={this.handleFieldChange} /> */}
                                     </FormGroup>
-                                    {/* </Col>
-                                    </Row> */}
-                                    {/* <Row form>
-                                        <Col md={12}> */}
                                     <FormGroup id="revisionGroup">
                                         {/* <p>Mix Revisions</p> */}
                                         {
@@ -253,6 +278,7 @@ export default class VersionDetail extends Component {
                                                     revision={revision}
                                                     handleFieldChange={this.handleFieldChange}
                                                     handleMinus={this.handleMinus}
+                                                    handleBlur={this.handleBlur}
                                                 />
                                             ))
                                         }
@@ -270,6 +296,7 @@ export default class VersionDetail extends Component {
                                                                 id={revisionId}
                                                                 placeholder="Add a mix revision ..."
                                                                 onChange={this.handleFieldChange}
+                                                                onBlur={this.handleBlur}
                                                                 style={{ marginBottom: '5px' }} />
                                                             {/* <InputGroupAddon addonType="append">
                                                                 <FiPlus onClick={this.addRevision} id="revisionBtn"
@@ -284,14 +311,11 @@ export default class VersionDetail extends Component {
                                     </FormGroup>
                                     <FiPlus onClick={this.addRevision} id="revisionBtn"
                                         style={{ margin: 'auto' }} />
-                                    {/* </Col>
-                                    </Row> */}
-                                    {/* <Button onClick={this.handleSubmit}>Submit</Button> */}
                                 </Form>
                             </ModalBody>
                             <ModalFooter>
                                 <Button outline color="primary" onClick={this.handlesavechangesbtn}>Save Changes</Button>{' '}
-                                <Button outline color="secondary" onClick={this.handlecancelbtn}>Cancel</Button>
+                                {/* <Button outline color="secondary" onClick={this.handlecancelbtn}>Cancel</Button> */}
                             </ModalFooter>
                         </Modal>
                     </div>
