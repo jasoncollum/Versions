@@ -37,44 +37,41 @@ export default class VersionDetail extends Component {
 
     handlesavechangesbtn = async (e) => {
         e.preventDefault()
-        console.log('updated revisions ids', this.state.updatedRevisionIds)
+        // console.log('updated revisions ids', this.state.updatedRevisionIds)
         // HANDLE UPDTATED REVISIONS
-        const updatedRevisionArray = this.createUpdatedRevisionObjects()
-        if (updatedRevisionArray) {
-            await updatedRevisionArray.map(updatedRevisionObj => API.updateRevision(updatedRevisionObj.id, updatedRevisionObj))
-        }
+        // const updatedRevisionArray = this.createUpdatedRevisionObjects()
+        // if (updatedRevisionArray) {
+        //     await updatedRevisionArray.map(updatedRevisionObj => API.updateRevision(updatedRevisionObj.id, updatedRevisionObj))
+        // }
         //  ... end of Updated Revisions
 
         // HANDLE DELETE REVISIONS
-        if (this.state.removeRevisionIds.length > 0) {
-            await this.state.removeRevisionIds.map(id => API.deleteRevision(id))
-        }
+        // if (this.state.removeRevisionIds.length > 0) {
+        //     await this.state.removeRevisionIds.map(id => API.deleteRevision(id))
+        // }
         //  ... end of HANDLE REMOVE REVISIONS
 
         // HANDLE NEW REVISIONS
-        this.pushNewRevisions()
+        // this.pushNewRevisions()
         // post new revisions to db
-        const newRevisionArr = this.state.newRevisionInputText.map(newRevisionText => {
-            return {
-                revisionText: newRevisionText,
-                versionId: this.props.version.id
-            }
-        })
+        // const newRevisionArr = this.state.newRevisionInputText.map(newRevisionText => {
+        //     return {
+        //         revisionText: newRevisionText,
+        //         versionId: this.props.version.id
+        //     }
+        // })
 
         // await console.log(newRevisionArr)
-        await newRevisionArr.map(newRevisionObj => API.postRevision(newRevisionObj))
+        // await newRevisionArr.map(newRevisionObj => API.postRevision(newRevisionObj))
         // ... end of New Revisions
 
-        await this.props.getAllData()
-        this.setState({
-            revisions: [{ text: '' }],
-            updatedRevisionIds: [],
-            removeRevisionIds: [],
-            newRevisionInputText: []
-        })
+        this.afterSaveChanges()
         this.toggle()
-        this.props.history.push(`/songList/${this.props.version.id}`)
+    }
 
+    afterSaveChanges = async () => {
+        await this.props.getAllData()
+        this.props.history.push(`/songList/${this.props.version.id}`)
     }
 
     // handlecancelbtn() {
@@ -101,29 +98,34 @@ export default class VersionDetail extends Component {
     handleBlur = (e) => {
         console.log('Blur', e.target.id, e.target.value)
         // Check if previously existing revision
-        if (e.target.type === 'text' && !e.target.id.includes('-')) {
+        if (e.target.type === 'text' && !e.target.id.includes('-') && e.target.value) {
             const updatedRevision = { revisionText: e.target.value }
             API.updateRevision(e.target.id, updatedRevision)
         }
         // Check if new revision
-        if (e.target.type === 'text' && e.target.id.includes('-')) {
-            if (!this.state[e.target.id]) {
-                console.log('UNDEFINED')
-                const newRevisionObject = {
-                    revisionText: e.target.value,
-                    versionId: this.props.version.id
-                }
-                API.postRevision(newRevisionObject).then((result) => {
+        if (e.target.type === 'text' && e.target.id.includes('-') && e.target.value) {
+            // if (!this.state[e.target.id]) {
+            //     console.log('UNDEFINED')
+            // Show FiMinus ???
 
-                })
-            } // Check if revision-idx
-            if (typeof this.state[e.target.id] === Object) {
-                const updatedRevisionObject = {
-                    revisionText: e.target.value
-                }
+            // Create newRevisionObject, Post to database and return result
+            const newRevisionObject = {
+                revisionText: e.target.value,
+                versionId: this.props.version.id
             }
+            API.postRevision(newRevisionObject).then((result) => {
+                console.log('Posted NEW Revision', result)
+
+            })
         }
+        // Check if revision-idx
+        // if (typeof this.state[e.target.id] === Object) {
+        //     const updatedRevisionObject = {
+        //         revisionText: e.target.value
+        //     }
+        // }
     }
+
 
     //EDIT FORM LOGIC ...
     addRevision = (e) => {
@@ -168,23 +170,21 @@ export default class VersionDetail extends Component {
             let revisions = [...this.state.revisions]
             revisions[e.target.dataset.id][e.target.className] = e.target.value
             this.setState({ revisions }, () => console.log('revisions', this.state.revisions))
+        } else {
+            this.setState({ [e.target.name]: e.target.value })
         }
-        // else {
-        //     this.setState({ [e.target.name]: e.target.value })
-        // }
         // check if updating an existing revision
-        if (e.target.type === 'text' && !e.target.id.includes('-')) {
-            if (!this.state.updatedRevisionIds.includes(e.target.id)) {
-                this.state.updatedRevisionIds.push(e.target.id)
-            }
-
-            console.log('VALUE', e.target.value)
-        }
+        // if (e.target.type === 'text' && !e.target.id.includes('-')) {
+        //     if (!this.state.updatedRevisionIds.includes(e.target.id)) {
+        //         this.state.updatedRevisionIds.push(e.target.id)
+        //     }
+        //     console.log('VALUE', e.target.value)
+        // }
     }
 
-    componentDidMount() {
-        console.log('VersionDetail mounted')
-    }
+    // componentDidMount() {
+    //     console.log('VersionDetail mounted')
+    // }
 
     // Create objects:  artist, song, version, request
     // createArtistObj = () => {
@@ -224,7 +224,8 @@ export default class VersionDetail extends Component {
 
     render() {
         if (this.props.version.song) {
-            console.log('version', this.props.version)
+            // console.log('version', this.props.version)
+            console.log(this.state)
             let { revisions } = this.state
             return (
                 <section className="versionDetail" style={{ width: '500px' }}>
@@ -314,7 +315,7 @@ export default class VersionDetail extends Component {
                                 </Form>
                             </ModalBody>
                             <ModalFooter>
-                                <Button outline color="primary" onClick={this.handlesavechangesbtn}>Save Changes</Button>{' '}
+                                <Button outline color="primary" onClick={this.handlesavechangesbtn}>Save Revisions</Button>{' '}
                                 {/* <Button outline color="secondary" onClick={this.handlecancelbtn}>Cancel</Button> */}
                             </ModalFooter>
                         </Modal>
