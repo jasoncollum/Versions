@@ -76,7 +76,7 @@ export default class SongSetupForm extends Component {
             console.log('Redirect to version card to create a new version')
         } else {
             let newVersionObj = {
-                versionNum: this.state.versionNumberInput,
+                versionNum: parseInt(this.state.versionNumberInput, 10),
                 songId: songObj_Id
             }
             await API.postVersion(newVersionObj).then(result => {
