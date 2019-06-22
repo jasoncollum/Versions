@@ -35,12 +35,14 @@ class ApplicationViews extends Component {
         // console.log('deleteSong called')
         const versionsToDelete = this.state.versions.filter(version => version.songId === song_Id)
 
-        await versionsToDelete.map(version => {
-            return API.deleteVersion(version.id)
-        })
+        await Promise.all(
+            versionsToDelete.map(async version => {
+                await API.deleteVersion(version.id)
+            })
+        )
 
         await API.deleteSong(song_Id)
-            .then(() => this.getAllData())
+        await this.getAllData()
     }
 
     createMasterObjects = (data) => {
@@ -137,7 +139,7 @@ class ApplicationViews extends Component {
     // }
 
     componentDidMount() {
-        if (this.user) {
+        if (this.state.user) {
             this.getAllData()
         } else {
             this.props.history.push('/login')

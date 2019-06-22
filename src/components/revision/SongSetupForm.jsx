@@ -43,9 +43,8 @@ export default class SongSetupForm extends Component {
                 name: this.state.artistNameInput,
                 imageURL: this.state.artistImageURL
             }
-            await API.postArtist(newArtistObj).then(result => {
-                newArtistObj = result
-            })
+            const result = await API.postArtist(newArtistObj)
+            newArtistObj.id = result.id
             return newArtistObj
         }
     }
@@ -79,9 +78,8 @@ export default class SongSetupForm extends Component {
                 versionNum: parseInt(this.state.versionNumberInput, 10),
                 songId: songObj_Id
             }
-            await API.postVersion(newVersionObj).then(result => {
-                newVersionObj = result
-            })
+            const result = await API.postVersion(newVersionObj)
+            newVersionObj.id = result.id
             return newVersionObj
         }
     }
