@@ -96,6 +96,7 @@ export default class VersionDetail extends Component {
     }
 
     handleBlur = (e) => {
+        const target = e.target;
         console.log('Blur', e.target.id, e.target.value)
         // Check if previously existing revision
         if (e.target.type === 'text' && !e.target.id.includes('-') && e.target.value) {
@@ -115,7 +116,7 @@ export default class VersionDetail extends Component {
             }
             API.postRevision(newRevisionObject).then((result) => {
                 console.log('Posted NEW Revision', result)
-
+                target.id = result.id
             })
         }
         // Check if revision-idx

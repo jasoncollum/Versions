@@ -10,7 +10,7 @@ import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
 import VersionDetail from './list/VersionDetail'
 import API from '../modules/API'
-// import { promised } from 'q';
+
 
 class ApplicationViews extends Component {
 
@@ -20,15 +20,15 @@ class ApplicationViews extends Component {
         revisionFormObj: {}
     }
 
-    deleteRevision = (revisionId) => {
-        API.deleteRevision(revisionId)
+    deleteRevision = async (revisionId) => {
+        await API.deleteRevision(revisionId)
     }
 
     deleteVersion = async (version_Id) => {
         const versionToDelete = this.state.versions.find(version => version.id === version_Id)
 
         await API.deleteVersion(versionToDelete.id)
-        this.getAllData()
+        await this.getAllData()
     }
 
     deleteSong = async (song_Id) => {
@@ -61,22 +61,15 @@ class ApplicationViews extends Component {
         const data = {}
         let newState = {}
 
-        await API.getAllArtists().then(allArtists => {
-            data.artists = allArtists
-        })
-        await API.getAllSongs().then(allSongs => {
-            data.songs = allSongs
-        })
-        await API.getAllVersions().then(allVersions => {
-            data.versions = allVersions
-        })
-        await API.getAllRevisions().then(allRevisions => {
-            data.revisions = allRevisions
-        })
+        data.artists = await API.getAllArtists()
+        data.songs = await API.getAllSongs()
+        data.versions = await API.getAllVersions()
+        data.revisions = await API.getAllRevisions()
+
         const masterVersions = this.createMasterObjects(data)
 
         const userVersions = masterVersions.filter(version => version.song.userId === this.state.user.id)
-        console.log('USER VERSIONS', userVersions)
+
         newState.versions = userVersions
 
         this.setState(newState)
