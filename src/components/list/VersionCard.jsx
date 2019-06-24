@@ -4,18 +4,38 @@ import {
     Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle, Button
 } from 'reactstrap';
+import API from '../../modules/API'
 
 export default class VersionCard extends Component {
     // version = this.props.versions.find(version =>
     //     version.artist.id === this.props.song.artistId
     // )
 
+    // Find Artist
     artist = this.props.versions.find(version =>
         version.artist.id === this.props.song.artistId
     ).artist
 
+    //  New Version
+    handleNewVersion = async (song, artist) => {
+        console.log(`New version for ${song.title} by ${artist.name}`)
+        // Determine how many versions currently exist
+        const versionArr = this.props.versions.filter(version => {
+            return version.songId === song.id
+        })
+        // Create new version object
+        let newVersionObj = {
+            versionNum: parseInt(versionArr.length + 1, 10),
+            songId: song.id
+        }
+        // Post new version
+        await API.postVersion(newVersionObj)
+        this.props.getAllData()
+    }
+
+
     // Pass in song.id to deleteSong
-    handleClick = () => {
+    handleDelete = () => {
         // const versionsToDelete =
         this.props.deleteSong(this.props.song.id)
     }
@@ -36,7 +56,8 @@ export default class VersionCard extends Component {
                                     : ""
                             )
                         }
-                        <Button onClick={this.handleClick} outline color="secondary" style={{ float: 'right', fontSize: '.7em' }} >Delete Song</Button>
+                        <Button onClick={() => this.handleNewVersion(this.props.song, this.artist)} outline color="primary" style={{ float: 'left', fontSize: '.7em' }} >New Version</Button>
+                        <Button onClick={this.handleDelete} outline color="secondary" style={{ float: 'right', fontSize: '.7em' }} >Delete Song</Button>
                     </CardBody>
                 </Card>
             </div>
