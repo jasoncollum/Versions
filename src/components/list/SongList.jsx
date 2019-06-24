@@ -22,6 +22,7 @@ export default class SongList extends Component {
                                     song={song}
                                     versions={this.props.versions}
                                     deleteSong={this.props.deleteSong}
+                                    getAllData={this.props.getAllData}
                                     {...this.props} />
                             )
                         }

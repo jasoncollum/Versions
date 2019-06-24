@@ -46,7 +46,7 @@ class ApplicationViews extends Component {
     }
 
     createMasterObjects = (data) => {
-        data.versions.map(version => {
+        data.versions.forEach(version => {
             let filteredRevisions = data.revisions.filter(revision => revision.versionId === version.id)
             version.revisions = filteredRevisions
             let foundSong = data.songs.find(song => song.id === version.songId)
@@ -161,6 +161,7 @@ class ApplicationViews extends Component {
                         <SongList
                             versions={this.state.versions}
                             deleteSong={this.deleteSong}
+                            getAllData={this.getAllData}
                         />
                     ) : (
                             <Redirect to="/login" />

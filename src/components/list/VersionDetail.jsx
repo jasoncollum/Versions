@@ -24,7 +24,6 @@ export default class VersionDetail extends Component {
 
         this.toggle = this.toggle.bind(this);
         this.handlesavechangesbtn = this.handlesavechangesbtn.bind(this)
-        // this.handlecancelbtn = this.handlecancelbtn.bind(this)
     }
 
     // hideRevision() {
@@ -80,6 +79,7 @@ export default class VersionDetail extends Component {
     //         revisions: [{ text: '' }]
     //     }))
     // }
+
     newRevisionsArray = []
 
     handleDeleteBtn = () => {
