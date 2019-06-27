@@ -97,7 +97,7 @@ export default class SongSetupForm extends Component {
                 </FormGroup>
                 <FormGroup>
                     {/* <Label for="versionNumberInput">Version No.</Label> */}
-                    <Input type="text" name="versionNumberInput" id="versionNumberInput"
+                    <Input type="number" name="versionNumberInput" id="versionNumberInput"
                         placeholder="Version No."
                         onChange={this.handleFieldChange}
                     />
