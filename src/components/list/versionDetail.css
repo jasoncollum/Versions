@@ -1,3 +1,7 @@
+.versionDetail {
+    margin: 0 auto;
+}
+
 .song-info {
     display: flex;
     flex-direction: row;
