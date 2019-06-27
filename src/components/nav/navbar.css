@@ -3,6 +3,10 @@ nav {
 }
 
 nav h2 {
-    margin: 5px 5px 5px 15px;
+    margin: 5px 5px 5px 5%;
     color:  #CDAB7C;
+}
+
+nav ul {
+    margin-right: 5%;
 }
