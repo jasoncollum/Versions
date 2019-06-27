@@ -5,6 +5,7 @@ import {
     CardTitle, CardSubtitle, Button
 } from 'reactstrap';
 import API from '../../modules/API'
+import './versionCard.css'
 
 export default class VersionCard extends Component {
     // version = this.props.versions.find(version =>
@@ -56,7 +57,7 @@ export default class VersionCard extends Component {
                                     : ""
                             )
                         }
-                        <Button onClick={() => this.handleNewVersion(this.props.song, this.artist)} outline color="primary" style={{ float: 'left', fontSize: '.7em' }} >New Version</Button>
+                        <Button onClick={() => this.handleNewVersion(this.props.song, this.artist)} outline color="primary" style={{ float: 'left', fontSize: '.7em' }} className="newVersionBtn">New Version</Button>
                         <Button onClick={this.handleDelete} outline color="secondary" style={{ float: 'right', fontSize: '.7em' }} >Delete Song</Button>
                     </CardBody>
                 </Card>
