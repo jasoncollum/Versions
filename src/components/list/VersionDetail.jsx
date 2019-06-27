@@ -98,10 +98,14 @@ export default class VersionDetail extends Component {
     handleBlur = (e) => {
         const target = e.target;
         console.log('Blur', e.target.id, e.target.value)
-        // Check if previously existing revision
+        // Check if previously existing revision and update edited revision
         if (e.target.type === 'text' && !e.target.id.includes('-') && e.target.value) {
             const updatedRevision = { revisionText: e.target.value }
             API.updateRevision(e.target.id, updatedRevision)
+        }
+        // Check if previously existing revision, but now has no text value and delete revision
+        if (e.target.type === 'text' && !e.target.id.includes('-') && !e.target.value) {
+            API.deleteRevision(e.target.id)
         }
         // Check if new revision
         if (e.target.type === 'text' && e.target.id.includes('-') && e.target.value) {
@@ -153,16 +157,16 @@ export default class VersionDetail extends Component {
     }
 
     // push all new revision text to newRevisionInputText array in state
-    pushNewRevisions = () => {
-        const newRevisionInputs = document.querySelectorAll('.newRevisionGroup input')
-        newRevisionInputs.forEach(input => {
-            let floatState = this.state.newRevisionInputText
-            if (input.value !== '') {
-                floatState.push(input.value)
-                this.setState({ newRevisionInputText: floatState })
-            }
-        })
-    }
+    // pushNewRevisions = () => {
+    //     const newRevisionInputs = document.querySelectorAll('.newRevisionGroup input')
+    //     newRevisionInputs.forEach(input => {
+    //         let floatState = this.state.newRevisionInputText
+    //         if (input.value !== '') {
+    //             floatState.push(input.value)
+    //             this.setState({ newRevisionInputText: floatState })
+    //         }
+    //     })
+    // }
 
 
 
