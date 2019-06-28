@@ -8,18 +8,14 @@ import API from '../../modules/API'
 import './versionCard.css'
 
 export default class VersionCard extends Component {
-    // version = this.props.versions.find(version =>
-    //     version.artist.id === this.props.song.artistId
-    // )
-
     // Find Artist
     artist = this.props.versions.find(version =>
         version.artist.id === this.props.song.artistId
     ).artist
 
-    //  New Version
+    // New Version
     handleNewVersion = async (song, artist) => {
-        console.log(`New version for ${song.title} by ${artist.name}`)
+        // console.log(`New version for ${song.title} by ${artist.name}`)
         // Determine how many versions currently exist
         const versionArr = this.props.versions.filter(version => {
             return version.songId === song.id
@@ -34,10 +30,8 @@ export default class VersionCard extends Component {
         this.props.getAllData()
     }
 
-
-    // Pass in song.id to deleteSong
+    // Delete song, versions, and revisions
     handleDelete = () => {
-        // const versionsToDelete =
         this.props.deleteSong(this.props.song.id)
     }
 

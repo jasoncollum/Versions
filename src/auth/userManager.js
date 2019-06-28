@@ -20,7 +20,7 @@ export const register = (user) => {
             return newUserFromJsonServer
         })
         .catch(function (error) {
-            alert('WTF')
+            alert('Unable to register user')
         });
 }
 
@@ -32,7 +32,7 @@ export const login = (email, password) => {
             return userFromJsonServer;
         })
         .catch(() => {
-            alert('Trouble logging in')
+            alert('Unable to log in')
         })
 }
 

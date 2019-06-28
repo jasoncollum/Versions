@@ -3,8 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router'
 import Login from './Login';
 import Register from './Register';
-// import Home from './Home';
-import { getUserFromLocalStorage, logout } from '../auth/userManager';
+import { getUserFromLocalStorage } from '../auth/userManager';
 import SongSetupForm from './revision/SongSetupForm'
 import RevisionForm from './revision/RevisionForm'
 import SongList from './list/SongList'
@@ -32,7 +31,6 @@ class ApplicationViews extends Component {
     }
 
     deleteSong = async (song_Id) => {
-        // console.log('deleteSong called')
         const versionsToDelete = this.state.versions.filter(version => version.songId === song_Id)
 
         await Promise.all(
@@ -45,6 +43,7 @@ class ApplicationViews extends Component {
         await this.getAllData()
     }
 
+    // Assemble data in version objects
     createMasterObjects = (data) => {
         data.versions.forEach(version => {
             let filteredRevisions = data.revisions.filter(revision => revision.versionId === version.id)
@@ -76,68 +75,12 @@ class ApplicationViews extends Component {
         this.props.history.push('/songList')
     }
 
-    // saveSongSetupForm = async (artistObj, songObj, versionObj) => {
-    //     // console.log('revisions array', revisionArr)
-    //     const revFormObj = {}
-
-    //     await API.postArtist(artistObj)
-    //         .then(artist => {
-    //             revFormObj.artist = artist
-    //         })
-
-    //     songObj.artistId = revFormObj.artist.id
-    //     await API.postSong(songObj)
-    //         .then(song => {
-    //             revFormObj.song = song
-    //         })
-
-    //     versionObj.songId = revFormObj.song.id
-    //     await API.postVersion(versionObj)
-    //         .then(version => {
-    //             revFormObj.version = version
-    //         })
-
-    //     this.getAllData()
-    // }
-
-    // saveRevisionForm = async (artistObj, songObj, versionObj, revisionArr) => {
-    //     // console.log('revisions array', revisionArr)
-    //     const revFormObj = {}
-
-    //     await API.postArtist(artistObj)
-    //         .then(artist => {
-    //             revFormObj.artist = artist
-    //         })
-
-    //     songObj.artistId = revFormObj.artist.id
-    //     await API.postSong(songObj)
-    //         .then(song => {
-    //             revFormObj.song = song
-    //         })
-
-    //     versionObj.songId = revFormObj.song.id
-    //     await API.postVersion(versionObj)
-    //         .then(version => {
-    //             revFormObj.version = version
-    //         })
-
-    //     let revisionArrProms = revisionArr.map(revisionObj => {
-    //         revisionObj.versionId = revFormObj.version.id
-    //         let dbCall = API.postRevision(revisionObj)
-    //         return dbCall
-
-    //     })
-    //     Promise.all(revisionArrProms).then(() => console.log('Revisions posted', revisionArrProms))
-    //         .then(() => this.getAllData())
-    // }
-
     componentDidMount() {
         if (this.state.user) {
             this.getAllData()
         } else {
             this.props.history.push('/login')
         }
-
     }
 
 
@@ -147,14 +90,6 @@ class ApplicationViews extends Component {
                 <Route path="/login" render={(props) => <Login {...props} onLogin={(user) => this.setState({ user: user })} getAllData={this.getAllData} />} />
 
                 <Route path="/register" render={(props) => <Register {...props} onRegister={(user) => this.setState({ user: user })} />} />
-
-                {/* <Route exact path="/" render={(props) => {
-                    return this.state.user ? (
-                        <Home {...props} user={this.state.user} onLogout={logout} />
-                    ) : (
-                            <Redirect to="/login" />
-                        )
-                }} /> */}
 
                 <Route exact path="/songList" render={props => {
                     return this.state.user ? (
@@ -168,7 +103,6 @@ class ApplicationViews extends Component {
                         )
                 }} />
                 <Route exact path="/songList/:versionId(\d+)" render={(props) => {
-                    // if (this.isAuthenticated()) { <-- not necessary
                     if (this.state.user) {
                         // Find the version with the id of the route parameter
                         let version = this.state.versions.find(version =>

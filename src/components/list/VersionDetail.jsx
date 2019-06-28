@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import API from '../../modules/API';
 import RevisionComp from './RevisionComp'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Col, Row, Form, FormGroup, Label, Input, InputGroup, InputGroupAddon } from 'reactstrap'
-import { FiMinus, FiPlus } from 'react-icons/fi'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, InputGroup } from 'reactstrap'
+import { FiPlus } from 'react-icons/fi'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './versionDetail.css'
@@ -13,9 +13,6 @@ export default class VersionDetail extends Component {
         super(props);
         this.state = {
             modal: false,
-            // songTitleInput: '',
-            // versionNumberInput: '',
-            // artistNameInput: '',
             revisions: [{ text: '' }],
             updatedRevisionIds: [],
             removeRevisionIds: [],
@@ -26,44 +23,12 @@ export default class VersionDetail extends Component {
         this.handlesavechangesbtn = this.handlesavechangesbtn.bind(this)
     }
 
-    // hideRevision() {
-    //     this.setState({ hide: true })
-    // }
-
     toggle() {
         this.setState(prevState => ({ modal: !prevState.modal }))
     }
 
     handlesavechangesbtn = async (e) => {
         e.preventDefault()
-        // console.log('updated revisions ids', this.state.updatedRevisionIds)
-        // HANDLE UPDTATED REVISIONS
-        // const updatedRevisionArray = this.createUpdatedRevisionObjects()
-        // if (updatedRevisionArray) {
-        //     await updatedRevisionArray.map(updatedRevisionObj => API.updateRevision(updatedRevisionObj.id, updatedRevisionObj))
-        // }
-        //  ... end of Updated Revisions
-
-        // HANDLE DELETE REVISIONS
-        // if (this.state.removeRevisionIds.length > 0) {
-        //     await this.state.removeRevisionIds.map(id => API.deleteRevision(id))
-        // }
-        //  ... end of HANDLE REMOVE REVISIONS
-
-        // HANDLE NEW REVISIONS
-        // this.pushNewRevisions()
-        // post new revisions to db
-        // const newRevisionArr = this.state.newRevisionInputText.map(newRevisionText => {
-        //     return {
-        //         revisionText: newRevisionText,
-        //         versionId: this.props.version.id
-        //     }
-        // })
-
-        // await console.log(newRevisionArr)
-        // await newRevisionArr.map(newRevisionObj => API.postRevision(newRevisionObj))
-        // ... end of New Revisions
-
         this.afterSaveChanges()
         this.toggle()
     }
@@ -88,47 +53,34 @@ export default class VersionDetail extends Component {
     }
 
     handleMinus = (revisionId) => {
-        console.log('minus icon', revisionId)
-        // if (!this.state.removeRevisionIds.includes(revisionId)) {
-        //     this.state.removeRevisionIds.push(revisionId)
-        // }
+        // console.log('minus icon', revisionId)
         API.deleteRevision(revisionId).then(() => console.log('revision deleted:'))
     }
 
     handleBlur = (e) => {
         const target = e.target;
-        console.log('Blur', e.target.id, e.target.value)
+        // console.log('Blur', e.target.id, e.target.value)
         // Check if previously existing revision and update edited revision
         if (e.target.type === 'text' && !e.target.id.includes('-') && e.target.value) {
             const updatedRevision = { revisionText: e.target.value }
             API.updateRevision(e.target.id, updatedRevision)
         }
-        // Check if previously existing revision, but now has no text value and delete revision
+        // Check if previously existing revision, but now has no text value, and delete revision
         if (e.target.type === 'text' && !e.target.id.includes('-') && !e.target.value) {
             API.deleteRevision(e.target.id)
         }
         // Check if new revision
         if (e.target.type === 'text' && e.target.id.includes('-') && e.target.value) {
-            // if (!this.state[e.target.id]) {
-            //     console.log('UNDEFINED')
-            // Show FiMinus ???
-
             // Create newRevisionObject, Post to database and return result
             const newRevisionObject = {
                 revisionText: e.target.value,
                 versionId: this.props.version.id
             }
             API.postRevision(newRevisionObject).then((result) => {
-                console.log('Posted NEW Revision', result)
+                // console.log('Posted NEW Revision', result)
                 target.id = result.id
             })
         }
-        // Check if revision-idx
-        // if (typeof this.state[e.target.id] === Object) {
-        //     const updatedRevisionObject = {
-        //         revisionText: e.target.value
-        //     }
-        // }
     }
 
 
@@ -168,8 +120,6 @@ export default class VersionDetail extends Component {
     //     })
     // }
 
-
-
     handleFieldChange = e => {
         if (['text'].includes(e.target.className)) {
             let revisions = [...this.state.revisions]
@@ -178,13 +128,6 @@ export default class VersionDetail extends Component {
         } else {
             this.setState({ [e.target.name]: e.target.value })
         }
-        // check if updating an existing revision
-        // if (e.target.type === 'text' && !e.target.id.includes('-')) {
-        //     if (!this.state.updatedRevisionIds.includes(e.target.id)) {
-        //         this.state.updatedRevisionIds.push(e.target.id)
-        //     }
-        //     console.log('VALUE', e.target.value)
-        // }
     }
 
     // componentDidMount() {
@@ -229,8 +172,7 @@ export default class VersionDetail extends Component {
 
     render() {
         if (this.props.version.song) {
-            // console.log('version', this.props.version)
-            console.log(this.state)
+            // console.log(this.state)
             let { revisions } = this.state
             return (
                 <section className="versionDetail" style={{ width: '500px' }}>
@@ -313,7 +255,6 @@ export default class VersionDetail extends Component {
                                                 )
                                             })
                                         }
-                                        {/* <Button onClick={this.addRevision} id="revisionBtn">+</Button> */}
                                     </FormGroup>
                                     <FiPlus onClick={this.addRevision} id="revisionBtn"
                                         style={{ margin: 'auto' }} />
