@@ -48,9 +48,8 @@ export default class VersionDetail extends Component {
     newRevisionsArray = []
 
     handleDeleteBtn = async () => {
-        console.log('delete version')
-        await this.props.deleteVersion(this.props.version.id)
-        await this.props.getAllData()
+        // console.log('delete version')
+        this.props.deleteVersion(this.props.version.id)
     }
 
     handleMinus = (revisionId) => {
@@ -75,7 +74,8 @@ export default class VersionDetail extends Component {
             // Create newRevisionObject, Post to database and return result
             const newRevisionObject = {
                 revisionText: e.target.value,
-                versionId: this.props.version.id
+                versionId: this.props.version.id,
+                songId: this.props.version.songId
             }
             API.postRevision(newRevisionObject).then((result) => {
                 // console.log('Posted NEW Revision', result)

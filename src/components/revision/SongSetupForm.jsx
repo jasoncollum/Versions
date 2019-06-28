@@ -25,8 +25,8 @@ export default class SongSetupForm extends Component {
         const artistObj = await this.createArtistObj()
         const songObj = await this.createSongObj(artistObj.id)
         const versionObj = await this.createVersionObj(songObj.id)
-        console.log(versionObj)
-        await this.props.getAllData()
+        // console.log(versionObj)
+        this.props.getAllData()
     }
 
     // Create objects:  artist, song, and version

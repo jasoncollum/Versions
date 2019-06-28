@@ -27,20 +27,17 @@ class ApplicationViews extends Component {
         const versionToDelete = this.state.versions.find(version => version.id === version_Id)
 
         await API.deleteVersion(versionToDelete.id)
-        // await this.getAllData()
+        await this.getAllData()
     }
 
     deleteSong = async (song_Id) => {
-        const versionsToDelete = this.state.versions.filter(version => version.songId === song_Id)
+        // const versionsToDelete = this.state.versions.filter(version => version.songId === song_Id)
 
-        await Promise.all(
-            versionsToDelete.map(async version => {
-                // let dbCalls = 
-                await API.deleteVersion(version.id)
-                // return dbCalls
-            })
-        )
-
+        // await Promise.all(
+        //     versionsToDelete.map(version => {
+        //         return API.deleteVersion(version.id)
+        //     })
+        // )
         await API.deleteSong(song_Id)
         await this.getAllData()
     }

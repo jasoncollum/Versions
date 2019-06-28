@@ -27,12 +27,13 @@ export default class VersionCard extends Component {
         }
         // Post new version
         await API.postVersion(newVersionObj)
-        await this.props.getAllData()
+        this.props.getAllData()
     }
 
     // Delete song, versions, and revisions
-    handleDelete = () => {
+    handleDelete = async () => {
         this.props.deleteSong(this.props.song.id)
+        // await this.props.getAllData()
     }
 
     render() {
