@@ -1,6 +1,7 @@
 const remoteURL = "http://localhost:5002"
 
 export default {
+    // ARTISTS
     getAllArtists() {
         return fetch(`${remoteURL}/artists`).then(e => e.json())
     },
@@ -16,6 +17,7 @@ export default {
             body: JSON.stringify(artistObj)
         }).then(e => e.json())
     },
+    // SONGS
     getAllSongs() {
         return fetch(`${remoteURL}/songs`).then(e => e.json())
     },
@@ -39,6 +41,7 @@ export default {
             method: "DELETE"
         }).then(e => e.json())
     },
+    // VERSIONS
     getAllVersions() {
         return fetch(`${remoteURL}/versions`).then(e => e.json())
     },
@@ -46,7 +49,7 @@ export default {
         return fetch(`${remoteURL}/versions?songId=${songId}`).then(e => e.json())
     },
     getVersionNumBySongId(version_Num, song_Id) {
-        return fetch(`${remoteURL}/versions?versionNum=${version_Num}&_songId=${song_Id}`).then(e => e.json())
+        return fetch(`${remoteURL}/versions?versionNum=${version_Num}&songId=${song_Id}`).then(e => e.json())
     },
     postVersion(versionObj) {
         return fetch(`${remoteURL}/versions`, {
@@ -62,6 +65,7 @@ export default {
             method: "DELETE"
         }).then(e => e.json())
     },
+    // REVISIONS
     getAllRevisions() {
         return fetch(`${remoteURL}/revisions`).then(e => e.json())
     },

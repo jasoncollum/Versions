@@ -27,17 +27,16 @@ export default class SongSetupForm extends Component {
         const versionObj = await this.createVersionObj(songObj.id)
         console.log(versionObj)
         this.props.getAllData()
-
-        // console.log(artistObj, songObj, versionObj)
-        // this.props.saveSongSetupForm(artistObj, songObj, versionObj)
     }
 
     // Create objects:  artist, song, and version
     createArtistObj = async () => {
         const artistCheck = await API.getArtistByName(this.state.artistNameInput)
+        // Artist already in database - return artist object
         if (artistCheck.length === 1) {
             return artistCheck[0]
         }
+        // Artist not in database - add artist to database, return artist object
         if (artistCheck.length === 0) {
             let newArtistObj = {
                 name: this.state.artistNameInput,
@@ -62,9 +61,8 @@ export default class SongSetupForm extends Component {
                 userId: this.props.user.id,
                 artistId: artist_Id
             }
-            await API.postSong(newSongObj).then(result => {
-                newSongObj = result
-            })
+            const result = await API.postSong(newSongObj)
+            newSongObj.id = result.id
             return newSongObj
         }
     }
@@ -72,7 +70,7 @@ export default class SongSetupForm extends Component {
     createVersionObj = async (songObj_Id) => {
         const versionCheck = await API.getVersionNumBySongId(this.state.versionNumberInput, songObj_Id)
         if (versionCheck.length === 1) {
-            console.log('Redirect to version card to create a new version')
+            alert('Version number already exists. Please click the New Version button on the song card to create a new version of this song.')
         } else {
             let newVersionObj = {
                 versionNum: parseInt(this.state.versionNumberInput, 10),

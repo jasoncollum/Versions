@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import VersionCard from './VersionCard'
-// import { Link } from 'react-router-dom'
 import './songList.css'
 
 export default class SongList extends Component {
