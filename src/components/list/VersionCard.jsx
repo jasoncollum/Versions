@@ -31,8 +31,9 @@ export default class VersionCard extends Component {
     }
 
     // Delete song, versions, and revisions
-    handleDelete = () => {
+    handleDelete = async () => {
         this.props.deleteSong(this.props.song.id)
+        // await this.props.getAllData()
     }
 
     render() {
