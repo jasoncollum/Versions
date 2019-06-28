@@ -116,7 +116,7 @@ export default class SongSetupForm extends Component {
                         onChange={this.handleFieldChange}
                     />
                 </FormGroup>
-                <Button onClick={this.handleSubmit} outline color="secondary">Submit</Button>
+                <Button onClick={this.handleSubmit} outline color="primary">Submit</Button>
             </Form >
         )
     }

@@ -1,6 +1,6 @@
 #songSetupForm {
     max-width: 375px;
-    margin: auto;
+    margin: 10% auto;
 }
 
 #songSetupForm input {
@@ -11,9 +11,4 @@
 
 #songSetupBtn {
     float: right;
-}
-
-textarea {
-    margin-bottom: 5px;
-    border-top: none;
 }
