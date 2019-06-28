@@ -27,7 +27,7 @@ class ApplicationViews extends Component {
         const versionToDelete = this.state.versions.find(version => version.id === version_Id)
 
         await API.deleteVersion(versionToDelete.id)
-        await this.getAllData()
+        // await this.getAllData()
     }
 
     deleteSong = async (song_Id) => {
@@ -35,7 +35,9 @@ class ApplicationViews extends Component {
 
         await Promise.all(
             versionsToDelete.map(async version => {
+                // let dbCalls = 
                 await API.deleteVersion(version.id)
+                // return dbCalls
             })
         )
 

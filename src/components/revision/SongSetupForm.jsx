@@ -26,7 +26,7 @@ export default class SongSetupForm extends Component {
         const songObj = await this.createSongObj(artistObj.id)
         const versionObj = await this.createVersionObj(songObj.id)
         console.log(versionObj)
-        this.props.getAllData()
+        await this.props.getAllData()
     }
 
     // Create objects:  artist, song, and version
@@ -77,7 +77,7 @@ export default class SongSetupForm extends Component {
                 songId: songObj_Id
             }
             const result = await API.postVersion(newVersionObj)
-            newVersionObj.id = result.id
+            newVersionObj = result
             return newVersionObj
         }
     }

@@ -47,9 +47,10 @@ export default class VersionDetail extends Component {
 
     newRevisionsArray = []
 
-    handleDeleteBtn = () => {
+    handleDeleteBtn = async () => {
         console.log('delete version')
-        this.props.deleteVersion(this.props.version.id)
+        await this.props.deleteVersion(this.props.version.id)
+        await this.props.getAllData()
     }
 
     handleMinus = (revisionId) => {
