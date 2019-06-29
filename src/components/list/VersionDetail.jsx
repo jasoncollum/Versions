@@ -22,7 +22,8 @@ export default class VersionDetail extends Component {
             removeRevisionIds: [],
             newRevisionInputText: [],
             audio: null,
-            hide: true
+            hide: true,
+            hidePlayer: true
         };
 
         this.toggle = this.toggle.bind(this);
@@ -36,8 +37,13 @@ export default class VersionDetail extends Component {
     handlesavechangesbtn = async (e) => {
         e.preventDefault()
         this.setState({ hide: false })
-        const audioFbURL = await this.createAudioURL()
-        this.afterSaveChanges(audioFbURL)
+        if (this.state.audio) {
+            let audioFbURL = await this.createAudioURL()
+            this.afterSaveChanges(audioFbURL)
+        } else {
+            let noAudioURL = ''
+            this.afterSaveChanges(noAudioURL)
+        }
         this.toggle()
     }
 
@@ -46,12 +52,13 @@ export default class VersionDetail extends Component {
 
         const audioFbURL = await ref.put(this.state.audio)
             .then(data => data.ref.getDownloadURL())
+            .catch(response => console.log('unable to upload file'))
         console.log('Firebase URL::', audioFbURL)
         return audioFbURL
     }
 
-    afterSaveChanges = async (audioFbURL) => {
-        this.props.version.audioURL = audioFbURL
+    afterSaveChanges = async (audioURL) => {
+        this.props.version.audioURL = audioURL
         const audioAdded = await API.updateVersion(this.props.version.id, this.props.version)
         await this.props.getAllData()
         this.props.history.push(`/songList/${this.props.version.id}`)
@@ -193,6 +200,10 @@ export default class VersionDetail extends Component {
     render() {
         if (this.props.version.song) {
             const hide = this.state.hide ? 'none' : '';
+            let hidePlayer = this.state.hidePlayer ? 'none' : '';
+            if (this.props.version.audioURL) {
+                hidePlayer = '';
+            }
             let { revisions } = this.state
             return (
                 <section className="versionDetail" style={{ width: '500px' }}>
@@ -201,7 +212,8 @@ export default class VersionDetail extends Component {
                             <div className="title-version">
                                 <h4 className="card-title">{this.props.version.song.title}</h4>
                                 <h5 className="card-title">Version {this.props.version.versionNum}</h5>
-                                <audio id="audioPlayer" controls controlsList="nodownload">
+                                <audio id="audioPlayer" controls controlsList="nodownload"
+                                    style={{ display: `${hidePlayer}` }}>
                                     <source src={this.props.version.audioURL}
                                         type="audio/mp3" />
                                 </audio>

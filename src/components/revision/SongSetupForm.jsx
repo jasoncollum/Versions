@@ -82,7 +82,7 @@ export default class SongSetupForm extends Component {
 
         const audioFbURL = await ref.put(this.state.audio)
             .then(data => data.ref.getDownloadURL())
-        console.log('Firebase URL::', audioFbURL)
+            .catch(response => console.log('unable to upload file'))
         return audioFbURL
     }
 
