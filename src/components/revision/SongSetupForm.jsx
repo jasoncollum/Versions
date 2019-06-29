@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import { Button, Form, FormGroup, FormText, Label, Input } from 'reactstrap'
 import API from '../../modules/API';
 
 import './songSetupForm.css'
@@ -116,6 +116,13 @@ export default class SongSetupForm extends Component {
                         placeholder="Artist Image URL"
                         onChange={this.handleFieldChange}
                     />
+                </FormGroup>
+                <FormGroup>
+                    {/* <Label for="exampleFile">File</Label> */}
+                    <Input type="file" name="file" id="audioFile" />
+                    <FormText color="muted">
+                        Upload an audio file for this version
+                    </FormText>
                 </FormGroup>
                 <Button onClick={this.handleSubmit} outline color="primary">Submit</Button>
             </Form >
