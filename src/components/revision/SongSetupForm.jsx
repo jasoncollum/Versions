@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, FormText, Label, Input } from 'reactstrap'
+import { Button, Form, FormGroup, FormText, Label, Input, Progress } from 'reactstrap'
 import API from '../../modules/API';
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
@@ -14,7 +14,8 @@ export default class SongSetupForm extends Component {
         versionNumberInput: '',
         artistNameInput: '',
         artistImageURL: '',
-        audio: null
+        audio: null,
+        hide: true
     }
 
     handleFieldChange = e => {
@@ -25,7 +26,7 @@ export default class SongSetupForm extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault()
-
+        this.setState({ hide: false })
         // post to db
         const artistObj = await this.createArtistObj()
         const songObj = await this.createSongObj(artistObj.id)
@@ -103,6 +104,7 @@ export default class SongSetupForm extends Component {
 
     render() {
         console.log(this.state);
+        const hide = this.state.hide ? 'none' : '';
         return (
             <Form id="songSetupForm">
 
@@ -135,13 +137,15 @@ export default class SongSetupForm extends Component {
                     />
                 </FormGroup>
                 <FormGroup>
-                    {/* <Label for="exampleFile">File</Label> */}
+                    {/* <Label for="audioFile">File</Label> */}
                     <Input type="file" name="audio" id="audioFile"
                         onChange={(e) => this.setState({ audio: e.target.files[0] })} />
                     <FormText color="muted">
                         Upload an audio file for this version
                     </FormText>
                 </FormGroup>
+                <div className="loader" style={{ display: `${hide}` }}
+                ></div>
                 <Button onClick={this.handleSubmit} outline color="primary">Submit</Button>
             </Form >
         )
