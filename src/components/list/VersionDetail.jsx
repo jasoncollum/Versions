@@ -57,9 +57,9 @@ export default class VersionDetail extends Component {
         return audioFbURL
     }
 
-    afterSaveChanges = async (audioURL) => {
-        this.props.version.audioURL = audioURL
-        const audioAdded = await API.updateVersion(this.props.version.id, this.props.version)
+    afterSaveChanges = async (audio_URL) => {
+        const audioUrlObj = { audioURL: audio_URL }
+        const audioAdded = await API.updateVersion(this.props.version.id, audioUrlObj)
         await this.props.getAllData()
         this.props.history.push(`/songList/${this.props.version.id}`)
     }
