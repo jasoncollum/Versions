@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
 import API from '../../modules/API';
 import RevisionComp from './RevisionComp'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, InputGroup } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, InputGroup, FormText } from 'reactstrap'
 import { FiPlus } from 'react-icons/fi'
+import * as firebase from 'firebase/app'
+import 'firebase/storage'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './versionDetail.css'
 
 
 export default class VersionDetail extends Component {
+    storageRef = firebase.storage().ref('audio')
+
     constructor(props) {
         super(props);
         this.state = {
@@ -16,7 +20,9 @@ export default class VersionDetail extends Component {
             revisions: [{ text: '' }],
             updatedRevisionIds: [],
             removeRevisionIds: [],
-            newRevisionInputText: []
+            newRevisionInputText: [],
+            audio: null,
+            hide: true
         };
 
         this.toggle = this.toggle.bind(this);
@@ -29,11 +35,24 @@ export default class VersionDetail extends Component {
 
     handlesavechangesbtn = async (e) => {
         e.preventDefault()
-        this.afterSaveChanges()
+        this.setState({ hide: false })
+        const audioFbURL = await this.createAudioURL()
+        this.afterSaveChanges(audioFbURL)
         this.toggle()
     }
 
-    afterSaveChanges = async () => {
+    createAudioURL = async () => {
+        const ref = this.storageRef.child(`${Date.now()}`)
+
+        const audioFbURL = await ref.put(this.state.audio)
+            .then(data => data.ref.getDownloadURL())
+        console.log('Firebase URL::', audioFbURL)
+        return audioFbURL
+    }
+
+    afterSaveChanges = async (audioFbURL) => {
+        this.props.version.audioURL = audioFbURL
+        const audioAdded = await API.updateVersion(this.props.version.id, this.props.version)
         await this.props.getAllData()
         this.props.history.push(`/songList/${this.props.version.id}`)
     }
@@ -173,7 +192,7 @@ export default class VersionDetail extends Component {
 
     render() {
         if (this.props.version.song) {
-            // console.log(this.state)
+            const hide = this.state.hide ? 'none' : '';
             let { revisions } = this.state
             return (
                 <section className="versionDetail" style={{ width: '500px' }}>
@@ -263,7 +282,17 @@ export default class VersionDetail extends Component {
                                     </FormGroup>
                                     <FiPlus onClick={this.addRevision} id="revisionBtn"
                                         style={{ margin: 'auto' }} />
+                                    <FormGroup>
+                                        {/* <Label for="audioFile">File</Label> */}
+                                        <Input type="file" name="audio" id="audioFile"
+                                            onChange={(e) => this.setState({ audio: e.target.files[0] })} />
+                                        <FormText color="muted">
+                                            Upload an audio file for this version
+                    </FormText>
+                                    </FormGroup>
                                 </Form>
+                                <div className="loader" style={{ display: `${hide}` }}
+                                ></div>
                             </ModalBody>
                             <ModalFooter>
                                 <Button outline color="primary" onClick={this.handlesavechangesbtn}>Save Revisions</Button>{' '}

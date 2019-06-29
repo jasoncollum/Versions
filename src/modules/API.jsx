@@ -60,6 +60,15 @@ export default {
             body: JSON.stringify(versionObj)
         }).then(e => e.json())
     },
+    updateVersion(versionId, updatedVersionObj) {
+        return fetch(`${remoteURL}/versions/${versionId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedVersionObj)
+        }).then(e => e.json())
+    },
     deleteVersion(versionId) {
         return fetch(`${remoteURL}/versions/${versionId}`, {
             method: "DELETE"

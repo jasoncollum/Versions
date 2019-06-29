@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, FormText, Label, Input, Progress } from 'reactstrap'
+import { Button, Form, FormGroup, FormText, Label, Input } from 'reactstrap'
 import API from '../../modules/API';
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
