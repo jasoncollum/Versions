@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, FormText, Label, Input } from 'reactstrap'
 import API from '../../modules/API';
+import * as firebase from 'firebase/app'
+import 'firebase/storage'
 
 import './songSetupForm.css'
 
 export default class SongSetupForm extends Component {
+    storageRef = firebase.storage().ref('audio')
+
     state = {
         songTitleInput: '',
         versionNumberInput: '',
         artistNameInput: '',
-        artistImageURL: ''
+        artistImageURL: '',
+        audio: null
     }
 
     handleFieldChange = e => {
@@ -24,7 +29,8 @@ export default class SongSetupForm extends Component {
         // post to db
         const artistObj = await this.createArtistObj()
         const songObj = await this.createSongObj(artistObj.id)
-        const versionObj = await this.createVersionObj(songObj.id)
+        const audioURL = await this.createAudioURL()
+        const versionObj = await this.createVersionObj(songObj.id, audioURL)
         // console.log(versionObj)
         this.props.getAllData()
     }
@@ -70,13 +76,23 @@ export default class SongSetupForm extends Component {
         }
     }
 
-    createVersionObj = async (songObj_Id) => {
+    createAudioURL = async () => {
+        const ref = this.storageRef.child(`${Date.now()}`)
+
+        const audioFbURL = await ref.put(this.state.audio)
+            .then(data => data.ref.getDownloadURL())
+        console.log('Firebase URL::', audioFbURL)
+        return audioFbURL
+    }
+
+    createVersionObj = async (songObj_Id, audio_URL) => {
         const versionCheck = await API.getVersionNumBySongId(this.state.versionNumberInput, songObj_Id)
         if (versionCheck.length === 1) {
             alert('Version number already exists. Please click the New Version button on the song card to create a new version of this song.')
         } else {
             let newVersionObj = {
                 versionNum: parseInt(this.state.versionNumberInput, 10),
+                audioURL: audio_URL,
                 songId: songObj_Id
             }
             const result = await API.postVersion(newVersionObj)
@@ -86,6 +102,7 @@ export default class SongSetupForm extends Component {
     }
 
     render() {
+        console.log(this.state);
         return (
             <Form id="songSetupForm">
 
@@ -119,7 +136,8 @@ export default class SongSetupForm extends Component {
                 </FormGroup>
                 <FormGroup>
                     {/* <Label for="exampleFile">File</Label> */}
-                    <Input type="file" name="file" id="audioFile" />
+                    <Input type="file" name="audio" id="audioFile"
+                        onChange={(e) => this.setState({ audio: e.target.files[0] })} />
                     <FormText color="muted">
                         Upload an audio file for this version
                     </FormText>
