@@ -182,6 +182,10 @@ export default class VersionDetail extends Component {
                             <div className="title-version">
                                 <h4 className="card-title">{this.props.version.song.title}</h4>
                                 <h5 className="card-title">Version {this.props.version.versionNum}</h5>
+                                <audio id="audioPlayer" controls controlsList="nodownload">
+                                    <source src={this.props.version.audioURL}
+                                        type="audio/mp3" />
+                                </audio>
                             </div>
                             <div className="artist-image">
                                 <img src={this.props.version.artist.imageURL} alt="artist" />
@@ -267,7 +271,7 @@ export default class VersionDetail extends Component {
                             </ModalFooter>
                         </Modal>
                     </div>
-                </section>
+                </section >
             )
         } else {
             return null

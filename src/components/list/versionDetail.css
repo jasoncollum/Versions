@@ -20,3 +20,12 @@ img {
     width: 200px;
     height: auto;
 }
+
+#audioPlayer {
+    width: 250px;
+}
+
+#audioPlayer:focus {
+    outline: none;
+}
+
