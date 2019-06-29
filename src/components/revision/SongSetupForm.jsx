@@ -42,6 +42,9 @@ export default class SongSetupForm extends Component {
                 name: this.state.artistNameInput,
                 imageURL: this.state.artistImageURL
             }
+            if (newArtistObj.imageURL === '') {
+                newArtistObj.imageURL = "https://images.unsplash.com/photo-1561175915-509343c39f6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+            }
             const result = await API.postArtist(newArtistObj)
             newArtistObj.id = result.id
             return newArtistObj
