@@ -42,7 +42,7 @@ export default class RevisionForm extends Component {
         e.preventDefault()
         this.pushRevisions()
 
-        // Create array of object with revisionText: revision
+        // Create array of objects with revisionText: revision
         const revisionArr = this.state.revisionInputText.map(revision => {
             return { revisionText: revision }
         })
