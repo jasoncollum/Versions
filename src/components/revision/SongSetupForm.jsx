@@ -27,17 +27,23 @@ export default class SongSetupForm extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault()
-        this.setState({
-            hide: false,
-            hideSubmitBtn: true
-        })
+
         let audioURL = ''
+        if (this.state.audio) {
+            this.setState({
+                hide: false,
+                hideSubmitBtn: true
+            })
+            audioURL = await this.createAudioURL()
+        } else {
+            this.setState({
+                hideSubmitBtn: true
+            })
+        }
         // post to db
         const artistObj = await this.createArtistObj()
         const songObj = await this.createSongObj(artistObj.id)
-        if (this.state.audio) {
-            audioURL = await this.createAudioURL()
-        }
+
         const versionObj = await this.createVersionObj(songObj.id, audioURL)
         // console.log(versionObj)
         await this.props.getAllData()

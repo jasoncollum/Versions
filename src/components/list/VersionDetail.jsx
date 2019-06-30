@@ -37,14 +37,17 @@ export default class VersionDetail extends Component {
 
     handlesavechangesbtn = async (e) => {
         e.preventDefault()
-        this.setState({
-            hide: false,
-            hideSaveBtn: true
-        })
         if (this.state.audio) {
+            this.setState({
+                hide: false,
+                hideSaveBtn: true
+            })
             let audioFbURL = await this.createAudioURL()
             this.afterSaveChanges(audioFbURL)
         } else {
+            this.setState({
+                hideSaveBtn: true
+            })
             let noAudioURL = ''
             this.afterSaveChanges(noAudioURL)
         }
@@ -57,7 +60,7 @@ export default class VersionDetail extends Component {
         const audioFbURL = await ref.put(this.state.audio)
             .then(data => data.ref.getDownloadURL())
             .catch(response => console.log('unable to upload file'))
-        console.log('Firebase URL::', audioFbURL)
+        // console.log('Firebase URL::', audioFbURL)
         return audioFbURL
     }
 
