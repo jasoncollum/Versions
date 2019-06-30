@@ -15,7 +15,8 @@ export default class SongSetupForm extends Component {
         artistNameInput: '',
         artistImageURL: '',
         audio: null,
-        hide: true
+        hide: true,
+        hideSubmitBtn: false
     }
 
     handleFieldChange = e => {
@@ -26,7 +27,10 @@ export default class SongSetupForm extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault()
-        this.setState({ hide: false })
+        this.setState({
+            hide: false,
+            hideSubmitBtn: true
+        })
         let audioURL = ''
         // post to db
         const artistObj = await this.createArtistObj()
@@ -108,6 +112,9 @@ export default class SongSetupForm extends Component {
     render() {
         // console.log(this.state);
         const hide = this.state.hide ? 'none' : '';
+        const hideSubmitBtn = this.state.hideSubmitBtn ? 'none' : '';
+
+        const isEnabled = this.state.songTitleInput && this.state.versionNumberInput && this.state.artistNameInput;
         return (
             <Form id="songSetupForm">
 
@@ -149,7 +156,8 @@ export default class SongSetupForm extends Component {
                 </FormGroup>
                 <div className="loader" style={{ display: `${hide}` }}
                 ></div>
-                <Button onClick={this.handleSubmit} outline color="primary">Submit</Button>
+                <Button disabled={!isEnabled} onClick={this.handleSubmit} outline color="primary"
+                    style={{ display: `${hideSubmitBtn}` }} >Submit</Button>
             </Form >
         )
     }

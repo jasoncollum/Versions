@@ -23,7 +23,8 @@ export default class VersionDetail extends Component {
             newRevisionInputText: [],
             audio: null,
             hide: true,
-            hidePlayer: true
+            hidePlayer: true,
+            hideSaveBtn: false
         };
 
         this.toggle = this.toggle.bind(this);
@@ -36,7 +37,10 @@ export default class VersionDetail extends Component {
 
     handlesavechangesbtn = async (e) => {
         e.preventDefault()
-        this.setState({ hide: false })
+        this.setState({
+            hide: false,
+            hideSaveBtn: true
+        })
         if (this.state.audio) {
             let audioFbURL = await this.createAudioURL()
             this.afterSaveChanges(audioFbURL)
@@ -205,6 +209,7 @@ export default class VersionDetail extends Component {
                 hidePlayer = '';
             }
             let { revisions } = this.state
+            const hideSaveBtn = this.state.hideSaveBtn ? 'none' : '';
             return (
                 <section className="versionDetail" style={{ width: '500px' }}>
                     <div className="card-body">
@@ -307,7 +312,8 @@ export default class VersionDetail extends Component {
                                 ></div>
                             </ModalBody>
                             <ModalFooter>
-                                <Button outline color="primary" onClick={this.handlesavechangesbtn}>Save Revisions</Button>{' '}
+                                <Button outline color="primary" onClick={this.handlesavechangesbtn}
+                                    style={{ display: `${hideSaveBtn}` }}>Save Revisions</Button>{' '}
                                 {/* <Button outline color="secondary" onClick={this.handlecancelbtn}>Cancel</Button> */}
                             </ModalFooter>
                         </Modal>
