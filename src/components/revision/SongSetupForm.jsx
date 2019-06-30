@@ -106,7 +106,7 @@ export default class SongSetupForm extends Component {
     }
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
         const hide = this.state.hide ? 'none' : '';
         return (
             <Form id="songSetupForm">
