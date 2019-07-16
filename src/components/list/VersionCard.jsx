@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import {
-    Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Button
+    Card, CardImg, CardBody, Button
 } from 'reactstrap';
 import API from '../../modules/API'
 import './versionCard.css'
@@ -15,7 +14,6 @@ export default class VersionCard extends Component {
 
     // New Version
     handleNewVersion = async (song, artist) => {
-        // console.log(`New version for ${song.title} by ${artist.name}`)
         // Determine how many versions currently exist
         const versionArr = this.props.versions.filter(version => {
             return version.songId === song.id
@@ -33,7 +31,6 @@ export default class VersionCard extends Component {
     // Delete song, versions, and revisions
     handleDelete = async () => {
         this.props.deleteSong(this.props.song.id)
-        // await this.props.getAllData()
     }
 
     render() {
