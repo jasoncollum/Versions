@@ -60,7 +60,6 @@ export default class VersionDetail extends Component {
         const audioFbURL = await ref.put(this.state.audio)
             .then(data => data.ref.getDownloadURL())
             .catch(response => console.log('unable to upload file'))
-        // console.log('Firebase URL::', audioFbURL)
         return audioFbURL
     }
 
@@ -71,28 +70,18 @@ export default class VersionDetail extends Component {
         this.props.history.push(`/songList/${this.props.version.id}`)
     }
 
-    // handlecancelbtn() {
-    //     this.setState(prevState => ({
-    //         modal: !prevState.modal,
-    //         revisions: [{ text: '' }]
-    //     }))
-    // }
-
     newRevisionsArray = []
 
     handleDeleteBtn = async () => {
-        // console.log('delete version')
         this.props.deleteVersion(this.props.version.id)
     }
 
     handleMinus = (revisionId) => {
-        // console.log('minus icon', revisionId)
         API.deleteRevision(revisionId).then(() => console.log('revision deleted:'))
     }
 
     handleBlur = (e) => {
         const target = e.target;
-        // console.log('Blur', e.target.id, e.target.value)
         // Check if previously existing revision and update edited revision
         if (e.target.type === 'text' && !e.target.id.includes('-') && e.target.value) {
             const updatedRevision = { revisionText: e.target.value }
@@ -111,12 +100,10 @@ export default class VersionDetail extends Component {
                 songId: this.props.version.songId
             }
             API.postRevision(newRevisionObject).then((result) => {
-                // console.log('Posted NEW Revision', result)
                 target.id = result.id
             })
         }
     }
-
 
     //EDIT FORM LOGIC ...
     addRevision = (e) => {
@@ -142,18 +129,6 @@ export default class VersionDetail extends Component {
         }
     }
 
-    // push all new revision text to newRevisionInputText array in state
-    // pushNewRevisions = () => {
-    //     const newRevisionInputs = document.querySelectorAll('.newRevisionGroup input')
-    //     newRevisionInputs.forEach(input => {
-    //         let floatState = this.state.newRevisionInputText
-    //         if (input.value !== '') {
-    //             floatState.push(input.value)
-    //             this.setState({ newRevisionInputText: floatState })
-    //         }
-    //     })
-    // }
-
     handleFieldChange = e => {
         if (['text'].includes(e.target.className)) {
             let revisions = [...this.state.revisions]
@@ -164,45 +139,6 @@ export default class VersionDetail extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     console.log('VersionDetail mounted')
-    // }
-
-    // Create objects:  artist, song, version, request
-    // createArtistObj = () => {
-    //     return {
-    //         name: this.state.artistNameInput
-    //     }
-    // }
-
-    // createSongObj = () => {
-    //     return {
-    //         title: this.state.songTitleInput
-    //     }
-    // }
-
-    // createVersionObj = () => {
-    //     return {
-    //         versionNum: parseInt(this.state.versionNumberInput)
-    //     }
-    // }
-
-    // createRevisionObjArr = (strArr) => {
-    //     return {
-    //         revisionText: this.state.revisionInputText
-    //     }
-    // }
-    // ... end Edit Form Logic
-
-    // set existing properties in state
-    // componentDidMount() {
-
-    //     this.props.version.revisions.map(revision => {
-    //         this.setState({ [revision.id]: revision.revisionText })
-    //     })
-
-    //     console.log('mount', this.state)
-    // }
 
     render() {
         if (this.props.version.song) {
@@ -252,18 +188,11 @@ export default class VersionDetail extends Component {
                                 <Form id="revisionForm">
                                     <FormGroup>
                                         <Label for="songTitleInput">{this.props.version.song.title}</Label>
-                                        {/* <Input type="text" name="songTitleInput" id="songTitleInput"
-                                                    placeholder="Song Title"
-                                                    onChange={this.handleFieldChange} /> */}
                                     </FormGroup>
                                     <FormGroup>
                                         <Label for="versionNumberInput">Version {this.props.version.versionNum}</Label>
-                                        {/* <Input type="text" name="versionNumberInput" id="versionNumberInput"
-                                                    placeholder="Version No."
-                                                    onChange={this.handleFieldChange} /> */}
                                     </FormGroup>
                                     <FormGroup id="revisionGroup">
-                                        {/* <p>Mix Revisions</p> */}
                                         {
                                             this.props.version.revisions.map(revision => (
                                                 <RevisionComp key={revision.id}
@@ -279,7 +208,6 @@ export default class VersionDetail extends Component {
                                                 let revisionId = `revision-${idx}`
                                                 return (
                                                     <div key={idx} id="dynamicRevisionGroup">
-                                                        {/* <Label for={revisionId} hidden>Mix Revisions</Label> */}
                                                         <InputGroup className="newRevisionGroup">
                                                             <Input
                                                                 type="text"
@@ -290,10 +218,6 @@ export default class VersionDetail extends Component {
                                                                 onChange={this.handleFieldChange}
                                                                 onBlur={this.handleBlur}
                                                                 style={{ marginBottom: '5px' }} />
-                                                            {/* <InputGroupAddon addonType="append">
-                                                                <FiPlus onClick={this.addRevision} id="revisionBtn"
-                                                                    style={{ margin: 'auto' }} />
-                                                            </InputGroupAddon> */}
                                                         </InputGroup>
                                                     </div>
                                                 )
@@ -303,7 +227,6 @@ export default class VersionDetail extends Component {
                                     <FiPlus onClick={this.addRevision} id="revisionBtn"
                                         style={{ margin: 'auto' }} />
                                     <FormGroup>
-                                        {/* <Label for="audioFile">File</Label> */}
                                         <Input type="file" name="audio" id="audioFile"
                                             onChange={(e) => this.setState({ audio: e.target.files[0] })} />
                                         <FormText color="muted">
@@ -317,7 +240,6 @@ export default class VersionDetail extends Component {
                             <ModalFooter>
                                 <Button outline color="primary" onClick={this.handlesavechangesbtn}
                                     style={{ display: `${hideSaveBtn}` }}>Save Revisions</Button>{' '}
-                                {/* <Button outline color="secondary" onClick={this.handlecancelbtn}>Cancel</Button> */}
                             </ModalFooter>
                         </Modal>
                     </div>

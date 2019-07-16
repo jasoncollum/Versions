@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, FormText, Label, Input } from 'reactstrap'
+import { Button, Form, FormGroup, FormText, Input } from 'reactstrap'
 import API from '../../modules/API';
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
@@ -45,7 +45,6 @@ export default class SongSetupForm extends Component {
         const songObj = await this.createSongObj(artistObj.id)
 
         const versionObj = await this.createVersionObj(songObj.id, audioURL)
-        // console.log(versionObj)
         await this.props.getAllData()
     }
 
@@ -116,7 +115,6 @@ export default class SongSetupForm extends Component {
     }
 
     render() {
-        // console.log(this.state);
         const hide = this.state.hide ? 'none' : '';
         const hideSubmitBtn = this.state.hideSubmitBtn ? 'none' : '';
 
@@ -125,35 +123,30 @@ export default class SongSetupForm extends Component {
             <Form id="songSetupForm">
 
                 <FormGroup>
-                    {/* <Label for="songTitleInput">Song Title</Label> */}
                     <Input type="text" name="songTitleInput" id="songTitleInput"
                         placeholder="Song Title"
                         onChange={this.handleFieldChange}
                     />
                 </FormGroup>
                 <FormGroup>
-                    {/* <Label for="versionNumberInput">Version No.</Label> */}
                     <Input type="number" name="versionNumberInput" id="versionNumberInput"
                         placeholder="Version No."
                         onChange={this.handleFieldChange}
                     />
                 </FormGroup>
                 <FormGroup>
-                    {/* <Label for="artistNameInput">Artist Name</Label> */}
                     <Input type="text" name="artistNameInput" id="artistNameInput"
                         placeholder="Artist Name"
                         onChange={this.handleFieldChange}
                     />
                 </FormGroup>
                 <FormGroup>
-                    {/* <Label for="artistNameInput">Artist Name</Label> */}
                     <Input type="text" name="artistImageURL" id="artistImageURLInput"
                         placeholder="Artist Image URL"
                         onChange={this.handleFieldChange}
                     />
                 </FormGroup>
                 <FormGroup>
-                    {/* <Label for="audioFile">File</Label> */}
                     <Input type="file" name="audio" id="audioFile"
                         onChange={(e) => this.setState({ audio: e.target.files[0] })} />
                     <FormText color="muted">
