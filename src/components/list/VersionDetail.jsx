@@ -44,12 +44,6 @@ export default class VersionDetail extends Component {
             })
             let audioFbURL = await this.createAudioURL()
             this.afterSaveChanges(audioFbURL)
-        } else {
-            this.setState({
-                hideSaveBtn: true
-            })
-            let noAudioURL = ''
-            this.afterSaveChanges(noAudioURL)
         }
         this.toggle()
     }
@@ -147,6 +141,7 @@ export default class VersionDetail extends Component {
             if (this.props.version.audioURL) {
                 hidePlayer = '';
             }
+            console.log(`Audio URL:: ${this.props.version.audioURL}`)
             let { revisions } = this.state
             const hideSaveBtn = this.state.hideSaveBtn ? 'none' : '';
             return (
