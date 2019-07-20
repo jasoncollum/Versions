@@ -41,13 +41,16 @@ class NavBar extends Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/components/" style={style}>Song List</NavLink>
+                                {/* <NavLink href="/components/" style={style}>Song List</NavLink> */}
+                                <Link className="nav-link" to="/songList">Song List</Link>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/components/" style={style}>New Song</NavLink>
+                                {/* <NavLink href="/components/" style={style}>New Song</NavLink> */}
+                                <Link className="nav-link" to="/songSetupForm">New Song</Link>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/components/" style={style}>Logout</NavLink>
+                                {/* <NavLink href="/components/" style={style}>Logout</NavLink> */}
+                                <Link className="nav-link" to="/login" onClick={() => logout()}>Logout</Link>
                             </NavItem>
                             {/* <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav caret>
