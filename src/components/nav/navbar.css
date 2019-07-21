@@ -1,12 +1,8 @@
-nav {
+.strap-nav {
     background-color:#273644;
 }
 
-nav h2 {
-    margin: 5px 5px 5px 5%;
-    color:  #CDAB7C;
+.nav-brand {
+    color: rgb(238, 233, 226);
 }
 
-nav ul {
-    margin-right: 4%;
-}

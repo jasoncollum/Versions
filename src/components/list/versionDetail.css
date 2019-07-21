@@ -1,19 +1,17 @@
 .versionDetail {
     margin: 0 auto;
+    max-width: 500px;
 }
 
 .song-info {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-between;
-}
-
-.title-version {
-    align-self: flex-start;
+    justify-content: center;
 }
 
 .artist-image {
-   align-self: flex-end;
+   display: none;
 }
 
 img {
@@ -32,9 +30,9 @@ img {
 /* Upload Spinner */
 
 .loader {
-  border: 8px solid #CDAB7C; /* Light grey */
-  border-top: 8px solid #273644; /* Blue */
-  border-bottom: 8px solid #273644; /* Blue */
+  border: 8px solid #CDAB7C;
+  border-top: 8px solid #273644;
+  border-bottom: 8px solid #273644;
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -45,4 +43,17 @@ img {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@media only screen and (min-width: 600px) {
+    .song-info {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    }
+
+    .artist-image {
+    display: inline-block;
+    }   
 }

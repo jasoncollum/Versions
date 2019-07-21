@@ -46,6 +46,8 @@ export default class VersionDetail extends Component {
             this.afterSaveChanges(audioFbURL)
         }
         this.toggle()
+        await this.props.getAllData()
+        this.props.history.push(`/songList/${this.props.version.id}`)
     }
 
     createAudioURL = async () => {
@@ -141,11 +143,11 @@ export default class VersionDetail extends Component {
             if (this.props.version.audioURL) {
                 hidePlayer = '';
             }
-            console.log(`Audio URL:: ${this.props.version.audioURL}`)
+            // console.log(`Audio URL:: ${this.props.version.audioURL}`)
             let { revisions } = this.state
             const hideSaveBtn = this.state.hideSaveBtn ? 'none' : '';
             return (
-                <section className="versionDetail" style={{ width: '500px' }}>
+                <section className="versionDetail">
                     <div className="card-body">
                         <div className="song-info">
                             <div className="title-version">
