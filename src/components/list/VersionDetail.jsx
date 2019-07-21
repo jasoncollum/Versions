@@ -46,6 +46,8 @@ export default class VersionDetail extends Component {
             this.afterSaveChanges(audioFbURL)
         }
         this.toggle()
+        await this.props.getAllData()
+        this.props.history.push(`/songList/${this.props.version.id}`)
     }
 
     createAudioURL = async () => {
