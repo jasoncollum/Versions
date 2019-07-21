@@ -8,8 +8,7 @@ import {
     NavbarToggler,
     NavbarBrand,
     Nav,
-    NavItem,
-    NavLink
+    NavItem
 } from 'reactstrap';
 import './navbar.css';
 
@@ -32,6 +31,12 @@ class NavBar extends Component {
         });
     }
 
+    closeMenu() {
+        if (window.innerWidth <= 768) {
+            this.toggle();
+        }
+    }
+
     render() {
         return (
             <div>
@@ -41,34 +46,18 @@ class NavBar extends Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <Link className="nav-link" to="/songList" style={style}>Song List</Link>
+                                <Link className="nav-link" to="/songList" style={style} onClick={() => this.closeMenu()}>Song List</Link>
                             </NavItem>
                             <NavItem>
-                                <Link className="nav-link" to="/songSetupForm" style={style}>New Song</Link>
+                                <Link className="nav-link" to="/songSetupForm" style={style} onClick={() => this.closeMenu()}>New Song</Link>
                             </NavItem>
                             <NavItem>
-                                <Link className="nav-link" to="/login" style={style} onClick={() => logout()}>Logout</Link>
+                                <Link className="nav-link" to="/login" style={style} onClick={() => { logout(); this.closeMenu() }}>Logout</Link>
                             </NavItem>
                         </Nav>
                     </Collapse>
                 </Navbar>
             </div>
-
-            // Bootstrap Navboar - original
-            // <nav className="navbar navbar-light fixed-top light-blue flex-md-nowrap p-0 shadow">
-            //     <h2>VERSIONS</h2>
-            //     <ul className="nav nav-pills">
-            //         <li className="nav-item">
-            //             <Link className="nav-link" to="/songList">Song List</Link>
-            //         </li>
-            //         <li className="nav-item">
-            //             <Link className="nav-link" to="/songSetupForm">New Song</Link>
-            //         </li>
-            //         <li className="nav-item">
-            //             <Link className="nav-link" to="/login" onClick={() => logout()}>Logout</Link>
-            //         </li>
-            //     </ul>
-            // </nav>
         )
     }
 }
