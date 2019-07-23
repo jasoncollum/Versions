@@ -143,7 +143,7 @@ export default class VersionDetail extends Component {
             if (this.props.version.audioURL) {
                 hidePlayer = '';
             }
-            // console.log(`Audio URL:: ${this.props.version.audioURL}`)
+
             let { revisions } = this.state
             const hideSaveBtn = this.state.hideSaveBtn ? 'none' : '';
             return (

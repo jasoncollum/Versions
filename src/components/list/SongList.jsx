@@ -10,7 +10,7 @@ export default class SongList extends Component {
         })
 
         const uniqueSongsArray = Array.from(new Set(songs))
-        console.log()
+
         if (this.props.versions) {
             return (
                 <React.Fragment>

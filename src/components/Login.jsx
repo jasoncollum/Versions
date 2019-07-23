@@ -11,7 +11,7 @@ export default class Login extends Component {
 
     submit = async (e) => {
         e.preventDefault()
-        // console.log(this.state.email, this.state.password)
+
         await login(this.state.email, this.state.password)
             .then((user) => {
                 this.props.onLogin(user);
