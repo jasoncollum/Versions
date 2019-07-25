@@ -4,8 +4,8 @@ import { withRouter } from 'react-router'
 import Login from './Login';
 import Register from './Register';
 import { getUserFromLocalStorage } from '../auth/userManager';
-import SongSetupForm from './revision/SongSetupForm'
-import RevisionForm from './revision/RevisionForm'
+import SongSetupForm from './forms/SongSetupForm'
+import RevisionForm from './forms/RevisionForm'
 import SongList from './list/SongList'
 import VersionDetail from './list/VersionDetail'
 import API from '../modules/API'
