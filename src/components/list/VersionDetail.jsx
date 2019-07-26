@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import API from '../../modules/API';
 import RevisionComp from './RevisionComp'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, InputGroup, FormText } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, InputGroup, FormText, Card, CardBody } from 'reactstrap'
 import { FiPlus } from 'react-icons/fi'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
@@ -148,98 +148,102 @@ export default class VersionDetail extends Component {
             const hideSaveBtn = this.state.hideSaveBtn ? 'none' : '';
             return (
                 <section className="versionDetail">
-                    <div className="card-body">
-                        <div className="song-info">
-                            <div className="title-version">
-                                <h4 className="card-title">{this.props.version.song.title}</h4>
-                                <h5 className="card-title">Version {this.props.version.versionNum}</h5>
-                                <audio id="audioPlayer" controls controlsList="nodownload"
-                                    style={{ display: `${hidePlayer}` }}>
-                                    <source src={this.props.version.audioURL}
-                                        type="audio/mp3" />
-                                </audio>
+                    <Card style={{ border: 'none' }}>
+                        {/* <div className="card-body"> */}
+                        <CardBody>
+                            <div className="song-info">
+                                <div className="title-version">
+                                    <h4 className="card-title">{this.props.version.song.title}</h4>
+                                    <h5 className="card-title">Version {this.props.version.versionNum}</h5>
+                                    <audio id="audioPlayer" controls controlsList="nodownload"
+                                        style={{ display: `${hidePlayer}` }}>
+                                        <source src={this.props.version.audioURL}
+                                            type="audio/mp3" />
+                                    </audio>
+                                </div>
+                                <div className="artist-image">
+                                    <img src={this.props.version.artist.imageURL} alt="artist" />
+                                </div>
                             </div>
-                            <div className="artist-image">
-                                <img src={this.props.version.artist.imageURL} alt="artist" />
+                            <hr></hr>
+                            <div>
+                                {
+                                    this.props.version.revisions.map(revision =>
+                                        <p key={revision.id}>{revision.revisionText}</p>
+                                    )
+                                }
                             </div>
-                        </div>
-                        <hr></hr>
-                        <div>
-                            {
-                                this.props.version.revisions.map(revision =>
-                                    <p key={revision.id}>{revision.revisionText}</p>
-                                )
-                            }
-                        </div>
-                        <hr></hr>
-                        <Button onClick={this.handleDeleteBtn} outline color="danger"
-                            style={{ float: 'right', margin: '0 10px', fontSize: '.7em' }}>Delete Version</Button>
-                        <Button onClick={this.toggle} outline color="primary"
-                            style={{ float: 'right', fontSize: '.7em' }}>Add | Edit Revisions</Button>
-                        <Modal isOpen={this.state.modal}
-                            className={this.props.className}
-                            centered={true}
-                            style={{ maxWidth: '575px' }}>
-                            <ModalHeader toggle={this.toggle}>Add | Edit Revisions</ModalHeader>
-                            <ModalBody>
-                                <Form id="revisionForm">
-                                    <FormGroup>
-                                        <Label for="songTitleInput">{this.props.version.song.title}</Label>
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label for="versionNumberInput">Version {this.props.version.versionNum}</Label>
-                                    </FormGroup>
-                                    <FormGroup id="revisionGroup">
-                                        {
-                                            this.props.version.revisions.map(revision => (
-                                                <RevisionComp key={revision.id}
-                                                    revision={revision}
-                                                    handleFieldChange={this.handleFieldChange}
-                                                    handleMinus={this.handleMinus}
-                                                    handleBlur={this.handleBlur}
-                                                />
-                                            ))
-                                        }
-                                        {
-                                            revisions.map((val, idx) => {
-                                                let revisionId = `revision-${idx}`
-                                                return (
-                                                    <div key={idx} id="dynamicRevisionGroup">
-                                                        <InputGroup className="newRevisionGroup">
-                                                            <Input
-                                                                type="text"
-                                                                name={revisionId}
-                                                                data-id={idx}
-                                                                id={revisionId}
-                                                                placeholder="Add a mix revision ..."
-                                                                onChange={this.handleFieldChange}
-                                                                onBlur={this.handleBlur}
-                                                                style={{ marginBottom: '5px' }} />
-                                                        </InputGroup>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </FormGroup>
-                                    <FiPlus onClick={this.addRevision} id="revisionBtn"
-                                        style={{ margin: 'auto' }} />
-                                    <FormGroup>
-                                        <Input type="file" name="audio" id="audioFile"
-                                            onChange={(e) => this.setState({ audio: e.target.files[0] })} />
-                                        <FormText color="muted">
-                                            Upload an audio file for this version
+                            <hr></hr>
+                            <Button onClick={this.handleDeleteBtn} outline color="danger"
+                                style={{ float: 'right', margin: '0 10px', fontSize: '.7em' }}>Delete Version</Button>
+                            <Button onClick={this.toggle} outline color="primary"
+                                style={{ float: 'right', fontSize: '.7em' }}>Add | Edit Revisions</Button>
+                            <Modal isOpen={this.state.modal}
+                                className={this.props.className}
+                                centered={true}
+                                style={{ maxWidth: '575px' }}>
+                                <ModalHeader toggle={this.toggle}>Add | Edit Revisions</ModalHeader>
+                                <ModalBody>
+                                    <Form id="revisionForm">
+                                        <FormGroup>
+                                            <Label for="songTitleInput">{this.props.version.song.title}</Label>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="versionNumberInput">Version {this.props.version.versionNum}</Label>
+                                        </FormGroup>
+                                        <FormGroup id="revisionGroup">
+                                            {
+                                                this.props.version.revisions.map(revision => (
+                                                    <RevisionComp key={revision.id}
+                                                        revision={revision}
+                                                        handleFieldChange={this.handleFieldChange}
+                                                        handleMinus={this.handleMinus}
+                                                        handleBlur={this.handleBlur}
+                                                    />
+                                                ))
+                                            }
+                                            {
+                                                revisions.map((val, idx) => {
+                                                    let revisionId = `revision-${idx}`
+                                                    return (
+                                                        <div key={idx} id="dynamicRevisionGroup">
+                                                            <InputGroup className="newRevisionGroup">
+                                                                <Input
+                                                                    type="text"
+                                                                    name={revisionId}
+                                                                    data-id={idx}
+                                                                    id={revisionId}
+                                                                    placeholder="Add a mix revision ..."
+                                                                    onChange={this.handleFieldChange}
+                                                                    onBlur={this.handleBlur}
+                                                                    style={{ marginBottom: '5px' }} />
+                                                            </InputGroup>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </FormGroup>
+                                        <FiPlus onClick={this.addRevision} id="revisionBtn"
+                                            style={{ margin: 'auto' }} />
+                                        <FormGroup>
+                                            <Input type="file" name="audio" id="audioFile"
+                                                onChange={(e) => this.setState({ audio: e.target.files[0] })} />
+                                            <FormText color="muted">
+                                                Upload an audio file for this version
                     </FormText>
-                                    </FormGroup>
-                                </Form>
-                                <div className="loader" style={{ display: `${hide}` }}
-                                ></div>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button outline color="primary" onClick={this.handlesavechangesbtn}
-                                    style={{ display: `${hideSaveBtn}` }}>Save Revisions</Button>{' '}
-                            </ModalFooter>
-                        </Modal>
-                    </div>
+                                        </FormGroup>
+                                    </Form>
+                                    <div className="loader" style={{ display: `${hide}` }}
+                                    ></div>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button outline color="primary" onClick={this.handlesavechangesbtn}
+                                        style={{ display: `${hideSaveBtn}` }}>Save Revisions</Button>{' '}
+                                </ModalFooter>
+                            </Modal>
+                            {/* </div> */}
+                        </CardBody>
+                    </Card>
                 </section >
             )
         } else {
