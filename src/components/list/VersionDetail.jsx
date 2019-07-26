@@ -149,7 +149,6 @@ export default class VersionDetail extends Component {
             return (
                 <section className="versionDetail">
                     <Card style={{ border: 'none' }}>
-                        {/* <div className="card-body"> */}
                         <CardBody>
                             <div className="song-info">
                                 <div className="title-version">
@@ -241,7 +240,6 @@ export default class VersionDetail extends Component {
                                         style={{ display: `${hideSaveBtn}` }}>Save Revisions</Button>{' '}
                                 </ModalFooter>
                             </Modal>
-                            {/* </div> */}
                         </CardBody>
                     </Card>
                 </section >
